@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxRayDistance = 500;
     [BoxGroup("Character Stats")]
     [Tooltip("Where objects will be held relative to the character.")]
+    [Required]
     public Transform grabPoint;
 
     Interactable currentHeldItem;
@@ -22,6 +23,8 @@ public class PlayerController : MonoBehaviour
     Player_Input playerInputActions;
     InputAction clickAction;
     InputAction moveAction;
+    InputAction interactAction;
+    InputAction cancelAction;
     LayerMask raycastLayerMask;
     Vector2 currentMovementInput;
     bool isClickToMove = false;
@@ -49,6 +52,16 @@ public class PlayerController : MonoBehaviour
         moveAction.canceled += OnMovementStop;
         moveAction.Enable();
 
+        // Setup Interact
+        interactAction = playerInputActions.Player.Interact;
+        interactAction.performed += OnInteract;
+        interactAction.Enable();
+
+        // Setup Cancel
+        cancelAction = playerInputActions.Player.Cancel;
+        cancelAction.performed += OnCancel;
+        cancelAction.Enable();
+
         raycastLayerMask = ~(1 << LayerMask.NameToLayer("Structure"));
     }
 
@@ -56,14 +69,20 @@ public class PlayerController : MonoBehaviour
     {
         clickAction.performed -= OnClickPerformed;
         clickAction.Disable();
+
         moveAction.performed -= OnMovementInput;
         moveAction.canceled -= OnMovementStop;
         moveAction.Disable();
+
+        interactAction.performed -= OnInteract;
+        interactAction.Disable();
+
+        cancelAction.performed -= OnCancel;
+        cancelAction.Disable();
     }
 
     void Update()
     {
-        HandleInteraction();
         // If there's input and the player is not using click to move, keep updating the destination.
         if (!isClickToMove && currentMovementInput != Vector2.zero)
         {
@@ -73,18 +92,18 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteraction()
     {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
+        //TODO: Need to account for closest item/npc/animal within range first
+        if (currentHeldItem == null)
         {
-            if (currentHeldItem != null)
-            {
-                DropItem();
-            }
-            else
-            {
-                AttemptPickup();
-            }
+            AttemptPickup();
         }
-        // Add more interaction handling here for other objects like NPCs
+        //If no other interactables in range
+        else
+        {
+            DropItem();
+        }
+        //If talking to NPC, petting animal, etc. should stop movement
+        //StopMoving();
     }
 
     public void ClickToMove(Vector3 destination)
@@ -138,12 +157,16 @@ public class PlayerController : MonoBehaviour
 
     private void DropItem()
     {
-        currentHeldItem.Drop();
-        currentHeldItem = null;
+        if (currentHeldItem != null)
+        {
+            currentHeldItem.Drop();
+            currentHeldItem = null;
+        }
     }
 
     void OnClickPerformed(InputAction.CallbackContext context)
     {
+        Debug.Log($"Click Action Performed: {context.phase}");
         if (navMeshAgent != null && navMeshAgent.enabled)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -153,8 +176,18 @@ public class PlayerController : MonoBehaviour
 #if UNITY_EDITOR
                 Debug.DrawLine(ray.origin, hit.point, debugRayColor, debugRayTime);
 #endif
-                isClickToMove = true;
-                ClickToMove(hit.point);
+                Interactable interactable = hit.collider.GetComponent<Interactable>();
+                if (interactable != null && Vector3.Distance(hit.point, transform.position) <= interactRange)
+                {
+                    interactable.PickUp(grabPoint);
+                    currentHeldItem = interactable;
+                    //StopMoving();
+                }
+                else
+                {
+                    isClickToMove = true;
+                    ClickToMove(hit.point);
+                }
             }
         }
     }
@@ -170,6 +203,17 @@ public class PlayerController : MonoBehaviour
     {
         currentMovementInput = Vector2.zero;
         StopMoving();
+    }
+
+    private void OnInteract(InputAction.CallbackContext context)
+    {
+        HandleInteraction();
+    }
+
+    private void OnCancel(InputAction.CallbackContext context)
+    {
+        // Should first check for context, for now just drop item
+        DropItem();
     }
 }
 
