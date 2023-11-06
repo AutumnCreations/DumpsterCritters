@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     [Required]
     public Transform grabPoint;
 
+    [HideInInspector]
+    public Placemat nearbyPlacemat = null;
+
     Interactable currentHeldItem;
     NavMeshAgent navMeshAgent;
     Player_Input playerInputActions;
@@ -95,15 +98,25 @@ public class PlayerController : MonoBehaviour
         //TODO: Need to account for closest item/npc/animal within range first
         if (currentHeldItem == null)
         {
-            AttemptPickup();
+            bool itemFound = AttemptPickup();
+            if (!itemFound && nearbyPlacemat != null && nearbyPlacemat.currentObject != null)
+            {
+                //Debug.Log($"Attempting to remove {nearbyPlacemat.currentObject.name} from {nearbyPlacemat}");
+                currentHeldItem = nearbyPlacemat.currentObject;
+                nearbyPlacemat.RemoveObject(grabPoint);
+            }
         }
-        //If no other interactables in range
+        else if (nearbyPlacemat != null && nearbyPlacemat.currentObject == null)
+        {
+            nearbyPlacemat.SetObject(currentHeldItem);
+            currentHeldItem = null;
+            StopMoving();
+        }
         else
         {
             DropItem();
         }
         //If talking to NPC, petting animal, etc. should stop movement
-        //StopMoving();
     }
 
     public void ClickToMove(Vector3 destination)
@@ -127,8 +140,6 @@ public class PlayerController : MonoBehaviour
         navMeshAgent.SetDestination(destination);
     }
 
-
-
     private void StopMoving()
     {
         if (navMeshAgent.hasPath)
@@ -138,21 +149,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void AttemptPickup()
+    private bool AttemptPickup()
     {
         Collider[] itemsInRange = Physics.OverlapSphere(transform.position, interactRange);
         foreach (Collider item in itemsInRange)
         {
             Interactable interactable = item.GetComponent<Interactable>();
-            // Ensure interactable can be interacted with
-            //if (interactable && interactable.CanInteract()) 
+
             if (interactable)
             {
                 currentHeldItem = interactable;
                 interactable.PickUp(grabPoint);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     private void DropItem()
@@ -166,7 +177,7 @@ public class PlayerController : MonoBehaviour
 
     void OnClickPerformed(InputAction.CallbackContext context)
     {
-        Debug.Log($"Click Action Performed: {context.phase}");
+        //Debug.Log($"Click Action Performed: {context.phase}");
         if (navMeshAgent != null && navMeshAgent.enabled)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
