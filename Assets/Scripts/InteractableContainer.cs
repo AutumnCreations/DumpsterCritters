@@ -38,8 +38,8 @@ public class InteractableContainer : MonoBehaviour
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
-            player.nearbyContainer = this;
-            if (currentObject == null)
+            player.SetNearbyComponents(this.gameObject, true);
+            if (currentObject == null && this is not FoodContainer)
             {
                 highlight.color = actionHighlight;
             }
@@ -50,8 +50,8 @@ public class InteractableContainer : MonoBehaviour
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
+            player.SetNearbyComponents(this.gameObject, false);
             highlight.color = defaultHighlight;
-            player.nearbyContainer = null;
         }
     }
 

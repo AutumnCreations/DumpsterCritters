@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,8 +39,15 @@ public class PlayerController : MonoBehaviour
     [Required]
     public Transform grabPoint;
 
+    [BoxGroup("Interactions")]
+    [Required]
+    public GameObject pickupIcon;
+
     [HideInInspector]
     public InteractableContainer nearbyContainer = null;
+
+    [HideInInspector]
+    public Interactable nearbyInteractable = null;
 
     bool isClickToMove = false;
     PlayerInventory inventory;
@@ -50,6 +58,7 @@ public class PlayerController : MonoBehaviour
     LayerMask raycastLayerMask;
     Player_Input playerInputActions;
     InputAction clickAction;
+
     InputAction moveAction;
     InputAction interactAction;
     InputAction cancelAction;
@@ -121,6 +130,7 @@ public class PlayerController : MonoBehaviour
     {
         navMeshAgent.speed = movementSpeed;
         navMeshAgent.stoppingDistance = stoppingDistance;
+        pickupIcon.SetActive(false);
     }
     #endregion
 
@@ -163,16 +173,17 @@ public class PlayerController : MonoBehaviour
         //TODO: Need to account for closest item/npc/animal within range first
         if (currentHeldItem == null)
         {
-            bool itemFound = AttemptPickup();
-            if (!itemFound && nearbyContainer != null && nearbyContainer.currentObject != null)
+            if (nearbyInteractable != null) AttemptPickup();
+            else if (nearbyContainer != null && nearbyContainer.currentObject != null)
             {
-                //Debug.Log($"Attempting to remove {nearbyPlacemat.currentObject.name} from {nearbyPlacemat}");
                 currentHeldItem = nearbyContainer.currentObject;
                 nearbyContainer.RemoveObject(this);
+                pickupIcon.SetActive(false);
             }
         }
-        else if (nearbyContainer != null && nearbyContainer.currentObject == null)
+        else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer)
         {
+            pickupIcon.SetActive(true);
             nearbyContainer.SetObject(currentHeldItem);
             currentHeldItem = null;
             StopMoving();
@@ -184,30 +195,43 @@ public class PlayerController : MonoBehaviour
         //If talking to NPC, petting animal, etc. should stop movement
     }
 
-    private bool AttemptPickup()
+    private void AttemptPickup()
     {
-        Collider[] itemsInRange = Physics.OverlapSphere(transform.position, interactRange);
-        foreach (Collider item in itemsInRange)
-        {
-            Interactable interactable = item.GetComponent<Interactable>();
+        //Collider[] itemsInRange = Physics.OverlapSphere(transform.position, interactRange);
+        //foreach (Collider item in itemsInRange)
+        //{
+        //    Interactable interactable = item.GetComponent<Interactable>();
 
-            if (interactable)
-            {
-                if (interactable.isFood)
-                {
-                    inventory.FoodRations += interactable.rationCount;
-                    Debug.Log(inventory.FoodRations);
-                    Destroy(interactable.gameObject);
-                }
-                else
-                {
-                    currentHeldItem = interactable;
-                    interactable.PickUp(grabPoint);
-                }
-                return true;
-            }
+        //    if (interactable)
+        //    {
+        //        if (interactable.isFood)
+        //        {
+        //            inventory.FoodRations += interactable.rationCount;
+        //            Debug.Log(inventory.FoodRations);
+        //            Destroy(interactable.gameObject);
+        //        }
+        //        else
+        //        {
+        //            currentHeldItem = interactable;
+        //            interactable.PickUp(grabPoint);
+        //        }
+        //        return true;
+        //    }
+        //}
+        if (nearbyInteractable.isFood)
+        {
+            inventory.FoodRations += nearbyInteractable.rationCount;
+            Debug.Log(inventory.FoodRations);
+            Destroy(nearbyInteractable.gameObject);
+            nearbyInteractable = null;
         }
-        return false;
+        else
+        {
+            currentHeldItem = nearbyInteractable;
+            nearbyInteractable = null;
+            currentHeldItem.PickUp(grabPoint);
+        }
+        pickupIcon.SetActive(false);
     }
 
     private void DropItem()
@@ -223,6 +247,40 @@ public class PlayerController : MonoBehaviour
     {
         inventory.FoodRations += foodItem.rationCount;
         Debug.Log(inventory.FoodRations);
+    }
+
+    internal void SetNearbyComponents(GameObject component, bool active)
+    {
+        Interactable interactable = component.GetComponent<Interactable>();
+        InteractableContainer interactableContainer = component.GetComponent<InteractableContainer>();
+
+        if (interactable != null)
+        {
+            if (active)
+            {
+                nearbyInteractable = interactable;
+                if (currentHeldItem == null) pickupIcon.SetActive(active);
+            }
+            else
+            {
+                nearbyInteractable = nearbyInteractable == interactable ? null : nearbyInteractable;
+                pickupIcon.SetActive(active);
+            }
+        }
+        else if (interactableContainer != null)
+        {
+            if (active)
+            {
+                nearbyContainer = interactableContainer;
+                if (currentHeldItem == null && interactableContainer.currentObject != null) pickupIcon.SetActive(active);
+            }
+            else
+            {
+                nearbyContainer = nearbyContainer == interactableContainer ? null : nearbyContainer;
+                pickupIcon.SetActive(active);
+            }
+        }
+
     }
 
     #endregion
@@ -283,6 +341,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (nearbyInteractable != null) Debug.Log(nearbyInteractable);
         // If there's input and the player is not using click to move, keep updating the destination.
         if (!isClickToMove && currentMovementInput != Vector2.zero)
         {

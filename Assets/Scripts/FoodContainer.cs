@@ -6,9 +6,14 @@ public class FoodContainer : InteractableContainer
     [BoxGroup("Food")]
     [SerializeField]
     Interactable foodItem;
+
     [BoxGroup("Food")]
     [SerializeField]
     int quantity = 1;
+
+    [BoxGroup("Interactables")]
+    [SerializeField]
+    bool canStoreItems = false;
 
     private void Start()
     {
@@ -32,7 +37,7 @@ public class FoodContainer : InteractableContainer
             player.PickupFood(foodItem);
             Destroy(currentObject.gameObject);
             currentObject = null;
-            highlight.color = actionHighlight;
+            highlight.color = canStoreItems ? actionHighlight : defaultHighlight;
         }
     }
 }

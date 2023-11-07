@@ -47,3 +47,6 @@ TagManager:
   - name: Food
     uniqueID: 2168466565
     locked: 0
+  - name: WorldUI
+    uniqueID: 1193582379
+    locked: 0
