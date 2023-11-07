@@ -5,44 +5,77 @@ using Sirenix.OdinInspector;
 
 public class PlayerController : MonoBehaviour
 {
-    [BoxGroup("Character Stats")]
-    [SerializeField] float movementSpeed = 5f;
-    [BoxGroup("Character Stats")]
-    [Tooltip("How far can the character be from an interactable object/NPC to interact with it.")]
-    [SerializeField] float interactRange = 2f;
-    [BoxGroup("Character Stats")]
+    [BoxGroup("Movement")]
+    [SerializeField]
+    [Tooltip("Set at initialization.")]
+    [Range(.5f, 20f)]
+    float movementSpeed = 5f;
+
+    [BoxGroup("Movement")]
+    [SerializeField]
+    [Tooltip("Target distance from player when using input movement.")]
+    [ValidateInput("DistanceCheck", "Stopping distance must be less than Target Distance from Player.")]
+    [Range(.25f, 5f)]
+    float distanceFromPlayer = 1f;
+
+    [BoxGroup("Movement")]
+    [SerializeField]
+    [Tooltip("Set at initialization. Distance from target that player will stop.")]
+    [ValidateInput("DistanceCheck", "Stopping distance must be less than Target Distance from Player.")]
+    [Range(0f, 2f)]
+    float stoppingDistance = .5f;
+
+    [BoxGroup("Movement")]
     [Tooltip("Likely won't need to be changed in a flat game.")]
     [SerializeField] float maxRayDistance = 500;
-    [BoxGroup("Character Stats")]
+
+    [BoxGroup("Interactions")]
+    [Tooltip("How far can the character be from an interactable object/NPC to interact with it.")]
+    [SerializeField] float interactRange = 2f;
+
+    [BoxGroup("Interactions")]
     [Tooltip("Where objects will be held relative to the character.")]
     [Required]
     public Transform grabPoint;
 
     [HideInInspector]
-    public Placemat nearbyPlacemat = null;
+    public InteractableContainer nearbyContainer = null;
 
+    bool isClickToMove = false;
+    PlayerInventory inventory;
     Interactable currentHeldItem;
     NavMeshAgent navMeshAgent;
+
+    Vector2 currentMovementInput;
+    LayerMask raycastLayerMask;
     Player_Input playerInputActions;
     InputAction clickAction;
     InputAction moveAction;
     InputAction interactAction;
     InputAction cancelAction;
-    LayerMask raycastLayerMask;
-    Vector2 currentMovementInput;
-    bool isClickToMove = false;
 
+    #region Debug Variables
 #if UNITY_EDITOR
     [BoxGroup("Debug")]
     [SerializeField] float debugRayTime = 1.0f;
     [BoxGroup("Debug")]
     [SerializeField] Color debugRayColor = Color.blue;
 #endif
+    #endregion
 
+    #region Inspector Validation
+    bool DistanceCheck()
+    {
+        return distanceFromPlayer > stoppingDistance;
+    }
+    #endregion
+
+    #region Assignment
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         playerInputActions = new Player_Input();
+        inventory = GetComponent<PlayerInventory>();
 
         // Setup Click to Move/Interact
         clickAction = playerInputActions.Player.MoveInteract;
@@ -84,41 +117,14 @@ public class PlayerController : MonoBehaviour
         cancelAction.Disable();
     }
 
-    void Update()
+    void Start()
     {
-        // If there's input and the player is not using click to move, keep updating the destination.
-        if (!isClickToMove && currentMovementInput != Vector2.zero)
-        {
-            StartMoving(currentMovementInput);
-        }
+        navMeshAgent.speed = movementSpeed;
+        navMeshAgent.stoppingDistance = stoppingDistance;
     }
+    #endregion
 
-    private void HandleInteraction()
-    {
-        //TODO: Need to account for closest item/npc/animal within range first
-        if (currentHeldItem == null)
-        {
-            bool itemFound = AttemptPickup();
-            if (!itemFound && nearbyPlacemat != null && nearbyPlacemat.currentObject != null)
-            {
-                //Debug.Log($"Attempting to remove {nearbyPlacemat.currentObject.name} from {nearbyPlacemat}");
-                currentHeldItem = nearbyPlacemat.currentObject;
-                nearbyPlacemat.RemoveObject(grabPoint);
-            }
-        }
-        else if (nearbyPlacemat != null && nearbyPlacemat.currentObject == null)
-        {
-            nearbyPlacemat.SetObject(currentHeldItem);
-            currentHeldItem = null;
-            StopMoving();
-        }
-        else
-        {
-            DropItem();
-        }
-        //If talking to NPC, petting animal, etc. should stop movement
-    }
-
+    #region Movement
     public void ClickToMove(Vector3 destination)
     {
         if (navMeshAgent == null) return;
@@ -128,15 +134,15 @@ public class PlayerController : MonoBehaviour
 
     private void StartMoving(Vector2 input)
     {
+        if (navMeshAgent == null) return;
         Transform cameraTransform = Camera.main.transform;
-        Vector3 forward = cameraTransform.forward;
-        forward.y = 0;
-        forward.Normalize();
-        Vector3 right = cameraTransform.right;
-        right.y = 0;
-        right.Normalize();
-        Vector3 direction = (forward * input.y + right * input.x).normalized;
-        Vector3 destination = transform.position + direction * movementSpeed;
+
+        Vector3 cameraForward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up).normalized;
+        Vector3 cameraRight = Vector3.ProjectOnPlane(cameraTransform.right, Vector3.up).normalized;
+
+        Vector3 direction = (cameraRight * input.x + cameraForward * input.y).normalized;
+
+        Vector3 destination = transform.position + direction * distanceFromPlayer;
         navMeshAgent.SetDestination(destination);
     }
 
@@ -149,6 +155,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Interactions
+    private void HandleInteraction()
+    {
+        //TODO: Need to account for closest item/npc/animal within range first
+        if (currentHeldItem == null)
+        {
+            bool itemFound = AttemptPickup();
+            if (!itemFound && nearbyContainer != null && nearbyContainer.currentObject != null)
+            {
+                //Debug.Log($"Attempting to remove {nearbyPlacemat.currentObject.name} from {nearbyPlacemat}");
+                currentHeldItem = nearbyContainer.currentObject;
+                nearbyContainer.RemoveObject(this);
+            }
+        }
+        else if (nearbyContainer != null && nearbyContainer.currentObject == null)
+        {
+            nearbyContainer.SetObject(currentHeldItem);
+            currentHeldItem = null;
+            StopMoving();
+        }
+        else
+        {
+            DropItem();
+        }
+        //If talking to NPC, petting animal, etc. should stop movement
+    }
+
     private bool AttemptPickup()
     {
         Collider[] itemsInRange = Physics.OverlapSphere(transform.position, interactRange);
@@ -158,8 +193,17 @@ public class PlayerController : MonoBehaviour
 
             if (interactable)
             {
-                currentHeldItem = interactable;
-                interactable.PickUp(grabPoint);
+                if (interactable.isFood)
+                {
+                    inventory.FoodRations += interactable.rationCount;
+                    Debug.Log(inventory.FoodRations);
+                    Destroy(interactable.gameObject);
+                }
+                else
+                {
+                    currentHeldItem = interactable;
+                    interactable.PickUp(grabPoint);
+                }
                 return true;
             }
         }
@@ -175,6 +219,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void PickupFood(Interactable foodItem)
+    {
+        inventory.FoodRations += foodItem.rationCount;
+        Debug.Log(inventory.FoodRations);
+    }
+
+    #endregion
+
+    #region Events
     void OnClickPerformed(InputAction.CallbackContext context)
     {
         //Debug.Log($"Click Action Performed: {context.phase}");
@@ -225,6 +278,16 @@ public class PlayerController : MonoBehaviour
     {
         // Should first check for context, for now just drop item
         DropItem();
+    }
+    #endregion
+
+    void Update()
+    {
+        // If there's input and the player is not using click to move, keep updating the destination.
+        if (!isClickToMove && currentMovementInput != Vector2.zero)
+        {
+            StartMoving(currentMovementInput);
+        }
     }
 }
 
