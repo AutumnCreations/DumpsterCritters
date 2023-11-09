@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3316119639024055487}
   - component: {fileID: 12482707843199291}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4128958016503343459}
   - component: {fileID: 1967390806877481410}
   - component: {fileID: 3700536651229065347}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 3D Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,8 +179,9 @@ GameObject:
   - component: {fileID: 7029143779901448171}
   - component: {fileID: 6042706293973313075}
   - component: {fileID: 5983737191206297480}
-  m_Layer: 0
-  m_Name: Interactable
+  - component: {fileID: -4061111713028958277}
+  m_Layer: 6
+  m_Name: Root_Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,7 +223,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.3337933
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6042706293973313075
 Rigidbody:
@@ -266,3 +267,21 @@ MonoBehaviour:
   isFood: 0
   rationCount: 0
   pickupPoint: {fileID: 3994422423606632428}
+  dropSpeed: 0.5
+  dropThreshold: 0.01
+--- !u!208 &-4061111713028958277
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7943446723486093195}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.15, y: 0.25, z: 0.15}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

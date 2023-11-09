@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
         cancelAction.performed += OnCancel;
         cancelAction.Enable();
 
-        raycastLayerMask = ~(1 << LayerMask.NameToLayer("Structure"));
+        raycastLayerMask = ~(1 << LayerMask.NameToLayer("Player"));
     }
 
     void OnDestroy()
@@ -137,7 +137,6 @@ public class PlayerController : MonoBehaviour
     #region Movement
     public void ClickToMove(Vector3 destination)
     {
-        if (navMeshAgent == null) return;
         navMeshAgent.destination = destination;
         navMeshAgent.isStopped = false;
     }
@@ -197,27 +196,6 @@ public class PlayerController : MonoBehaviour
 
     private void AttemptPickup()
     {
-        //Collider[] itemsInRange = Physics.OverlapSphere(transform.position, interactRange);
-        //foreach (Collider item in itemsInRange)
-        //{
-        //    Interactable interactable = item.GetComponent<Interactable>();
-
-        //    if (interactable)
-        //    {
-        //        if (interactable.isFood)
-        //        {
-        //            inventory.FoodRations += interactable.rationCount;
-        //            Debug.Log(inventory.FoodRations);
-        //            Destroy(interactable.gameObject);
-        //        }
-        //        else
-        //        {
-        //            currentHeldItem = interactable;
-        //            interactable.PickUp(grabPoint);
-        //        }
-        //        return true;
-        //    }
-        //}
         if (nearbyInteractable.isFood)
         {
             inventory.FoodRations += nearbyInteractable.rationCount;
@@ -293,17 +271,29 @@ public class PlayerController : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, maxRayDistance, raycastLayerMask))
             {
 #if UNITY_EDITOR
                 Debug.DrawLine(ray.origin, hit.point, debugRayColor, debugRayTime);
 #endif
                 Interactable interactable = hit.collider.GetComponent<Interactable>();
-                if (interactable != null && Vector3.Distance(hit.point, transform.position) <= interactRange)
+                InteractableContainer interactableContainer = hit.collider.GetComponent<InteractableContainer>();
+                if (interactable != null || interactableContainer != null)
                 {
-                    interactable.PickUp(grabPoint);
-                    currentHeldItem = interactable;
-                    //StopMoving();
+                    Debug.Log("Hit Something");
+                    if ((interactable != null && interactable == nearbyInteractable) ||
+                        (interactableContainer != null && interactableContainer == nearbyContainer))
+                    {
+                        Debug.Log($"Hit Nearby");
+                        HandleInteraction();
+                    }
+                    else
+                    {
+                        Debug.Log("Hit Interactable");
+                        Vector3 closestPoint = hit.collider.ClosestPoint(hit.point);
+                        ClickToMove(closestPoint);
+                    }
                 }
                 else
                 {

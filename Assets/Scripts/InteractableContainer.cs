@@ -1,5 +1,6 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.AI;
 
 public class InteractableContainer : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class InteractableContainer : MonoBehaviour
 
     [HideInInspector]
     public Interactable currentObject = null;
+
 
     protected virtual void Awake()
     {
