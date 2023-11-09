@@ -352,7 +352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   distanceFromPlayer: 1
-  stoppingDistance: 0.5
+  stoppingDistance: 0.1
   maxRayDistance: 500
   interactRange: 1.25
   grabPoint: {fileID: 9088618467348752141}
@@ -387,7 +387,7 @@ NavMeshAgent:
   m_Acceleration: 10000
   avoidancePriority: 50
   m_AngularSpeed: 10000
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
