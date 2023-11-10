@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638351332544885613
+  lastModified: 638351400817552706
   FileSizes:
   - Name: Desktop
     Value: 841440
@@ -35,7 +35,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638351332544603864
+  lastModified: 638351400817522698
   FileSizes:
   - Name: Desktop
     Value: 812
@@ -90,7 +90,7 @@ MonoBehaviour:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638351332544885613
+  cacheTime: 638351400817552706
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -107,7 +107,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638351332544603864
+  lastModified: 638351400817512713
   FileSizes:
   - Name: Desktop
     Value: 1036
