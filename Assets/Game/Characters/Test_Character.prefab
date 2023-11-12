@@ -350,6 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ded2a3633c4da745bc4b448c58e4c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   movementSpeed: 5
   distanceFromPlayer: 1
   stoppingDistance: 0.1
@@ -359,6 +360,7 @@ MonoBehaviour:
   pickupIcon: {fileID: 2041905440727308559}
   nearbyContainer: {fileID: 0}
   nearbyInteractable: {fileID: 0}
+  nearbyNPC: {fileID: 0}
   debugRayTime: 1
   debugRayColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &933729803052580111
@@ -392,7 +394,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 1
+  m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!136 &8285622612182967816

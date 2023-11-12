@@ -1,10 +1,17 @@
+using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class NPC : MonoBehaviour
 {
-    public Dialogue dialogue;
-    public ShopItem[] itemsForSale;
+    [SerializeField]
+    Dialogue dialogue;
+    [SerializeField]
+    //[AssetList(Path = "Assets/Game/Interactables/Items")]
+    List<Item> itemsForSale;
+
     private DialogueManager dialogueManager;
 
     private void Awake()
@@ -14,7 +21,7 @@ public class NPC : MonoBehaviour
 
     public void Interact(PlayerController player)
     {
-        dialogueManager.StartDialogue(dialogue);
+        dialogueManager.StartDialogue(this);
     }
 
     public void GoToShopSpot(Vector3 spot)
@@ -22,7 +29,7 @@ public class NPC : MonoBehaviour
         GetComponent<NavMeshAgent>().SetDestination(spot);
     }
 
-    public ShopItem[] GetItemsForSale()
+    public List<Item> GetItemsForSale()
     {
         return itemsForSale;
     }
@@ -42,6 +49,11 @@ public class NPC : MonoBehaviour
         {
             player.SetNearbyComponents(this.gameObject, false);
         }
+    }
+
+    internal Dialogue GetDialogue()
+    {
+        return dialogue;
     }
 }
 
