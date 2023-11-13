@@ -106,10 +106,10 @@ public class Critter : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        GameStateManager.Instance.onGameStateChange += OnGameStateChange;
-    }
+    //private void OnEnable()
+    //{
+    //    GameStateManager.Instance.onGameStateChange += OnGameStateChange;
+    //}
 
     private void OnDisable()
     {
@@ -147,6 +147,7 @@ public class Critter : MonoBehaviour
     {
         // Start the roaming coroutine
         ChangeState(CritterState.Roaming);
+        GameStateManager.Instance.onGameStateChange += OnGameStateChange;
     }
 
     private void Update()

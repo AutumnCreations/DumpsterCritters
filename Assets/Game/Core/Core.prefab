@@ -287,7 +287,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1623267314296713160
 Transform:
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_UseGeometry: 0
+  m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
@@ -403,9 +403,9 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.05
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: a5776cc5b8c07d2458ee61942eefcf22, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 17838ea78a0aa84499d0b7a450ad798c, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &8343965347412246465
 GameObject:
@@ -418,8 +418,9 @@ GameObject:
   - component: {fileID: 7463289475955957785}
   - component: {fileID: 6369126846937694501}
   - component: {fileID: 4157918890055192308}
+  - component: {fileID: 852728640240030526}
   m_Layer: 0
-  m_Name: Dialogue Manager
+  m_Name: UI Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -467,7 +468,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8101ed67c8fe0fe438b4cc377c22a316, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopKeeper: {fileID: 0}
+  panel: {fileID: 1621752061111149776}
+  itemContainer: {fileID: 1448267043180700421}
+  itemPrefab: {fileID: 6470138776812997044, guid: 0ae0dd707cdd67a4682374e7a302e5fb, type: 3}
+  playerInventory: {fileID: 5105722506672113946}
+--- !u!114 &852728640240030526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343965347412246465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2881c85906254646b10a8813eb881a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 837237169981572159}
+  itemContainer: {fileID: 650399742965580778}
+  itemPrefab: {fileID: 6470138776812997044, guid: 0ae0dd707cdd67a4682374e7a302e5fb, type: 3}
   playerInventory: {fileID: 5105722506672113946}
 --- !u!1001 &775169750172696903
 PrefabInstance:
@@ -562,20 +581,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7889579280329900499, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7889579280329900499, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4157918890055192308}
-    - target: {fileID: 7889579280329900499, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CloseShop
+    - target: {fileID: 8098178707674390844, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 7889579280329900499, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+    - target: {fileID: 8098178707674390844, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 852728640240030526}
+    - target: {fileID: 8098178707674390844, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8098178707674390844, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ShopSystem, Assembly-CSharp
+      value: UIListManager`1[[Interactable, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -593,6 +616,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &650399742965580778 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 272287290428228269, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+  m_PrefabInstance: {fileID: 775169750172696903}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &837237169981572159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 98940665990038904, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+  m_PrefabInstance: {fileID: 775169750172696903}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1448267043180700421 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2222724276780065346, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+  m_PrefabInstance: {fileID: 775169750172696903}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1621752061111149776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2035743785490949527, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+  m_PrefabInstance: {fileID: 775169750172696903}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3230427535924392008 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2744166058352308495, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
@@ -622,6 +665,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5803457849542859109}
     m_Modifications:
+    - target: {fileID: 933729803052580111, guid: 0ba0f2a697649714182e68be325ef5c7, type: 3}
+      propertyPath: ghostBucks
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1035516382537453085, guid: 0ba0f2a697649714182e68be325ef5c7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

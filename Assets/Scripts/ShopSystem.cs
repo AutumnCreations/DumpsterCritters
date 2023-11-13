@@ -1,46 +1,48 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopSystem : MonoBehaviour
+public class ShopSystem : UIListManager<Item>
 {
-    public NPC shopKeeper;
-    public PlayerInventory playerInventory;
-    ShopUI shopUI;
 
-    private void Awake()
+    //Temporary solution to NPC inventory issue
+    NPC npcInstance;
+    private void Start()
     {
-        shopUI = FindObjectOfType<ShopUI>();
-        shopUI.gameObject.SetActive(false);
+        npcInstance = FindObjectOfType<NPC>();
     }
 
-    public void OpenShop()
+    public void OpenShop(NPC npc)
     {
-        shopUI.gameObject.SetActive(true);
-        shopUI.PopulateShop(new List<ShopItem>(shopKeeper.GetItemsForSale()));
+        ShowUI(true);
+        PopulateList(npc.GetItemsForSale(), BuyItem);
     }
 
     public void CloseShop()
     {
-        GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
-        shopUI.gameObject.SetActive(false);
+        ShowUI(false);
     }
 
-    public void BuyItem(ShopItem item)
+    public void BuyItem(Item item)
     {
         Debug.Log(item.item.name);
         if (playerInventory.GhostBucks >= item.cost)
         {
             playerInventory.SpendGhostBucks(item.cost);
-            if (item.item.isFood)
-            {
-                playerInventory.FoodRations += item.item.rationCount;
-            }
-            else
-            {
-                playerInventory.AddItem(item.item);
-            }
-            shopUI.UpdateShopUI(item);
+            playerInventory.AddItem(item);
+            npcInstance.GetItemsForSale().Remove(item);
+            //if (item.item.isFood)
+            //{
+            //    playerInventory.FoodRations += item.item.rationCount;
+            //}
+            //else
+            //{
+            //    playerInventory.AddItem(item.item);
+            //}
+
+            UpdateUI(item, "SOLD OUT");
+            
         }
         else
         {

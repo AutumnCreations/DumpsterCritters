@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class PlayerInventory : MonoBehaviour
 {
+    [SerializeField]
     int foodRations;
+    [SerializeField]
     int ghostBucks;
-    List<Interactable> inventoryItems = new List<Interactable>();
+    [SerializeField]
+    //[AssetList(Path = "Assets/Interactables/Items")]
+    List<Item> inventoryItems = new List<Item>();
 
     public int FoodRations
     {
@@ -19,9 +24,9 @@ public class PlayerInventory : MonoBehaviour
         set => ghostBucks = Mathf.Max(0, value);
     }
 
-    public List<Interactable> InventoryItems => new List<Interactable>(inventoryItems);
+    public List<Item> InventoryItems => new List<Item>(inventoryItems);
 
-    public void AddItem(Interactable item)
+    public void AddItem(Item item)
     {
         if (item != null && !inventoryItems.Contains(item))
         {
@@ -29,7 +34,7 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public bool RemoveItem(Interactable item)
+    public bool RemoveItem(Item item)
     {
         return item != null && inventoryItems.Remove(item);
     }
