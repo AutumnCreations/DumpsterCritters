@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 using System;
 using UnityEngine.EventSystems;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class PlayerController : MonoBehaviour
 {
@@ -172,7 +173,6 @@ public class PlayerController : MonoBehaviour
     #region Interactions
     private void HandleInteraction()
     {
-        //TODO: Need to account for closest item/npc/animal within range first
         if (currentHeldItem == null)
         {
             if (nearbyInteractable != null) AttemptPickup();
@@ -188,53 +188,79 @@ public class PlayerController : MonoBehaviour
                 pickupIcon.SetActive(false);
             }
         }
-        else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer)
+        else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer
+            && nearbyContainer is not FoodBowl
+            && currentHeldItem is not Food)
         {
             pickupIcon.SetActive(true);
             nearbyContainer.SetObject(currentHeldItem);
             currentHeldItem = null;
             StopMoving();
         }
+        else if (nearbyContainer != null && nearbyContainer is FoodBowl && currentHeldItem is Food)
+        {
+            pickupIcon.SetActive(false);
+            nearbyContainer.GetComponent<FoodBowl>().AddFood(currentHeldItem.GetComponent<Food>().rationCount);
+            Destroy(currentHeldItem.gameObject);
+            currentHeldItem = null;
+            StopMoving();
+        }
         else
         {
-            DropItem();
+            StoreItem();
+            StopMoving();
+            //DropItem();
         }
         //If talking to NPC, petting animal, etc. should stop movement
     }
 
     private void AttemptPickup()
     {
-        if (nearbyInteractable.isFood)
-        {
-            inventory.FoodRations += nearbyInteractable.rationCount;
-            Debug.Log(inventory.FoodRations);
-            Destroy(nearbyInteractable.gameObject);
-            nearbyInteractable = null;
-        }
-        else
-        {
-            currentHeldItem = nearbyInteractable;
-            nearbyInteractable = null;
-            currentHeldItem.PickUp(grabPoint);
-            pickupIcon.SetActive(false);
-            FMODUnity.RuntimeManager.PlayOneShot("event:/Env/Env_BushRustle", transform.position);
-        }
+        currentHeldItem = nearbyInteractable;
+        nearbyInteractable = null;
+        currentHeldItem.PickUp(grabPoint);
         pickupIcon.SetActive(false);
     }
 
-    private void DropItem()
+    private bool DropItem()
     {
         if (currentHeldItem != null)
         {
             currentHeldItem.Drop();
             currentHeldItem = null;
+            return true;
         }
+        return false;
     }
 
-    public void PickupFood(Interactable foodItem)
+    //public void PickupFood(Interactable foodItem)
+    //{
+    //    inventory.FoodRations += foodItem.rationCount;
+    //    Debug.Log(inventory.FoodRations);
+    //}
+
+    public bool EquipItem(Interactable interactable)
     {
-        inventory.FoodRations += foodItem.rationCount;
-        Debug.Log(inventory.FoodRations);
+        if (currentHeldItem != null) return false;
+        foreach (Transform item in grabPoint)
+        {
+            if (item.gameObject == interactable.gameObject) currentHeldItem = interactable;
+        }
+        if (currentHeldItem == null) currentHeldItem = Instantiate(interactable);
+
+        currentHeldItem.InitializeInteractable();
+        currentHeldItem.PickUp(grabPoint);
+        currentHeldItem.gameObject.SetActive(true);
+
+        return true;
+    }
+
+    public void StoreItem()
+    {
+        Item newItem = new Item { cost = 0, item = currentHeldItem };
+        inventory.AddItem(newItem);
+        currentHeldItem.gameObject.SetActive(false);
+        currentHeldItem = null;
     }
 
     internal void SetNearbyComponents(GameObject component, bool active)
@@ -262,6 +288,7 @@ public class PlayerController : MonoBehaviour
             {
                 nearbyContainer = interactableContainer;
                 if (currentHeldItem == null && interactableContainer.currentObject != null) pickupIcon.SetActive(active);
+                else if (currentHeldItem != null && currentHeldItem is Food && nearbyContainer is FoodBowl) pickupIcon.SetActive(active);
             }
             else
             {
@@ -429,7 +456,7 @@ public class PlayerController : MonoBehaviour
         if (navMeshAgent != null && navMeshAgent.enabled)
         {
             Gizmos.color = debugRayColor;
-            Gizmos.DrawWireSphere(new Vector3(navMeshAgent.destination.x, 
+            Gizmos.DrawWireSphere(new Vector3(navMeshAgent.destination.x,
                 navMeshAgent.destination.y + .25f, navMeshAgent.destination.z), .25f);
         }
 #endif

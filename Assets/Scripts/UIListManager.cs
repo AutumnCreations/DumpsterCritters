@@ -23,17 +23,20 @@ public abstract class UIListManager<T> : MonoBehaviour
 
     protected void PopulateList(List<Item> items, System.Action<Item> onItemAction)
     {
-        foreach (Transform child in itemContainer)
-        {
-            Destroy(child.gameObject);
-        }
+        //foreach (Transform child in itemContainer)
+        //{
+        //    Destroy(child.gameObject);
+        //}
         foreach (var item in items)
         {
-            Debug.Log(item);
-            GameObject itemGO = Instantiate(itemPrefab, itemContainer);
-            SetupItemUI(itemGO, item);
-            Button itemButton = itemGO.GetComponent<Button>();
-            itemButton.onClick.AddListener(() => onItemAction(item));
+            //Debug.Log(item);
+            if (!itemUIElements.ContainsKey(item))
+            {
+                GameObject itemGO = Instantiate(itemPrefab, itemContainer);
+                SetupItemUI(itemGO, item);
+                Button itemButton = itemGO.GetComponent<Button>();
+                itemButton.onClick.AddListener(() => onItemAction(item));
+            }
         }
     }
 
@@ -55,6 +58,15 @@ public abstract class UIListManager<T> : MonoBehaviour
             Button itemButton = itemUI.GetComponent<Button>();
             itemButton.interactable = false;
             itemUI.itemNameText.text = newText;
+        }
+    }
+
+    protected virtual void RemoveItemUI(Item item)
+    {
+        if (itemUIElements.TryGetValue(item, out var itemGO))
+        {
+            itemUIElements.Remove(item);
+            Destroy(itemGO);
         }
     }
 

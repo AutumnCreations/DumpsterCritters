@@ -15,9 +15,6 @@ public class FoodContainer : InteractableContainer
     [SerializeField]
     bool canStoreItems = false;
 
-    [BoxGroup("Audio")]
-    public string PickupEvent;
-
     private void Start()
     {
         if (foodItem != null)
@@ -37,11 +34,12 @@ public class FoodContainer : InteractableContainer
     {
         if (currentObject != null)
         {
-            player.PickupFood(foodItem);
-            Destroy(currentObject.gameObject);
+            currentObject.PickUp(player.grabPoint);
             currentObject = null;
-            highlight.color = canStoreItems ? actionHighlight : defaultHighlight;
-            FMODUnity.RuntimeManager.PlayOneShot(PickupEvent, transform.position);
+            //player.PickupFood(foodItem);
+            //Destroy(currentObject.gameObject);
+            //currentObject = null;
+            //highlight.color = canStoreItems ? actionHighlight : defaultHighlight;
         }
     }
 }

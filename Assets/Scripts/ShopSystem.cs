@@ -5,6 +5,14 @@ using UnityEngine.UI;
 
 public class ShopSystem : UIListManager<Item>
 {
+
+    //Temporary solution to NPC inventory issue
+    NPC npcInstance;
+    private void Start()
+    {
+        npcInstance = FindObjectOfType<NPC>();
+    }
+
     public void OpenShop(NPC npc)
     {
         ShowUI(true);
@@ -23,6 +31,7 @@ public class ShopSystem : UIListManager<Item>
         {
             playerInventory.SpendGhostBucks(item.cost);
             playerInventory.AddItem(item);
+            npcInstance.GetItemsForSale().Remove(item);
             //if (item.item.isFood)
             //{
             //    playerInventory.FoodRations += item.item.rationCount;
@@ -33,6 +42,7 @@ public class ShopSystem : UIListManager<Item>
             //}
 
             UpdateUI(item, "SOLD OUT");
+            
         }
         else
         {

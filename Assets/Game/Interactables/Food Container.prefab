@@ -153,7 +153,7 @@ MonoBehaviour:
   defaultHighlight: {r: 1, g: 1, b: 1, a: 0}
   actionHighlight: {r: 0, g: 1, b: 1, a: 1}
   currentObject: {fileID: 0}
-  foodItem: {fileID: 1939188951624027758, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+  foodItem: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
   quantity: 1
   canStoreItems: 0
   PickupEvent: 

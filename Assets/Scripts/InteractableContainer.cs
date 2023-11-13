@@ -41,7 +41,7 @@ public class InteractableContainer : MonoBehaviour
         if (player != null)
         {
             player.SetNearbyComponents(this.gameObject, true);
-            if (currentObject == null && this is not FoodContainer)
+            if (currentObject == null && (this is not FoodContainer && this is not FoodBowl))
             {
                 highlight.color = actionHighlight;
             }
