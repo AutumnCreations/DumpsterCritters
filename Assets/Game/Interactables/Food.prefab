@@ -79,14 +79,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
-      propertyPath: isFood
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
-      propertyPath: rationCount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7943446723486093195, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: m_Name
       value: Food

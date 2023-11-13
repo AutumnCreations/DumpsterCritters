@@ -216,6 +216,8 @@ public class PlayerController : MonoBehaviour
             currentHeldItem = nearbyInteractable;
             nearbyInteractable = null;
             currentHeldItem.PickUp(grabPoint);
+            pickupIcon.SetActive(false);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Env/Env_BushRustle", transform.position);
         }
         pickupIcon.SetActive(false);
     }

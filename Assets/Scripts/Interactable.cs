@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
+using FMODUnity;
 
 public class Interactable : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class Interactable : MonoBehaviour
     [Tooltip("How close should the item get to the ground/target?")]
     [SerializeField]
     float dropThreshold = .01f;
+
+    //[BoxGroup("Audio")]
+    //public string PickupEvent;
 
     float dropPoint;
     List<Collider> colliders;
@@ -70,7 +74,7 @@ public class Interactable : MonoBehaviour
         obstacle.enabled = false;
         foreach (Collider collider in colliders)
         {
-            collider.enabled = false;
+            collider.enabled = false;            
         }
 
         Vector3 offsetFromRoot = pickupPoint.position - transform.position;

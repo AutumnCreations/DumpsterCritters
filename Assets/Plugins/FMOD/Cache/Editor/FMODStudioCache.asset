@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4854836697526680888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Env/Env_BushRustle
+  m_EditorClassIdentifier: 
+  Path: event:/Env/Env_BushRustle
+  Guid:
+    Data1: -1693004164
+    Data2: 1316737780
+    Data3: -1528146290
+    Data4: 94929576
+  Banks:
+  - {fileID: -4531838588142307115}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 100
+  Length: 1718
+--- !u!114 &-4531838588142307115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Environment.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
+  Name: Environment
+  StudioPath: bank:/Environment
+  lastModified: 638354177147869517
+  FileSizes:
+  - Name: Desktop
+    Value: 41728
+  Exists: 1
 --- !u!114 &-1268228530010879422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,7 +62,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638351338369018698
+  lastModified: 638354177147562640
   FileSizes:
   - Name: Desktop
     Value: 841440
@@ -35,10 +82,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638351338368706654
+  lastModified: 638354177147252318
   FileSizes:
   - Name: Desktop
-    Value: 812
+    Value: 928
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -83,14 +130,16 @@ MonoBehaviour:
   - {fileID: -912637174236405889}
   - {fileID: 1804358996151935307}
   - {fileID: -1268228530010879422}
+  - {fileID: -4531838588142307115}
   EditorEvents:
   - {fileID: -810296171214793645}
+  - {fileID: -4854836697526680888}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638351338369018698
+  cacheTime: 638354177147869517
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -107,7 +156,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638351338368706654
+  lastModified: 638354177147237241
   FileSizes:
   - Name: Desktop
     Value: 1036

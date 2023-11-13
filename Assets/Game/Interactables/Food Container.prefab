@@ -156,3 +156,4 @@ MonoBehaviour:
   foodItem: {fileID: 1939188951624027758, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
   quantity: 1
   canStoreItems: 0
+  PickupEvent: 

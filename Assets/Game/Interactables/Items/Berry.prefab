@@ -386,6 +386,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5245167421701457187, guid: e74f1106ae9936943943407abaa10641, type: 3}
+      propertyPath: PickupEvent
+      value: event:/Env/Env_BushRustle
+      objectReference: {fileID: 0}
     - target: {fileID: 8501907734154941728, guid: e74f1106ae9936943943407abaa10641, type: 3}
       propertyPath: m_Name
       value: Berry
