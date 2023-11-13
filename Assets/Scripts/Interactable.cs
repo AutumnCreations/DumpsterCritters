@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
+using Unity.AI.Navigation;
 
 public class Interactable : MonoBehaviour
 {
@@ -41,6 +42,11 @@ public class Interactable : MonoBehaviour
 
     void Awake()
     {
+        InitializeInteractable();
+    }
+
+    public void InitializeInteractable()
+    {
         obstacle = GetComponent<NavMeshObstacle>();
         Collider[] collidersArray = GetComponentsInChildren<Collider>();
         colliders = collidersArray.Where(collider => collider.enabled).ToList();
@@ -65,7 +71,6 @@ public class Interactable : MonoBehaviour
     public void PickUp(Transform grabPoint)
     {
         isDropping = false;
-
         // Disable collider and NavMeshObstacle on the item when picked up
         obstacle.enabled = false;
         foreach (Collider collider in colliders)

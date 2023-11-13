@@ -7,8 +7,10 @@ public class InventorySystem : UIListManager<Interactable>
         PlayerController player = FindObjectOfType<PlayerController>();
         if (player != null)
         {
-
-            
+            bool equipped = player.EquipItem(item.item);
+            if (!equipped) return;
+            playerInventory.RemoveItem(item);
+            RemoveItemUI(item);
         }
     }
 
