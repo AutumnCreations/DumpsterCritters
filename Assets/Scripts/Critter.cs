@@ -20,6 +20,11 @@ public class Critter : MonoBehaviour
     [SerializeField]
     bool useIntegers = true;
 
+    [BoxGroup("Settings")]
+    [Tooltip("Usually controlled by the GameStateManager, will pause functionality")]
+    [SerializeField]
+    bool isPaused = false;
+
     [BoxGroup("Stats")]
     [GUIColor("orange")]
     [Tooltip("Current critter hunger level. Lower is good, higher is bad")]
@@ -101,6 +106,38 @@ public class Critter : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GameStateManager.Instance.onGameStateChange += OnGameStateChange;
+    }
+
+    private void OnDisable()
+    {
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.onGameStateChange -= OnGameStateChange;
+        }
+    }
+
+    private void OnGameStateChange(GameStateManager.GameState newState)
+    {
+        switch (newState)
+        {
+            case GameStateManager.GameState.Paused:
+                isPaused = true;
+                agent.isStopped = true;
+                break;
+            case GameStateManager.GameState.Playing:
+                isPaused = false;
+                agent.isStopped = false;
+                break;
+            case GameStateManager.GameState.Dialogue:
+                isPaused = true;
+                agent.isStopped = true;
+                break;
+        }
+    }
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -114,6 +151,8 @@ public class Critter : MonoBehaviour
 
     private void Update()
     {
+        if (isPaused) return;
+
         IncreaseHunger();
         DecreaseMood();
 
@@ -199,11 +238,17 @@ public class Critter : MonoBehaviour
                 FindFoodBowl();
                 break;
             case CritterState.SeekingAttention:
+                GetComponent<MeshRenderer>().material.color = Color.blue;
+                if (mood > needAttention)
+                {
+                    GetComponent<MeshRenderer>().material.color = Color.white;
+                    ChangeState(CritterState.Idle);
+                }
                 // Likely should add some UI prompts here. Maybe go to interactable placemat that has a toy?
                 break;
         }
 
-        Debug.Log($"{name} state: {currentState} mood: {mood} hunger: {hunger}");
+        //Debug.Log($"{name} state: {currentState} mood: {mood} hunger: {hunger}");
     }
 
     private IEnumerator StartIdleRoamingTime()

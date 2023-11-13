@@ -3,9 +3,15 @@ using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 using System;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
+    [BoxGroup("Settings")]
+    [SerializeField]
+    [Tooltip("Usually controlled by the GameStateManager, will pause functionality")]
+    bool isPaused = false;
+
     [BoxGroup("Movement")]
     [SerializeField]
     [Tooltip("Set at initialization.")]
@@ -48,6 +54,10 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public Interactable nearbyInteractable = null;
+
+
+    [HideInInspector]
+    public NPC nearbyNPC = null;
 
     bool isClickToMove = false;
     PlayerInventory inventory;
@@ -173,6 +183,11 @@ public class PlayerController : MonoBehaviour
         if (currentHeldItem == null)
         {
             if (nearbyInteractable != null) AttemptPickup();
+            else if (nearbyNPC != null)
+            {
+                nearbyNPC.Interact(this);
+                StopMoving();
+            }
             else if (nearbyContainer != null && nearbyContainer.currentObject != null)
             {
                 currentHeldItem = nearbyContainer.currentObject;
@@ -231,6 +246,7 @@ public class PlayerController : MonoBehaviour
     {
         Interactable interactable = component.GetComponent<Interactable>();
         InteractableContainer interactableContainer = component.GetComponent<InteractableContainer>();
+        NPC npc = component.GetComponent<NPC>();
 
         if (interactable != null)
         {
@@ -258,6 +274,17 @@ public class PlayerController : MonoBehaviour
                 pickupIcon.SetActive(active);
             }
         }
+        else if (npc != null)
+        {
+            if (active)
+            {
+                nearbyNPC = npc;
+            }
+            else
+            {
+                nearbyNPC = nearbyNPC == npc ? null : nearbyNPC;
+            }
+        }
 
     }
 
@@ -266,7 +293,10 @@ public class PlayerController : MonoBehaviour
     #region Events
     void OnClickPerformed(InputAction.CallbackContext context)
     {
-        //Debug.Log($"Click Action Performed: {context.phase}");
+        //Should set up a check for UI elements to click through dialogue, etc.
+        if (isPaused || EventSystem.current.IsPointerOverGameObject()) return;
+
+
         if (navMeshAgent != null && navMeshAgent.enabled)
         {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -279,18 +309,19 @@ public class PlayerController : MonoBehaviour
 #endif
                 Interactable interactable = hit.collider.GetComponent<Interactable>();
                 InteractableContainer interactableContainer = hit.collider.GetComponent<InteractableContainer>();
-                if (interactable != null || interactableContainer != null)
+                NPC npc = hit.collider.GetComponent<NPC>();
+                if (interactable != null || interactableContainer != null || npc != null)
                 {
                     Debug.Log("Hit Something");
                     if ((interactable != null && interactable == nearbyInteractable) ||
-                        (interactableContainer != null && interactableContainer == nearbyContainer))
+                        (interactableContainer != null && interactableContainer == nearbyContainer) || (npc != null && npc == nearbyNPC))
                     {
                         Debug.Log($"Hit Nearby");
                         HandleInteraction();
                     }
                     else
                     {
-                        Debug.Log("Hit Interactable");
+                        Debug.Log("Hit something too far");
                         Vector3 closestPoint = hit.collider.ClosestPoint(hit.point);
                         ClickToMove(closestPoint);
                     }
@@ -306,6 +337,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnMovementInput(InputAction.CallbackContext context)
     {
+        if (isPaused) return;
         currentMovementInput = context.ReadValue<Vector2>();
         isClickToMove = false;
         StartMoving(currentMovementInput);
@@ -313,24 +345,63 @@ public class PlayerController : MonoBehaviour
 
     private void OnMovementStop(InputAction.CallbackContext context)
     {
+        if (isPaused) return;
         currentMovementInput = Vector2.zero;
         StopMoving();
     }
 
     private void OnInteract(InputAction.CallbackContext context)
     {
+        //Should set up a check for UI elements to click through dialogue, etc.
+        if (isPaused) return;
         HandleInteraction();
     }
 
     private void OnCancel(InputAction.CallbackContext context)
     {
-        // Should first check for context, for now just drop item
+        // Should be able to cancel out of dialogue, shop, etc.
+        if (!isPaused) return;
         DropItem();
     }
+
+
+    private void OnGameStateChange(GameStateManager.GameState newState)
+    {
+        switch (newState)
+        {
+            case GameStateManager.GameState.Paused:
+                isPaused = true;
+                navMeshAgent.isStopped = true;
+                break;
+            case GameStateManager.GameState.Playing:
+                isPaused = false;
+                navMeshAgent.isStopped = false;
+                break;
+            case GameStateManager.GameState.Dialogue:
+                isPaused = true;
+                navMeshAgent.isStopped = true;
+                break;
+        }
+    }
+
+    private void OnEnable()
+    {
+        GameStateManager.Instance.onGameStateChange += OnGameStateChange;
+    }
+
+    private void OnDisable()
+    {
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.onGameStateChange -= OnGameStateChange;
+        }
+    }
+
     #endregion
 
     void Update()
     {
+        if (isPaused) return;
         if (nearbyInteractable != null) Debug.Log(nearbyInteractable);
         // If there's input and the player is not using click to move, keep updating the destination.
         if (!isClickToMove && currentMovementInput != Vector2.zero)
