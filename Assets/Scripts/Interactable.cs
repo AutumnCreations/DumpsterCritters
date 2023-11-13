@@ -7,28 +7,28 @@ using Unity.AI.Navigation;
 
 public class Interactable : MonoBehaviour
 {
-    [BoxGroup("Food")]
-    [Tooltip("If food, will destroy and increase food count instead of being picked up.")]
-    public bool isFood = false;
+    //[BoxGroup("Food")]
+    //[Tooltip("If food, will destroy and increase food count instead of being picked up.")]
+    //public bool isFood = false;
 
-    [ShowIf("isFood")]
-    [BoxGroup("Food")]
-    [Tooltip("How many rations does this fill?")]
-    public int rationCount = 0;
+    //[ShowIf("isFood")]
+    //[BoxGroup("Food")]
+    //[Tooltip("How many rations does this fill?")]
+    //public int rationCount = 0;
 
-    [HideIf("isFood")]
+    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("Where item will be held from if it can be held.")]
     [SerializeField]
     Transform pickupPoint;
 
-    [HideIf("isFood")]
+    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How fast should the item fall to the ground/target?")]
     [SerializeField]
     float dropSpeed = .5f;
 
-    [HideIf("isFood")]
+    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How close should the item get to the ground/target?")]
     [SerializeField]

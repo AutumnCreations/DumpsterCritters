@@ -280,6 +280,7 @@ public class Critter : MonoBehaviour
     private void Eat()
     {
         hunger = Mathf.Max(0, hunger - 50f);
+        Debug.Log($"{this.name} ate and is now at {hunger}");
     }
 
     private void SeekFood()

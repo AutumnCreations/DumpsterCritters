@@ -173,7 +173,6 @@ public class PlayerController : MonoBehaviour
     #region Interactions
     private void HandleInteraction()
     {
-        //TODO: Need to account for closest item/npc/animal within range first
         if (currentHeldItem == null)
         {
             if (nearbyInteractable != null) AttemptPickup();
@@ -189,16 +188,27 @@ public class PlayerController : MonoBehaviour
                 pickupIcon.SetActive(false);
             }
         }
-        else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer)
+        else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer
+            && nearbyContainer is not FoodBowl
+            && currentHeldItem is not Food)
         {
             pickupIcon.SetActive(true);
             nearbyContainer.SetObject(currentHeldItem);
             currentHeldItem = null;
             StopMoving();
         }
+        else if (nearbyContainer != null && nearbyContainer is FoodBowl && currentHeldItem is Food)
+        {
+            pickupIcon.SetActive(false);
+            nearbyContainer.GetComponent<FoodBowl>().AddFood(currentHeldItem.GetComponent<Food>().rationCount);
+            Destroy(currentHeldItem.gameObject);
+            currentHeldItem = null;
+            StopMoving();
+        }
         else
         {
             StoreItem();
+            StopMoving();
             //DropItem();
         }
         //If talking to NPC, petting animal, etc. should stop movement
@@ -206,19 +216,9 @@ public class PlayerController : MonoBehaviour
 
     private void AttemptPickup()
     {
-        if (nearbyInteractable.isFood)
-        {
-            inventory.FoodRations += nearbyInteractable.rationCount;
-            Debug.Log(inventory.FoodRations);
-            Destroy(nearbyInteractable.gameObject);
-            nearbyInteractable = null;
-        }
-        else
-        {
-            currentHeldItem = nearbyInteractable;
-            nearbyInteractable = null;
-            currentHeldItem.PickUp(grabPoint);
-        }
+        currentHeldItem = nearbyInteractable;
+        nearbyInteractable = null;
+        currentHeldItem.PickUp(grabPoint);
         pickupIcon.SetActive(false);
     }
 
@@ -233,11 +233,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public void PickupFood(Interactable foodItem)
-    {
-        inventory.FoodRations += foodItem.rationCount;
-        Debug.Log(inventory.FoodRations);
-    }
+    //public void PickupFood(Interactable foodItem)
+    //{
+    //    inventory.FoodRations += foodItem.rationCount;
+    //    Debug.Log(inventory.FoodRations);
+    //}
 
     public bool EquipItem(Interactable interactable)
     {
@@ -288,6 +288,7 @@ public class PlayerController : MonoBehaviour
             {
                 nearbyContainer = interactableContainer;
                 if (currentHeldItem == null && interactableContainer.currentObject != null) pickupIcon.SetActive(active);
+                else if (currentHeldItem != null && currentHeldItem is Food && nearbyContainer is FoodBowl) pickupIcon.SetActive(active);
             }
             else
             {

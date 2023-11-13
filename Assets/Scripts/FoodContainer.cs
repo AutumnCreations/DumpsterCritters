@@ -34,10 +34,12 @@ public class FoodContainer : InteractableContainer
     {
         if (currentObject != null)
         {
-            player.PickupFood(foodItem);
-            Destroy(currentObject.gameObject);
+            currentObject.PickUp(player.grabPoint);
             currentObject = null;
-            highlight.color = canStoreItems ? actionHighlight : defaultHighlight;
+            //player.PickupFood(foodItem);
+            //Destroy(currentObject.gameObject);
+            //currentObject = null;
+            //highlight.color = canStoreItems ? actionHighlight : defaultHighlight;
         }
     }
 }
