@@ -52,13 +52,12 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public InteractableContainer nearbyContainer = null;
-
     [HideInInspector]
     public Interactable nearbyInteractable = null;
-
-
     [HideInInspector]
     public NPC nearbyNPC = null;
+    [HideInInspector]
+    public Critter nearbyCritter = null;
 
     bool isClickToMove = false;
     PlayerInventory inventory;
@@ -187,6 +186,10 @@ public class PlayerController : MonoBehaviour
                 nearbyContainer.RemoveObject(this);
                 pickupIcon.SetActive(false);
             }
+            else if (nearbyCritter != null)
+            {
+                PetCritter();
+            }
         }
         else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer
             && nearbyContainer is not FoodBowl
@@ -205,6 +208,10 @@ public class PlayerController : MonoBehaviour
             currentHeldItem = null;
             StopMoving();
         }
+        else if (nearbyCritter != null)
+        {
+            PetCritter();
+        }
         else
         {
             StoreItem();
@@ -212,6 +219,13 @@ public class PlayerController : MonoBehaviour
             //DropItem();
         }
         //If talking to NPC, petting animal, etc. should stop movement
+    }
+
+    private void PetCritter()
+    {
+        nearbyCritter.ReceivePlayerInteraction();
+        Debug.Log($"Player pet {nearbyCritter}");
+        StopMoving();
     }
 
     private void AttemptPickup()
@@ -268,6 +282,7 @@ public class PlayerController : MonoBehaviour
         Interactable interactable = component.GetComponent<Interactable>();
         InteractableContainer interactableContainer = component.GetComponent<InteractableContainer>();
         NPC npc = component.GetComponent<NPC>();
+        Critter critter = component.GetComponent<Critter>();
 
         if (interactable != null)
         {
@@ -305,6 +320,23 @@ public class PlayerController : MonoBehaviour
             else
             {
                 nearbyNPC = nearbyNPC == npc ? null : nearbyNPC;
+            }
+        }
+        else if (critter != null)
+        {
+            if (active)
+            {
+                nearbyCritter = critter;
+                //Maybe add direct feeding option here?
+                //if (currentHeldItem == null) 
+                //Replace with pet critter icon
+                pickupIcon.SetActive(active);
+            }
+            else
+            {
+                nearbyCritter = nearbyCritter == critter ? null : nearbyCritter;
+                //Replace with pet critter icon
+                pickupIcon.SetActive(active);
             }
         }
 

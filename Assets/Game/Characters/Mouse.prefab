@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1842299357109572559}
   - component: {fileID: 840198253385730893}
   - component: {fileID: 3582670485941969408}
+  - component: {fileID: 3260357531781688815}
   m_Layer: 0
   m_Name: Mouse
   m_TagString: Untagged
@@ -77,9 +78,30 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.25
-  m_BaseOffset: 0
+  m_BaseOffset: -0.09
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &3260357531781688815
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4659726675989386914}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.55
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7212552392894743891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102,7 +124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e3b911a0a3140344826b8400b8f50ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e3b911a0a3140344826b8400b8f50ff, type: 3}
       propertyPath: m_LocalPosition.y
@@ -110,7 +132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e3b911a0a3140344826b8400b8f50ff, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.097
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7e3b911a0a3140344826b8400b8f50ff, type: 3}
       propertyPath: m_LocalRotation.w

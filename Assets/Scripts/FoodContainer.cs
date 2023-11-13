@@ -1,5 +1,6 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System.Collections;
 
 public class FoodContainer : InteractableContainer
 {
@@ -11,9 +12,11 @@ public class FoodContainer : InteractableContainer
     [SerializeField]
     int quantity = 1;
 
-    [BoxGroup("Interactables")]
+    [BoxGroup("Food")]
+    [Tooltip("How long does it take for the food to respawn in seconds? 0 = No Respawn")]
+    [Range(0, 120)]
     [SerializeField]
-    bool canStoreItems = false;
+    float respawnTime = 10;
 
     private void Start()
     {
@@ -21,6 +24,11 @@ public class FoodContainer : InteractableContainer
         {
             SetObject(foodItem);
         }
+    }
+
+    private void Update()
+    {
+
     }
 
     public override void SetObject(Interactable newObject)
@@ -36,10 +44,19 @@ public class FoodContainer : InteractableContainer
         {
             currentObject.PickUp(player.grabPoint);
             currentObject = null;
+            StartCoroutine(RespawnFruit());
             //player.PickupFood(foodItem);
             //Destroy(currentObject.gameObject);
             //currentObject = null;
-            //highlight.color = canStoreItems ? actionHighlight : defaultHighlight;
         }
+    }
+
+    private IEnumerator RespawnFruit()
+    {
+        Debug.Log("Respawning Fruit...");
+        if (respawnTime == 0) yield break;
+        yield return new WaitForSeconds(respawnTime);
+        SetObject(foodItem);
+        Debug.Log("Fruit Respawned!");
     }
 }

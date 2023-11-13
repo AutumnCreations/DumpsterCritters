@@ -106,11 +106,6 @@ public class Critter : MonoBehaviour
         }
     }
 
-    //private void OnEnable()
-    //{
-    //    GameStateManager.Instance.onGameStateChange += OnGameStateChange;
-    //}
-
     private void OnDisable()
     {
         if (GameStateManager.Instance != null)
@@ -239,10 +234,10 @@ public class Critter : MonoBehaviour
                 FindFoodBowl();
                 break;
             case CritterState.SeekingAttention:
-                GetComponent<MeshRenderer>().material.color = Color.blue;
+                //GetComponent<MeshRenderer>().material.color = Color.blue;
                 if (mood > needAttention)
                 {
-                    GetComponent<MeshRenderer>().material.color = Color.white;
+                    //GetComponent<MeshRenderer>().material.color = Color.white;
                     ChangeState(CritterState.Idle);
                 }
                 // Likely should add some UI prompts here. Maybe go to interactable placemat that has a toy?
@@ -264,7 +259,7 @@ public class Critter : MonoBehaviour
 
     private IEnumerator WaitAndEvaluate()
     {
-        yield return new WaitForSeconds(eatingDuration); // Or however long you want to wait after eating
+        yield return new WaitForSeconds(eatingDuration);
         if (hunger >= needFood) ChangeState(CritterState.SeekingFood);
         else if (mood <= needAttention) ChangeState(CritterState.SeekingAttention);
         else ChangeState(CritterState.Idle);
@@ -387,4 +382,21 @@ public class Critter : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.SetNearbyComponents(this.gameObject, true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.SetNearbyComponents(this.gameObject, false);
+        }
+    }
 }
