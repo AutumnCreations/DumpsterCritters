@@ -4,26 +4,27 @@ using System.Collections.Generic;
 
 public class ShopUI : MonoBehaviour
 {
-    public GameObject itemEntryPrefab; 
-    public Transform itemEntryContainer; 
+    public GameObject itemEntryPrefab;
+    public Transform itemEntryContainer;
 
-    List<GameObject> itemEntryGameObjects = new List<GameObject>();
+    List<ItemUI> itemEntryGameObjects = new List<ItemUI>();
     ShopSystem shopSystem;
+
+    public object item { get; private set; }
 
     private void Awake()
     {
         shopSystem = FindObjectOfType<ShopSystem>();
     }
 
-    public void PopulateShop(List<ShopItem> itemsForSale)
+    public void PopulateShop(List<Item> itemsForSale)
     {
-        ClearShop(); 
-        foreach (ShopItem item in itemsForSale)
+        ClearShop();
+        foreach (Item item in itemsForSale)
         {
             GameObject itemEntryGO = Instantiate(itemEntryPrefab, itemEntryContainer);
-            itemEntryGameObjects.Add(itemEntryGO);
-            //Cleanup these nasty string references
-            ShopItemUI itemUI = itemEntryGO.GetComponent<ShopItemUI>();
+            ItemUI itemUI = itemEntryGO.GetComponent<ItemUI>();
+            itemEntryGameObjects.Add(itemUI);
             itemUI.itemNameText.text = item.item.name;
             itemUI.itemPriceText.text = $"{item.cost}";
             //itemUI.itemImage.sprite = item.item.icon;
@@ -34,32 +35,22 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-
-    public void UpdateShopUI(ShopItem purchasedItem)
+    public void UpdateShopUI(Item purchasedItem)
     {
-        //foreach (GameObject itemEntryGO in itemEntryGameObjects)
-        //{
-        //    Text itemNameText = itemEntryGO.transform.Find("ItemName").GetComponent<Text>();
-        //    Button purchaseButton = itemEntryGO.transform.Find("PurchaseButton").GetComponent<Button>();
+        //Only designed to match by unique name for now
+        ItemUI itemUI = itemEntryGameObjects.Find(
+            item => item.itemNameText.text == purchasedItem.item.name);
 
-        //    // If the item entry is the purchased item, update the UI accordingly
-        //    if (itemNameText.text == purchasedItem.item.name)
-        //    {
-        //        purchaseButton.interactable = false;
-        //                                            
-        //        itemNameText.text = $"{purchasedItem.item.name} (Sold Out)";
-        //        break;
-        //    }
-        //}
-        Debug.Log("UpdateShopUI");
+        Button purchaseButton = itemUI.GetComponent<Button>();
+        purchaseButton.interactable = false;
+        itemUI.itemNameText.text = "SOLD OUT";
     }
-
 
     private void ClearShop()
     {
-        foreach (GameObject itemEntryGO in itemEntryGameObjects)
+        foreach (ItemUI item in itemEntryGameObjects)
         {
-            Destroy(itemEntryGO);
+            Destroy(item.gameObject);
         }
         itemEntryGameObjects.Clear();
     }

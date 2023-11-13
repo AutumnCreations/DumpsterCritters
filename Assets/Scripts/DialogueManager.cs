@@ -7,8 +7,9 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text dialogueText;
     public GameObject dialogueUI;
     public Button continueButton;
-    private Dialogue currentDialogue;
-    private int currentLineIndex;
+    NPC currentNPC;
+    Dialogue currentDialogue;
+    int currentLineIndex;
 
     private void Awake()
     {
@@ -19,10 +20,11 @@ public class DialogueManager : MonoBehaviour
         continueButton.onClick.AddListener(() => ContinueDialogue());
     }
 
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDialogue(NPC npc)
     {
         GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);
-        currentDialogue = dialogue;
+        currentNPC = npc;
+        currentDialogue = npc.GetDialogue();
         currentLineIndex = 0;
         dialogueUI.SetActive(true);
         ShowLine();
@@ -48,7 +50,7 @@ public class DialogueManager : MonoBehaviour
             // Open the shop UI when the shop line index is reached
             dialogueUI.SetActive(false);
             ShopSystem shopSystem = GetComponent<ShopSystem>();
-            shopSystem.OpenShop();
+            shopSystem.OpenShop(currentNPC);
         }
         currentLineIndex++;
     }
