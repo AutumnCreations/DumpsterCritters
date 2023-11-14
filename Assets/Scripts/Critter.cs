@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Sirenix.OdinInspector;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Critter : MonoBehaviour
 {
@@ -83,6 +84,21 @@ public class Critter : MonoBehaviour
     [SerializeField, Range(0, 10)]
     float eatingDuration = 3f;
 
+    [BoxGroup("UI")]
+    [Tooltip("The Worlspace UI GameObject")]
+    [SerializeField]
+    GameObject worldSpaceUI;
+
+    [BoxGroup("UI")]
+    [Tooltip("The bar that will display the critter's hunger level")]
+    [SerializeField]
+    Image hungerFillBar;
+
+    [BoxGroup("UI")]
+    [Tooltip("The bar that will display the critter's mood level")]
+    [SerializeField]
+    Image moodFillBar;
+
     NavMeshAgent agent;
     CritterState currentState;
     FoodBowl targetFoodBowl;
@@ -136,6 +152,7 @@ public class Critter : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        ToggleUI(false);
     }
 
     private void Start()
@@ -187,12 +204,14 @@ public class Critter : MonoBehaviour
     {
         hunger += hungerIncreaseRate * Time.deltaTime;
         hunger = Mathf.Clamp(hunger, 0f, 100f);
+        UpdateFillAmount((hunger - 100) * -1, hungerFillBar);
     }
 
     private void DecreaseMood()
     {
         mood -= moodDecreaseRate * Time.deltaTime;
         mood = Mathf.Clamp(mood, 0f, 100f);
+        UpdateFillAmount(mood, moodFillBar);
     }
 
     private void ChangeState(CritterState newState)
@@ -382,11 +401,25 @@ public class Critter : MonoBehaviour
         }
     }
 
+    #region UI
+
+    protected virtual void ToggleUI(bool active)
+    {
+        if (worldSpaceUI != null) worldSpaceUI.SetActive(active);
+    }
+
+    private void UpdateFillAmount(float amount, Image fillBar)
+    {
+        fillBar.fillAmount = amount / 100;
+    }
+    #endregion
+
     private void OnTriggerEnter(Collider other)
     {
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
+            ToggleUI(true);
             player.SetNearbyComponents(this.gameObject, true);
         }
     }
@@ -396,6 +429,7 @@ public class Critter : MonoBehaviour
         PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
+            ToggleUI(false);
             player.SetNearbyComponents(this.gameObject, false);
         }
     }

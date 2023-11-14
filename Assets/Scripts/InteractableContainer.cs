@@ -17,6 +17,11 @@ public class InteractableContainer : MonoBehaviour
     [SerializeField]
     protected Color actionHighlight = Color.cyan;
 
+    [BoxGroup("UI")]
+    [Tooltip("The Worlspace UI GameObject")]
+    [SerializeField]
+    GameObject worldSpaceUI;
+
     [HideInInspector]
     public Interactable currentObject = null;
 
@@ -33,6 +38,7 @@ public class InteractableContainer : MonoBehaviour
         }
 
         highlight.color = defaultHighlight;
+        ToggleUI(false);
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -45,6 +51,7 @@ public class InteractableContainer : MonoBehaviour
             {
                 highlight.color = actionHighlight;
             }
+            if (this is not FoodContainer) ToggleUI(true);
         }
     }
     protected virtual void OnTriggerExit(Collider other)
@@ -55,6 +62,7 @@ public class InteractableContainer : MonoBehaviour
             player.SetNearbyComponents(this.gameObject, false);
             highlight.color = defaultHighlight;
         }
+        if (this is not FoodContainer) ToggleUI(false);
     }
 
     public virtual void SetObject(Interactable newObject)
@@ -65,5 +73,10 @@ public class InteractableContainer : MonoBehaviour
     public virtual void RemoveObject(PlayerController player)
     {
         currentObject = null;
+    }
+
+    protected virtual void ToggleUI(bool active)
+    {
+        if (worldSpaceUI != null) worldSpaceUI.SetActive(active);
     }
 }

@@ -8,7 +8,12 @@ public class InventorySystem : UIListManager<Interactable>
         if (player != null)
         {
             bool equipped = player.EquipItem(item.item);
-            if (!equipped) return;
+            if (!equipped)
+            {
+                footerText.text = errorText;
+                return;
+            }
+            footerText.text = "";
             playerInventory.RemoveItem(item);
             RemoveItemUI(item);
         }

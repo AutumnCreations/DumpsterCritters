@@ -388,7 +388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8501907734154941728, guid: e74f1106ae9936943943407abaa10641, type: 3}
       propertyPath: m_Name
-      value: Berry
+      value: Cherry
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5245167421701457187, guid: e74f1106ae9936943943407abaa10641, type: 3}
@@ -429,6 +429,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ee3367d66ff6447a940d2bbd1da686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: Cherry
+  itemSprite: {fileID: 21300000, guid: bdfae59c719aa8d409b5352ffdee39a9, type: 3}
   pickupPoint: {fileID: 9118919881820016138}
   dropSpeed: 0.5
   dropThreshold: 0.01

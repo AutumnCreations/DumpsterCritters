@@ -1,18 +1,22 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public abstract class UIListManager<T> : MonoBehaviour
 {
     [SerializeField]
     protected GameObject panel;
     [SerializeField]
-    protected Transform itemContainer;
+    protected Transform itemListContainer;
     [SerializeField]
-    protected GameObject itemPrefab;
+    protected GameObject itemUIPrefab;
     [SerializeField]
     protected PlayerInventory playerInventory;
+    [SerializeField]
+    protected TextMeshProUGUI footerText;
+    [SerializeField]
+    protected string errorText = "";
 
     protected Dictionary<Item, GameObject> itemUIElements = new Dictionary<Item, GameObject>();
 
@@ -32,7 +36,7 @@ public abstract class UIListManager<T> : MonoBehaviour
             //Debug.Log(item);
             if (!itemUIElements.ContainsKey(item))
             {
-                GameObject itemGO = Instantiate(itemPrefab, itemContainer);
+                GameObject itemGO = Instantiate(itemUIPrefab, itemListContainer);
                 SetupItemUI(itemGO, item);
                 Button itemButton = itemGO.GetComponent<Button>();
                 itemButton.onClick.AddListener(() => onItemAction(item));
@@ -43,9 +47,9 @@ public abstract class UIListManager<T> : MonoBehaviour
     protected virtual void SetupItemUI(GameObject itemGO, Item item)
     {
         ItemUI itemUI = itemGO.GetComponent<ItemUI>();
-        itemUI.itemNameText.text = item.item.name;
+        itemUI.itemNameText.text = item.item.itemName;
         itemUI.itemPriceText.text = $"{item.cost}";
-        // itemUI.itemImage.sprite = shopItem.item.icon;
+        itemUI.itemImage.sprite = item.item.itemSprite;
 
         itemUIElements.Add(item, itemGO);
     }
@@ -73,6 +77,7 @@ public abstract class UIListManager<T> : MonoBehaviour
     public void ShowUI(bool show)
     {
         panel.SetActive(show);
+        footerText.text = "";
         if (show)
         {
             GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);

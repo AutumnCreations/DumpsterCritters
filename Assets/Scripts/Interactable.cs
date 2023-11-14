@@ -7,6 +7,16 @@ using Unity.AI.Navigation;
 
 public class Interactable : MonoBehaviour
 {
+    [BoxGroup("Item Details")]
+    [Tooltip("Name that will show in inventory and shop. Sets to GO name if not assigned.")]
+    [SerializeField]
+    internal string itemName;
+
+    [BoxGroup("Item Details")]
+    [Tooltip("Sprite that will show in inventory and shop.")]
+    [SerializeField]
+    internal Sprite itemSprite;
+
     //[BoxGroup("Food")]
     //[Tooltip("If food, will destroy and increase food count instead of being picked up.")]
     //public bool isFood = false;
@@ -34,6 +44,7 @@ public class Interactable : MonoBehaviour
     [SerializeField]
     float dropThreshold = .01f;
 
+
     float dropPoint;
     List<Collider> colliders;
     bool isDropping = false;
@@ -55,6 +66,7 @@ public class Interactable : MonoBehaviour
             pickupPoint = transform;
         }
         dropPoint = transform.position.y;
+        itemName = itemName == "" ? gameObject.name : itemName;
     }
 
     private void Update()
@@ -78,10 +90,22 @@ public class Interactable : MonoBehaviour
             collider.enabled = false;
         }
 
+
+
         Vector3 offsetFromRoot = pickupPoint.position - transform.position;
         transform.position = grabPoint.position - offsetFromRoot;
+        Vector3 worldScale = transform.lossyScale;
 
         transform.parent = grabPoint;
+
+        // Calculate the new local scale
+        Vector3 newLocalScale = new Vector3(
+            worldScale.x / grabPoint.lossyScale.x,
+            worldScale.y / grabPoint.lossyScale.y,
+            worldScale.z / grabPoint.lossyScale.z);
+
+        transform.localScale = newLocalScale;
+
         transform.localRotation = Quaternion.identity;
         transform.localPosition = Vector3.zero;
     }

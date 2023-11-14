@@ -32,20 +32,13 @@ public class ShopSystem : UIListManager<Item>
             playerInventory.SpendGhostBucks(item.cost);
             playerInventory.AddItem(item);
             npcInstance.GetItemsForSale().Remove(item);
-            //if (item.item.isFood)
-            //{
-            //    playerInventory.FoodRations += item.item.rationCount;
-            //}
-            //else
-            //{
-            //    playerInventory.AddItem(item.item);
-            //}
 
             UpdateUI(item, "SOLD OUT");
-            
+            footerText.text = "";
         }
         else
         {
+            footerText.text = errorText;
             Debug.Log("Not enough Ghost Bucks");
         }
     }

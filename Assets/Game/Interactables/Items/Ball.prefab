@@ -64,6 +64,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: itemName
+      value: Ball
+      objectReference: {fileID: 0}
+    - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: itemSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e4d5ebb190353c45a49ffe2cafd8f46, type: 3}
     - target: {fileID: 6790297038882472040, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: m_IsActive
       value: 1

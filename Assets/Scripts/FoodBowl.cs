@@ -8,7 +8,7 @@ public class FoodBowl : InteractableContainer
     [SerializeField]
     int foodAmount;
 
-    [BoxGroup("Food Bowl")]
+    [BoxGroup("UI")]
     [SerializeField]
     TextMeshProUGUI currentRationCount;
 

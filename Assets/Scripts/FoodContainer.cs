@@ -1,6 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Collections;
+using UnityEngine.UI;
 
 public class FoodContainer : InteractableContainer
 {
@@ -18,17 +19,16 @@ public class FoodContainer : InteractableContainer
     [SerializeField]
     float respawnTime = 10;
 
+    [BoxGroup("UI")]
+    [SerializeField]
+    Image fillTimer;
+
     private void Start()
     {
         if (foodItem != null)
         {
             SetObject(foodItem);
         }
-    }
-
-    private void Update()
-    {
-
     }
 
     public override void SetObject(Interactable newObject)
@@ -55,8 +55,22 @@ public class FoodContainer : InteractableContainer
     {
         Debug.Log("Respawning Fruit...");
         if (respawnTime == 0) yield break;
-        yield return new WaitForSeconds(respawnTime);
+        ToggleUI(true);
+        float timePassed = 0;
+
+        while (timePassed < respawnTime)
+        {
+            timePassed += Time.deltaTime;
+            UpdateFillBar((respawnTime - timePassed) / respawnTime);
+            yield return null;
+        }
+        ToggleUI(false);
         SetObject(foodItem);
         Debug.Log("Fruit Respawned!");
+    }
+
+    private void UpdateFillBar(float amount)
+    {
+        fillTimer.fillAmount = amount;
     }
 }
