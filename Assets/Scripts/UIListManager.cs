@@ -20,7 +20,7 @@ public abstract class UIListManager<T> : MonoBehaviour
 
     protected Dictionary<Item, GameObject> itemUIElements = new Dictionary<Item, GameObject>();
 
-    private void Start()
+    protected virtual void Start()
     {
         ShowUI(false);
     }
@@ -74,13 +74,13 @@ public abstract class UIListManager<T> : MonoBehaviour
         }
     }
 
-    public void ShowUI(bool show)
+    public virtual void ShowUI(bool show)
     {
         panel.SetActive(show);
         footerText.text = "";
         if (show)
         {
-            GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);
+            GameStateManager.Instance.ChangeState(GameStateManager.GameState.Paused);
         }
         else
         {

@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     InventorySystem inventorySystem;
     Interactable currentHeldItem;
     NavMeshAgent navMeshAgent;
+    DialogueManager dialogueManager;
 
     Vector2 currentMovementInput;
     LayerMask raycastLayerMask;
@@ -74,6 +75,7 @@ public class PlayerController : MonoBehaviour
     InputAction interactAction;
     InputAction cancelAction;
     InputAction pauseAction;
+
 
     #region Debug Variables
 #if UNITY_EDITOR
@@ -121,11 +123,13 @@ public class PlayerController : MonoBehaviour
         cancelAction.Enable();
 
         // Setup Pause
-        pauseAction = playerInputActions.Player.Pause;
-        pauseAction.performed += OnPause;
+        pauseAction = playerInputActions.Player.Inventory;
+        pauseAction.performed += OnInventory;
         pauseAction.Enable();
 
         GameStateManager.Instance.onGameStateChange += OnGameStateChange;
+
+        dialogueManager = FindObjectOfType<DialogueManager>();
 
         raycastLayerMask = ~(1 << LayerMask.NameToLayer("Player"));
     }
@@ -347,7 +351,11 @@ public class PlayerController : MonoBehaviour
     #region Events
     void OnClickPerformed(InputAction.CallbackContext context)
     {
-        //Should set up a check for UI elements to click through dialogue, etc.
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        {
+            dialogueManager.ContinueDialogue();
+            return;
+        }
         if (isPaused || EventSystem.current.IsPointerOverGameObject()) return;
 
 
@@ -365,17 +373,18 @@ public class PlayerController : MonoBehaviour
                 Interactable interactable = hit.collider.GetComponent<Interactable>();
                 InteractableContainer interactableContainer = hit.collider.GetComponent<InteractableContainer>();
                 NPC npc = hit.collider.GetComponent<NPC>();
-                if (interactable != null || interactableContainer != null || npc != null)
+                Critter critter = hit.collider.GetComponent<Critter>();
+                if (interactable != null || interactableContainer != null || npc != null || critter != null)
                 {
                     Debug.Log("Hit Something");
                     if ((interactable != null && interactable == nearbyInteractable) ||
                         (interactableContainer != null && interactableContainer == nearbyContainer) ||
-                        (npc != null && npc == nearbyNPC))
+                        (npc != null && npc == nearbyNPC) || (critter != null && critter == nearbyCritter))
                     {
                         Debug.Log($"Hit Nearby");
                         HandleInteraction();
                     }
-                    else if (npc != null)
+                    else if (npc != null || critter != null)
                     {
                         // Calculate direction from player to NPC
                         Vector3 directionToNPC = hit.collider.transform.position - transform.position;
@@ -383,7 +392,7 @@ public class PlayerController : MonoBehaviour
                         Vector3 pointNearNPC = hit.collider.transform.position - directionToNPC.normalized * stoppingDistance;
                         // Now get the closest point on the NPC's collider from this point
                         Vector3 closestPoint = hit.collider.ClosestPoint(pointNearNPC);
-                        Debug.Log("Moving to closest point near NPC");
+                        Debug.Log("Moving to closest point near other character");
                         ClickToMove(closestPoint);
                     }
                     else
@@ -419,7 +428,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext context)
     {
-        //Should set up a check for UI elements to click through dialogue, etc.
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        {
+            dialogueManager.ContinueDialogue();
+            return;
+        }
         if (isPaused) return;
         HandleInteraction();
     }
@@ -431,7 +444,7 @@ public class PlayerController : MonoBehaviour
         DropItem();
     }
 
-    private void OnPause(InputAction.CallbackContext context)
+    private void OnInventory(InputAction.CallbackContext context)
     {
         inventorySystem.ToggleInventory();
     }
@@ -470,7 +483,7 @@ public class PlayerController : MonoBehaviour
         cancelAction.performed -= OnCancel;
         cancelAction.Disable();
 
-        pauseAction.performed -= OnPause;
+        pauseAction.performed -= OnInventory;
         pauseAction.Disable();
 
         if (GameStateManager.Instance != null)
@@ -488,8 +501,8 @@ public class PlayerController : MonoBehaviour
         if (navMeshAgent != null && navMeshAgent.enabled)
         {
             Gizmos.color = debugRayColor;
-            Gizmos.DrawWireSphere(new Vector3(navMeshAgent.destination.x,
-                navMeshAgent.destination.y + .25f, navMeshAgent.destination.z), .25f);
+            Gizmos.DrawSphere(new Vector3(navMeshAgent.destination.x,
+                navMeshAgent.destination.y + .25f, navMeshAgent.destination.z), .1f);
         }
 #endif
     }

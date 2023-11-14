@@ -23,14 +23,20 @@ public class FoodBowl : InteractableContainer
         currentRationCount.text = foodAmount.ToString();
     }
 
-    public bool HasFood()
+    //public void TakeFood()
+    //{
+    //    if (CanCritterInteract()) foodAmount--;
+    //    currentRationCount.text = foodAmount.ToString();
+    //}
+
+    internal override bool CanCritterInteract()
     {
         return foodAmount > 0;
     }
 
-    public void TakeFood()
+    internal override void CritterInteract()
     {
-        if (HasFood()) foodAmount--;
+        foodAmount--;
         currentRationCount.text = foodAmount.ToString();
     }
 }

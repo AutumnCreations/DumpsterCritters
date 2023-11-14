@@ -25,6 +25,14 @@ public class InteractableContainer : MonoBehaviour
     [HideInInspector]
     public Interactable currentObject = null;
 
+    [BoxGroup("Critter Interactions")]
+    [SerializeField]
+    [ReadOnly]
+    internal int currentCritters = 0;
+
+    [BoxGroup("Critter Interactions")]
+    [SerializeField, Range(0, 5)]
+    internal int maxCritters = 0;
 
     protected virtual void Awake()
     {
@@ -79,4 +87,11 @@ public class InteractableContainer : MonoBehaviour
     {
         if (worldSpaceUI != null) worldSpaceUI.SetActive(active);
     }
+
+    internal virtual bool CanCritterInteract()
+    {
+        return false;
+    }
+
+    internal virtual void CritterInteract() { }
 }

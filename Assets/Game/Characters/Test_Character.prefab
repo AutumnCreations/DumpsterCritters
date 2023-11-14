@@ -391,7 +391,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodRations: 0
   ghostBucks: 4
-  inventoryItems: []
+  inventoryItems:
+  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+    cost: 0
+  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+    cost: 0
+  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+    cost: 0
+  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+    cost: 0
+  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+    cost: 0
+  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+    cost: 0
 --- !u!195 &119525009216344623
 NavMeshAgent:
   m_ObjectHideFlags: 0

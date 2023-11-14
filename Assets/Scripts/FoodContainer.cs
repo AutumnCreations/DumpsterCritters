@@ -45,9 +45,6 @@ public class FoodContainer : InteractableContainer
             currentObject.PickUp(player.grabPoint);
             currentObject = null;
             StartCoroutine(RespawnFruit());
-            //player.PickupFood(foodItem);
-            //Destroy(currentObject.gameObject);
-            //currentObject = null;
         }
     }
 

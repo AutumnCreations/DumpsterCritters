@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class ShopSystem : UIListManager<Item>
 {
-
     //Temporary solution to NPC inventory issue
     NPC npcInstance;
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         npcInstance = FindObjectOfType<NPC>();
     }
 
@@ -26,7 +26,7 @@ public class ShopSystem : UIListManager<Item>
 
     public void BuyItem(Item item)
     {
-        Debug.Log(item.item.name);
+        //Debug.Log(item.item.name);
         if (playerInventory.GhostBucks >= item.cost)
         {
             playerInventory.SpendGhostBucks(item.cost);
@@ -39,7 +39,7 @@ public class ShopSystem : UIListManager<Item>
         else
         {
             footerText.text = errorText;
-            Debug.Log("Not enough Ghost Bucks");
+            //Debug.Log("Not enough Ghost Bucks");
         }
     }
 }

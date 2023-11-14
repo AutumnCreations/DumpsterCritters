@@ -96,4 +96,7 @@ MonoBehaviour:
   highlight: {fileID: 2652542846995643709}
   defaultHighlight: {r: 1, g: 1, b: 1, a: 0}
   actionHighlight: {r: 0, g: 1, b: 1, a: 1}
+  worldSpaceUI: {fileID: 0}
   currentObject: {fileID: 0}
+  currentCritters: 0
+  maxCritters: 5

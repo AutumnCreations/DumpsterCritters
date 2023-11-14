@@ -25,4 +25,18 @@ public class InventorySystem : UIListManager<Interactable>
         ShowUI(!isInventoryVisible);
         PopulateList(playerInventory.InventoryItems, UseItem);
     }
+
+    public override void ShowUI(bool show)
+    {
+        panel.SetActive(show);
+        footerText.text = "";
+        //if (show)
+        //{
+        //    GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);
+        //}
+        //else
+        //{
+        //    GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
+        //}
+    }
 }

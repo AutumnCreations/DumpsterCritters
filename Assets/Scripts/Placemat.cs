@@ -31,4 +31,9 @@ public class Placemat : InteractableContainer
             highlight.color = actionHighlight;
         }
     }
+
+    internal override bool CanCritterInteract()
+    {
+        return currentObject != null;
+    }
 }
