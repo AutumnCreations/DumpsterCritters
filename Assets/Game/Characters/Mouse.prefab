@@ -60,6 +60,9 @@ MonoBehaviour:
   minRoamIdleTime: 2
   maxRoamIdleTime: 10
   eatingDuration: 3
+  playDuration: 3
+  interactionDistance: 0.75
+  moveAwayDistance: 5
   worldSpaceUI: {fileID: 2607772343737500851}
   hungerFillBar: {fileID: 1400001558199831869}
   moodFillBar: {fileID: 8700608642439573009}

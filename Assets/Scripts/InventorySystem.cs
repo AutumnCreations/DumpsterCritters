@@ -15,28 +15,29 @@ public class InventorySystem : UIListManager<Interactable>
             }
             footerText.text = "";
             playerInventory.RemoveItem(item);
-            RemoveItemUI(item);
+            Debug.Log($"Player equipped {item.item.itemName}, {item.quantity} left in inventory.");
+            if (item.quantity <= 0)
+            {
+                RemoveItemUI(item);
+            }
+            else
+            {
+                UpdateUI(item);
+            }
         }
     }
+
 
     public void ToggleInventory()
     {
         bool isInventoryVisible = panel.activeSelf;
         ShowUI(!isInventoryVisible);
-        PopulateList(playerInventory.InventoryItems, UseItem);
+        PopulateList(playerInventory.Inventory.GetItems(), UseItem);
     }
 
     public override void ShowUI(bool show)
     {
         panel.SetActive(show);
         footerText.text = "";
-        //if (show)
-        //{
-        //    GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);
-        //}
-        //else
-        //{
-        //    GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
-        //}
     }
 }

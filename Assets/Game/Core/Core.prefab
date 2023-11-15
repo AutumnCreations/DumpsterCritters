@@ -405,7 +405,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.05
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 17838ea78a0aa84499d0b7a450ad798c, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: f8be746a45f55e448bd1ccbc7da06a2b, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &8343965347412246465
 GameObject:
@@ -502,7 +502,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 272287290428228269, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -56.761993
+      value: -22.749987
       objectReference: {fileID: 0}
     - target: {fileID: 444543564520705264, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -558,15 +558,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1996868996666566627, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Size
-      value: 0.44956553
+      value: 0.994577
       objectReference: {fileID: 0}
     - target: {fileID: 1996868996666566627, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Value
-      value: 14.604963
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2222724276780065346, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -35.261936
+      value: -1.25
       objectReference: {fileID: 0}
     - target: {fileID: 2453459061127514209, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -682,11 +682,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512560640062555293, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Size
-      value: 0.4112084
+      value: 0.9097222
       objectReference: {fileID: 0}
     - target: {fileID: 7512560640062555293, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Value
-      value: 1.7475157
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7889579280329900499, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

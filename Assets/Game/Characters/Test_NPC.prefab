@@ -121,7 +121,7 @@ NavMeshObstacle:
   m_Shape: 0
   m_Extents: {x: 0.25, y: 1, z: 0.25}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
@@ -144,8 +144,14 @@ MonoBehaviour:
     - Thank you
     - Come again!
     shopLineIndex: 2
-  itemsForSale:
-  - item: {fileID: 1939188951624027758, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
-    cost: 0
-  - item: {fileID: 6828946324636589963, guid: 823473391137bfc458d0bfe725941056, type: 3}
-    cost: 2
+  inventory:
+    items:
+    - item: {fileID: -637300778015786652, guid: 15f29138093018b42a841d7c77de707b, type: 3}
+      cost: 3
+      quantity: 10
+    - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+      cost: 2
+      quantity: 10
+    - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+      cost: 1
+      quantity: 10

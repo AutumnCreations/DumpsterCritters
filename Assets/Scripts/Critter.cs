@@ -305,6 +305,7 @@ public class Critter : MonoBehaviour
     private void MoveAwayFromInteraction()
     {
         Vector3 directionAwayFromBowl = (transform.position - targetInteraction.transform.position).normalized;
+        targetInteraction = null;
         Vector3 newDestination = transform.position + directionAwayFromBowl * moveAwayDistance;
         agent.SetDestination(newDestination);
         agent.isStopped = false;
@@ -320,13 +321,13 @@ public class Critter : MonoBehaviour
     private void Eat()
     {
         hunger = Mathf.Max(0, hunger - 50f);
-        Debug.Log($"{this.name} ate and is now at {hunger} hunger");
+        //Debug.Log($"{this.name} ate and is now at {hunger} hunger");
     }
 
     private void Play()
     {
         mood = Mathf.Max(0, mood + 50f);
-        Debug.Log($"{this.name} played and is now at {mood} mood");
+        //Debug.Log($"{this.name} played and is now at {mood} mood");
     }
 
     private void SeekInteraction<T>(CritterState onSuccessState) where T : InteractableContainer, new()
@@ -334,10 +335,10 @@ public class Critter : MonoBehaviour
         if (targetInteraction != null && targetInteraction.CanCritterInteract())
         {
             agent.SetDestination(targetInteraction.transform.position);
-            Debug.Log($"{this.name} is seeking a {targetInteraction.name} with {agent.remainingDistance} left to reach it.");
+            //Debug.Log($"{this.name} is seeking a {targetInteraction.name} with {agent.remainingDistance} left to reach it.");
             if (Vector3.Distance(transform.position, targetInteraction.transform.position) <= interactionDistance)
             {
-                Debug.Log($"{this.name} reached interaction {targetInteraction.name}");
+                //Debug.Log($"{this.name} reached interaction {targetInteraction.name}");
                 agent.isStopped = true;
                 targetInteraction.CritterInteract();
                 targetInteraction.currentCritters--;
@@ -346,7 +347,7 @@ public class Critter : MonoBehaviour
         }
         else
         {
-            Debug.Log($"{this.name} has needs and could not find an interaction to fulfill {onSuccessState}");
+            //Debug.Log($"{this.name} has needs and could not find an interaction to fulfill {onSuccessState}");
             FindInteraction<T>();
         }
     }

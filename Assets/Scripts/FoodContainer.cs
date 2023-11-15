@@ -50,8 +50,8 @@ public class FoodContainer : InteractableContainer
 
     private IEnumerator RespawnFruit()
     {
-        Debug.Log("Respawning Fruit...");
         if (respawnTime == 0) yield break;
+        Debug.Log("Respawning Fruit...");
         ToggleUI(true);
         float timePassed = 0;
 

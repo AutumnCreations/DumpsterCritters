@@ -16,7 +16,7 @@ public class ShopSystem : UIListManager<Item>
     public void OpenShop(NPC npc)
     {
         ShowUI(true);
-        PopulateList(npc.GetItemsForSale(), BuyItem);
+        PopulateList(npc.Inventory.GetItems(), BuyItem);
     }
 
     public void CloseShop()
