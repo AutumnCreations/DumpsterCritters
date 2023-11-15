@@ -7,32 +7,43 @@ using Unity.AI.Navigation;
 
 public class Interactable : MonoBehaviour
 {
-    [BoxGroup("Food")]
-    [Tooltip("If food, will destroy and increase food count instead of being picked up.")]
-    public bool isFood = false;
+    [BoxGroup("Item Details")]
+    [Tooltip("Name that will show in inventory and shop. Sets to GO name if not assigned.")]
+    [SerializeField]
+    internal string itemName;
 
-    [ShowIf("isFood")]
-    [BoxGroup("Food")]
-    [Tooltip("How many rations does this fill?")]
-    public int rationCount = 0;
+    [BoxGroup("Item Details")]
+    [Tooltip("Sprite that will show in inventory and shop.")]
+    [SerializeField]
+    internal Sprite itemSprite;
 
-    [HideIf("isFood")]
+    //[BoxGroup("Food")]
+    //[Tooltip("If food, will destroy and increase food count instead of being picked up.")]
+    //public bool isFood = false;
+
+    //[ShowIf("isFood")]
+    //[BoxGroup("Food")]
+    //[Tooltip("How many rations does this fill?")]
+    //public int rationCount = 0;
+
+    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("Where item will be held from if it can be held.")]
     [SerializeField]
     Transform pickupPoint;
 
-    [HideIf("isFood")]
+    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How fast should the item fall to the ground/target?")]
     [SerializeField]
     float dropSpeed = .5f;
 
-    [HideIf("isFood")]
+    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How close should the item get to the ground/target?")]
     [SerializeField]
     float dropThreshold = .01f;
+
 
     float dropPoint;
     List<Collider> colliders;
@@ -55,6 +66,7 @@ public class Interactable : MonoBehaviour
             pickupPoint = transform;
         }
         dropPoint = transform.position.y;
+        itemName = itemName == "" ? gameObject.name : itemName;
     }
 
     private void Update()
@@ -78,10 +90,22 @@ public class Interactable : MonoBehaviour
             collider.enabled = false;
         }
 
+
+
         Vector3 offsetFromRoot = pickupPoint.position - transform.position;
         transform.position = grabPoint.position - offsetFromRoot;
+        Vector3 worldScale = transform.lossyScale;
 
         transform.parent = grabPoint;
+
+        // Calculate the new local scale
+        Vector3 newLocalScale = new Vector3(
+            worldScale.x / grabPoint.lossyScale.x,
+            worldScale.y / grabPoint.lossyScale.y,
+            worldScale.z / grabPoint.lossyScale.z);
+
+        transform.localScale = newLocalScale;
+
         transform.localRotation = Quaternion.identity;
         transform.localPosition = Vector3.zero;
     }

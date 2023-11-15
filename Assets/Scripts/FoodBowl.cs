@@ -1,24 +1,42 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
+using TMPro;
 
-public class FoodBowl : MonoBehaviour
+public class FoodBowl : InteractableContainer
 {
     [BoxGroup("Food Bowl")]
     [SerializeField]
     int foodAmount;
 
+    [BoxGroup("UI")]
+    [SerializeField]
+    TextMeshProUGUI currentRationCount;
+
+    private void Start()
+    {
+        currentRationCount.text = foodAmount.ToString();
+    }
+
     public void AddFood(int amount)
     {
         foodAmount += amount;
+        currentRationCount.text = foodAmount.ToString();
     }
 
-    public bool HasFood()
+    //public void TakeFood()
+    //{
+    //    if (CanCritterInteract()) foodAmount--;
+    //    currentRationCount.text = foodAmount.ToString();
+    //}
+
+    internal override bool CanCritterInteract()
     {
         return foodAmount > 0;
     }
 
-    public void TakeFood()
+    internal override void CritterInteract()
     {
-        if (HasFood()) foodAmount--;
+        foodAmount--;
+        currentRationCount.text = foodAmount.ToString();
     }
 }

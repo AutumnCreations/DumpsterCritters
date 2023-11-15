@@ -8,7 +8,12 @@ public class InventorySystem : UIListManager<Interactable>
         if (player != null)
         {
             bool equipped = player.EquipItem(item.item);
-            if (!equipped) return;
+            if (!equipped)
+            {
+                footerText.text = errorText;
+                return;
+            }
+            footerText.text = "";
             playerInventory.RemoveItem(item);
             RemoveItemUI(item);
         }
@@ -19,5 +24,19 @@ public class InventorySystem : UIListManager<Interactable>
         bool isInventoryVisible = panel.activeSelf;
         ShowUI(!isInventoryVisible);
         PopulateList(playerInventory.InventoryItems, UseItem);
+    }
+
+    public override void ShowUI(bool show)
+    {
+        panel.SetActive(show);
+        footerText.text = "";
+        //if (show)
+        //{
+        //    GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);
+        //}
+        //else
+        //{
+        //    GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
+        //}
     }
 }

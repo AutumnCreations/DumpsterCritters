@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9088618467348752141}
+  - component: {fileID: 2423124190602344726}
   m_Layer: 7
   m_Name: Grab Point
   m_TagString: Untagged
@@ -31,6 +32,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1035516382537453085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2423124190602344726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126702647814476548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0128c457f96474b8c8a91fd7e72377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1189710101896131949
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,14 +154,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041905440727308559}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
   m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8522552119731638093}
   m_Father: {fileID: 1035516382537453085}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
 --- !u!212 &5597495191058022883
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -351,7 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  movementSpeed: 5
+  movementSpeed: 3
   distanceFromPlayer: 1
   stoppingDistance: 0.1
   maxRayDistance: 500
@@ -361,6 +374,7 @@ MonoBehaviour:
   nearbyContainer: {fileID: 0}
   nearbyInteractable: {fileID: 0}
   nearbyNPC: {fileID: 0}
+  nearbyCritter: {fileID: 0}
   debugRayTime: 1
   debugRayColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &933729803052580111
@@ -375,6 +389,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0229a2f8b2709484db78d0303a2160a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foodRations: 0
+  ghostBucks: 4
+  inventoryItems:
+  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+    cost: 0
+  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+    cost: 0
+  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+    cost: 0
+  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+    cost: 0
+  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+    cost: 0
+  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
+    cost: 0
 --- !u!195 &119525009216344623
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -385,7 +414,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 4.5
+  m_Speed: 3
   m_Acceleration: 10000
   avoidancePriority: 50
   m_AngularSpeed: 10000
@@ -430,7 +459,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
