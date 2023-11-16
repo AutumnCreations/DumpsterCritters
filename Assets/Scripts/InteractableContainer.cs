@@ -93,5 +93,5 @@ public class InteractableContainer : MonoBehaviour
         return false;
     }
 
-    internal virtual void CritterInteract() { }
+    internal virtual float CritterInteract(float need) { return 0; }
 }

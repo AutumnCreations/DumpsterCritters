@@ -32,9 +32,18 @@ public class FoodBowl : InteractableContainer
         return foodAmount > 0;
     }
 
-    internal override void CritterInteract()
+    internal override float CritterInteract(float need)
     {
-        foodAmount--;
+        int needAmount = Mathf.RoundToInt(need / 25);
+
+        // Check how much of the need can be fulfilled
+        int amountFed = Mathf.Min(needAmount, foodAmount);
+
+        // Deduct the amount fed from the food bowl
+        foodAmount -= amountFed;
         currentRationCount.text = foodAmount.ToString();
+
+        // Return the actual amount fed
+        return amountFed * 25;
     }
 }

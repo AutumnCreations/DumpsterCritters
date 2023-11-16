@@ -289,7 +289,7 @@ MonoBehaviour:
   currentObject: {fileID: 0}
   currentCritters: 0
   maxCritters: 0
-  foodItem: {fileID: -637300778015786652, guid: 15f29138093018b42a841d7c77de707b, type: 3}
+  foodItem: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}
   quantity: 1
   respawnTime: 0
   fillTimer: {fileID: 4581515805984766646}

@@ -36,4 +36,12 @@ public class Placemat : InteractableContainer
     {
         return currentObject != null;
     }
+
+    internal override float CritterInteract(float need)
+    {
+        if (currentObject == null) return 0;
+        int needAmount = Mathf.RoundToInt(need / 25);
+
+        return Mathf.Min(needAmount, currentObject.itemData.entertainmentValue) * 25f;
+    }
 }

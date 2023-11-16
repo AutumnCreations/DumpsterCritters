@@ -119,6 +119,10 @@ public class Critter : MonoBehaviour
     [SerializeField]
     ParticleSystem petVFX;
 
+    [BoxGroup("VFX")]
+    [Tooltip("The point where food will travel to when player feeds this critter")]
+    public Transform feedPoint;
+
 
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
@@ -127,6 +131,10 @@ public class Critter : MonoBehaviour
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
     InteractableContainer targetInteraction;
+
+    [ShowInInspector, ReadOnly]
+    [BoxGroup("Debug")]
+    float interactionRefill = 0;
 
     NavMeshAgent agent;
 
@@ -201,20 +209,17 @@ public class Critter : MonoBehaviour
                 CheckNeeds();
                 break;
             case CritterState.SeekingFood:
-                SeekInteraction<FoodBowl>(CritterState.Eating);
+                SeekInteraction<FoodBowl>(CritterState.Eating, hunger);
                 break;
             case CritterState.Eating:
                 Eat();
                 break;
             case CritterState.SeekingStimulation:
-                SeekInteraction<Placemat>(CritterState.Playing);
+                SeekInteraction<Placemat>(CritterState.Playing, mood);
                 break;
             case CritterState.Playing:
                 Play();
                 break;
-            //case CritterState.ReceivingAttention:
-            //ReceiveAttention();
-            //break;
             case CritterState.Roaming:
                 CheckNeeds();
                 break;
@@ -278,10 +283,10 @@ public class Critter : MonoBehaviour
                 StartCoroutine(Roam());
                 break;
             case CritterState.SeekingFood:
-                SeekInteraction<FoodBowl>(CritterState.Eating);
+                SeekInteraction<FoodBowl>(CritterState.Eating, hunger);
                 break;
             case CritterState.SeekingStimulation:
-                SeekInteraction<Placemat>(CritterState.Playing);
+                SeekInteraction<Placemat>(CritterState.Playing, mood);
                 break;
         }
         currentState = newState;
@@ -326,17 +331,17 @@ public class Critter : MonoBehaviour
 
     private void Eat()
     {
-        hunger = Mathf.Max(0, hunger - 50f);
+        hunger = Mathf.Max(0, hunger - interactionRefill);
         //Debug.Log($"{this.name} ate and is now at {hunger} hunger");
     }
 
     private void Play()
     {
-        mood = Mathf.Max(0, mood + 50f);
+        mood = Mathf.Max(0, mood + interactionRefill);
         //Debug.Log($"{this.name} played and is now at {mood} mood");
     }
 
-    private void SeekInteraction<T>(CritterState onSuccessState) where T : InteractableContainer, new()
+    private void SeekInteraction<T>(CritterState onSuccessState, float need) where T : InteractableContainer, new()
     {
         if (targetInteraction != null && targetInteraction.CanCritterInteract())
         {
@@ -346,8 +351,13 @@ public class Critter : MonoBehaviour
             {
                 //Debug.Log($"{this.name} reached interaction {targetInteraction.name}");
                 agent.isStopped = true;
-                targetInteraction.CritterInteract();
+                transform.LookAt(targetInteraction.transform.position);
+                //Either eat or play, should return a value that can be used to refill mood or hunger
+                interactionRefill = targetInteraction.CritterInteract(need);
+
+                //Might need to move this to moveaway method
                 targetInteraction.currentCritters--;
+
                 ChangeState(onSuccessState);
             }
             else
@@ -398,17 +408,23 @@ public class Critter : MonoBehaviour
         ChangeState(CritterState.Idle);
     }
 
-    // Called when giving food to the critter
-    public void Feed()
+    // Call this from the PlayerController when the player feeds the critter
+    public void ReceivePlayerFood(int rations)
     {
-        hunger = Mathf.Max(0, hunger - 50f); // Decrease hunger
+        //TODO: Add timer logic for time between player feedings
+        //Check needs before continuing states
+        hunger = Mathf.Max(0, hunger - (25f * rations));
+        petVFX.Play();
+        agent.isStopped = true;
         ChangeState(CritterState.Idle);
     }
 
-    //private void ReceiveAttention()
+
+    // Called when giving food to the critter
+    //public void Feed()
     //{
-    //    // Logic for what happens when receiving attention
-    //    mood = Mathf.Min(100, mood + 50f);
+    //    //Fill per ration
+    //    hunger = Mathf.Max(0, hunger - 25f);
     //    ChangeState(CritterState.Idle);
     //}
 

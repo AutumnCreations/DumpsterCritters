@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd39cf42a78dae34e8c2b55082346b4a, type: 3}
-  m_Name: Peach
+  m_Name: Feather Toy
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 7973919927504798477, guid: 164037a124abcf843a41c836cc63b31d, type: 3}
-  itemName: Peach
-  itemSprite: {fileID: 887286811, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
-  cost: 2
-  rationCount: 2
+  itemPrefab: {fileID: 6828946324636589963, guid: 8fd2656046c7b00408dc4180089f4919, type: 3}
+  itemName: Feather Toy
+  itemSprite: {fileID: -858408534, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
+  cost: 5
+  rationCount: 0
+  entertainmentValue: 3

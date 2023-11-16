@@ -25,6 +25,11 @@ public class ItemData : ScriptableObject
 
     [BoxGroup("Item Details")]
     [Tooltip("How many rations does this fill? 0 if non-food item")]
-    [Range(0, 50)]
+    [Range(0, 4)]
     public int rationCount = 0;
+
+    [BoxGroup("Item Details")]
+    [Tooltip("How much entertainment does this provide? 0 if food")]
+    [Range(0, 4)]
+    public int entertainmentValue = 0;
 }

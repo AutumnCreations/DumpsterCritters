@@ -57,6 +57,11 @@ public class PlayerController : MonoBehaviour
     [Required]
     public GameObject pickupIcon;
 
+    [BoxGroup("Interactions")]
+    [SerializeField, Range(0, 1f)]
+    [Tooltip("How long to wait between interactions.")]
+    float interactionCooldown = 1f;
+
     [HideInInspector]
     public InteractableContainer nearbyContainer = null;
     [HideInInspector]
@@ -66,7 +71,9 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Critter nearbyCritter = null;
 
+    float timeSinceLastInteraction = 0f;
     bool isClickToMove = false;
+    bool isMouseHeldDown = false;
     PlayerInventory inventory;
     InventorySystem inventorySystem;
     Interactable currentHeldItem;
@@ -110,7 +117,9 @@ public class PlayerController : MonoBehaviour
 
         // Setup Click to Move/Interact
         clickAction = playerInputActions.Player.MoveInteract;
+        clickAction.started += OnClickStarted;
         clickAction.performed += OnClickPerformed;
+        clickAction.canceled += OnClickCanceled;
         clickAction.Enable();
 
         // Setup Movement
@@ -127,6 +136,11 @@ public class PlayerController : MonoBehaviour
         // Setup Cancel
         cancelAction = playerInputActions.Player.Cancel;
         cancelAction.performed += OnCancel;
+        cancelAction.Enable();
+
+        // Setup Drop/???
+        cancelAction = playerInputActions.Player.Drop;
+        cancelAction.performed += OnDrop;
         cancelAction.Enable();
 
         // Setup Pause
@@ -151,6 +165,11 @@ public class PlayerController : MonoBehaviour
     #region Movement
     public void ClickToMove(Vector3 destination)
     {
+        if (timeSinceLastInteraction < interactionCooldown)
+        {
+            Debug.Log("Too soon to move after interaction");
+            return;
+        }
         navMeshAgent.destination = destination;
         navMeshAgent.isStopped = false;
     }
@@ -183,6 +202,13 @@ public class PlayerController : MonoBehaviour
     #region Interactions
     private void HandleInteraction()
     {
+        if (timeSinceLastInteraction < interactionCooldown)
+        {
+            Debug.Log("Too soon to interact again");
+            return;
+        }
+
+        timeSinceLastInteraction = 0f;
         if (currentHeldItem == null)
         {
             if (nearbyInteractable != null) AttemptPickup();
@@ -215,12 +241,82 @@ public class PlayerController : MonoBehaviour
         }
         else if (nearbyCritter != null)
         {
-            PetCritter();
+            if (currentHeldItem.itemData.rationCount > 0)
+            {
+                FeedCritter();
+            }
+            else
+            {
+                PetCritter();
+            }
+            StopMoving();
         }
         else
         {
             StoreItem();
             StopMoving();
+        }
+    }
+
+    private void HandleClickInput(bool holdDown)
+    {
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        {
+            dialogueManager.ContinueDialogue();
+            return;
+        }
+        if (isPaused || EventSystem.current.IsPointerOverGameObject()) return;
+
+
+        if (navMeshAgent != null && navMeshAgent.enabled)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, maxRayDistance, raycastLayerMask))
+            {
+                //Debug.Log("Hit layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer));
+#if UNITY_EDITOR
+                Debug.DrawLine(ray.origin, hit.point, debugRayColor, debugRayTime);
+#endif
+                Interactable interactable = hit.collider.GetComponent<Interactable>();
+                InteractableContainer interactableContainer = hit.collider.GetComponent<InteractableContainer>();
+                NPC npc = hit.collider.GetComponent<NPC>();
+                Critter critter = hit.collider.GetComponent<Critter>();
+                if (interactable != null || interactableContainer != null || npc != null || critter != null)
+                {
+                    //Debug.Log("Hit Something");
+                    if (!holdDown && ((interactable != null && interactable == nearbyInteractable) ||
+                        (interactableContainer != null && interactableContainer == nearbyContainer) ||
+                        (npc != null && npc == nearbyNPC) || (critter != null && critter == nearbyCritter)))
+                    {
+                        //Debug.Log($"Hit Nearby");
+                        HandleInteraction();
+                    }
+                    else if (npc != null || critter != null)
+                    {
+                        // Calculate direction from player to NPC
+                        Vector3 directionToNPC = hit.collider.transform.position - transform.position;
+                        // Find a point slightly in front of the NPC, along the direction vector
+                        Vector3 pointNearNPC = hit.collider.transform.position - directionToNPC.normalized * stoppingDistance;
+                        // Now get the closest point on the NPC's collider from this point
+                        Vector3 closestPoint = hit.collider.ClosestPoint(pointNearNPC);
+                        //Debug.Log("Moving to closest point near other character");
+                        ClickToMove(closestPoint);
+                    }
+                    else
+                    {
+                        //Debug.Log("Hit something too far");
+                        Vector3 closestPoint = hit.collider.ClosestPoint(hit.point);
+                        ClickToMove(closestPoint);
+                    }
+                }
+                else
+                {
+                    isClickToMove = true;
+                    ClickToMove(hit.point);
+                }
+            }
         }
     }
 
@@ -248,8 +344,36 @@ public class PlayerController : MonoBehaviour
     {
         nearbyCritter.ReceivePlayerInteraction();
         Debug.Log($"Player pet {nearbyCritter}");
-        StopMoving();
     }
+
+    private void FeedCritter()
+    {
+        nearbyCritter.ReceivePlayerFood(currentHeldItem.itemData.rationCount);
+        Debug.Log($"Player fed {nearbyCritter} a {currentHeldItem.itemData.itemName}");
+
+        // Move the food to the critter's position
+        currentHeldItem.transform.SetParent(nearbyCritter.transform);
+        currentHeldItem.transform.DOMove(nearbyCritter.feedPoint.position, 0.15f * currentHeldItem.itemData.rationCount).SetEase(Ease.Linear).OnComplete(() => Destroy(currentHeldItem.gameObject));
+
+        int rations = currentHeldItem.itemData.rationCount;
+        Vector3 originalScale = currentHeldItem.transform.localScale;
+        Vector3 scalePerBite = originalScale / rations;
+
+        var sequence = DOTween.Sequence();
+        for (int ration = 1; ration <= rations; ration++)
+        {
+            Vector3 nextScale = originalScale - scalePerBite * ration;
+            sequence.Append(currentHeldItem.transform.DOScale(nextScale, 0.25f).SetEase(Ease.InQuint));
+        }
+
+        // When the sequence is complete, remove the food item
+        sequence.OnComplete(() =>
+        {
+            Destroy(currentHeldItem.gameObject);
+            currentHeldItem = null;
+        });
+    }
+
 
     private void AttemptPickup()
     {
@@ -270,15 +394,17 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    //public void PickupFood(Interactable foodItem)
-    //{
-    //    inventory.FoodRations += foodItem.rationCount;
-    //    Debug.Log(inventory.FoodRations);
-    //}
-
     public bool EquipItem(Interactable interactable)
     {
         if (currentHeldItem != null) return false;
+        if (timeSinceLastInteraction < interactionCooldown)
+        {
+            Debug.Log("Too soon to interact again");
+            return false;
+        }
+        timeSinceLastInteraction = 0f;
+
+        DestroyHeldItems();
 
         currentHeldItem = Instantiate(interactable);
 
@@ -295,12 +421,22 @@ public class PlayerController : MonoBehaviour
         {
             inventory.AddItem(currentHeldItem.itemData);
             currentHeldItem.transform.DOMove(storePoint.position, .5f).SetEase(Ease.Linear);
-            currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => Destroy(currentHeldItem.gameObject));
-            //Destroy(currentHeldItem.gameObject);
+            currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => DestroyHeldItems());
             currentHeldItem = null;
+        }
+        else
+        {
+            DestroyHeldItems();
         }
     }
 
+    private void DestroyHeldItems()
+    {
+        foreach (Transform child in grabPoint)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
     internal void SetNearbyComponents(GameObject component, bool active)
     {
@@ -370,66 +506,20 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Events
+    private void OnClickStarted(InputAction.CallbackContext context)
+    {
+        HandleClickInput(false);
+    }
+
     void OnClickPerformed(InputAction.CallbackContext context)
     {
-        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
-        {
-            dialogueManager.ContinueDialogue();
-            return;
-        }
-        if (isPaused || EventSystem.current.IsPointerOverGameObject()) return;
+        isMouseHeldDown = true;
+        HandleClickInput(true);
+    }
 
-
-        if (navMeshAgent != null && navMeshAgent.enabled)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, maxRayDistance, raycastLayerMask))
-            {
-                Debug.Log("Hit layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer));
-#if UNITY_EDITOR
-                Debug.DrawLine(ray.origin, hit.point, debugRayColor, debugRayTime);
-#endif
-                Interactable interactable = hit.collider.GetComponent<Interactable>();
-                InteractableContainer interactableContainer = hit.collider.GetComponent<InteractableContainer>();
-                NPC npc = hit.collider.GetComponent<NPC>();
-                Critter critter = hit.collider.GetComponent<Critter>();
-                if (interactable != null || interactableContainer != null || npc != null || critter != null)
-                {
-                    Debug.Log("Hit Something");
-                    if ((interactable != null && interactable == nearbyInteractable) ||
-                        (interactableContainer != null && interactableContainer == nearbyContainer) ||
-                        (npc != null && npc == nearbyNPC) || (critter != null && critter == nearbyCritter))
-                    {
-                        Debug.Log($"Hit Nearby");
-                        HandleInteraction();
-                    }
-                    else if (npc != null || critter != null)
-                    {
-                        // Calculate direction from player to NPC
-                        Vector3 directionToNPC = hit.collider.transform.position - transform.position;
-                        // Find a point slightly in front of the NPC, along the direction vector
-                        Vector3 pointNearNPC = hit.collider.transform.position - directionToNPC.normalized * stoppingDistance;
-                        // Now get the closest point on the NPC's collider from this point
-                        Vector3 closestPoint = hit.collider.ClosestPoint(pointNearNPC);
-                        Debug.Log("Moving to closest point near other character");
-                        ClickToMove(closestPoint);
-                    }
-                    else
-                    {
-                        Debug.Log("Hit something too far");
-                        Vector3 closestPoint = hit.collider.ClosestPoint(hit.point);
-                        ClickToMove(closestPoint);
-                    }
-                }
-                else
-                {
-                    isClickToMove = true;
-                    ClickToMove(hit.point);
-                }
-            }
-        }
+    private void OnClickCanceled(InputAction.CallbackContext context)
+    {
+        isMouseHeldDown = false;
     }
 
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -462,6 +552,13 @@ public class PlayerController : MonoBehaviour
     {
         // Should be able to cancel out of dialogue, shop, etc.
         if (isPaused) return;
+        StoreItem();
+    }
+
+    private void OnDrop(InputAction.CallbackContext context)
+    {
+        // Should be able to cancel out of dialogue, shop, etc.
+        if (isPaused) return;
         DropItem();
     }
 
@@ -491,7 +588,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
+        clickAction.started -= OnClickStarted;
         clickAction.performed -= OnClickPerformed;
+        clickAction.canceled -= OnClickCanceled;
         clickAction.Disable();
 
         moveAction.performed -= OnMovementInput;
@@ -532,7 +631,13 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (isPaused) return;
-        if (nearbyInteractable != null) Debug.Log(nearbyInteractable);
+        if (timeSinceLastInteraction <= interactionCooldown) timeSinceLastInteraction += Time.deltaTime;
+
+        if (isMouseHeldDown)
+        {
+            HandleClickInput(true);
+        }
+        //if (nearbyInteractable != null) Debug.Log(nearbyInteractable);
         // If there's input and the player is not using click to move, keep updating the destination.
         if (!isClickToMove && currentMovementInput != Vector2.zero)
         {

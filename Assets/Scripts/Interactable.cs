@@ -12,35 +12,22 @@ public class Interactable : MonoBehaviour
     [SerializeField]
     internal ItemData itemData;
 
-    //[BoxGroup("Food")]
-    //[Tooltip("If food, will destroy and increase food count instead of being picked up.")]
-    //public bool isFood = false;
-
-    //[ShowIf("isFood")]
-    //[BoxGroup("Food")]
-    //[Tooltip("How many rations does this fill?")]
-    //public int rationCount = 0;
-
-    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("Where item will be held from if it can be held.")]
     [SerializeField]
     Transform pickupPoint;
 
-    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How fast should the item fall to the ground/target?")]
     [SerializeField]
     float dropSpeed = .5f;
 
-    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How close should the item get to the ground/target?")]
     [SerializeField]
     float dropThreshold = .01f;
 
 
-    float dropPoint;
     List<Collider> colliders;
     bool isDropped = false;
     NavMeshObstacle obstacle;
@@ -60,20 +47,8 @@ public class Interactable : MonoBehaviour
         {
             pickupPoint = transform;
         }
-        dropPoint = transform.position.y;
         itemData.itemName = itemData.itemName == "" ? gameObject.name : itemData.itemName;
     }
-
-    //private void Update()
-    //{
-    //    if (isDropping)
-    //    {
-    //        Vector3 target = new Vector3(transform.position.x, dropPoint, transform.position.z);
-    //        float dropStep = dropSpeed * Time.deltaTime;
-    //        transform.position = Vector3.MoveTowards(transform.position, target, dropStep);
-    //        if (Vector3.Distance(transform.position, target) < dropThreshold) isDropping = false;
-    //    }
-    //}
 
     public void PickUp(Transform settlePoint, bool animateMove = false)
     {
@@ -90,12 +65,14 @@ public class Interactable : MonoBehaviour
             Vector3 offsetFromRoot = pickupPoint.position - transform.position;
             transform.position = settlePoint.position - offsetFromRoot;
         }
-        Vector3 worldScale = transform.lossyScale;
-        
-        transform.SetParent(settlePoint);
 
-        // Calculate the new local scale
-        Vector3 newLocalScale = new Vector3(
+        transform.DOKill();
+
+        Vector3 worldScale = transform.lossyScale;
+        transform.SetParent(settlePoint, true);
+
+        // Calculate the new local scale     
+        Vector3 newLocalScale = new(
             worldScale.x / settlePoint.lossyScale.x,
             worldScale.y / settlePoint.lossyScale.y,
             worldScale.z / settlePoint.lossyScale.z);
@@ -124,7 +101,7 @@ public class Interactable : MonoBehaviour
         {
             collider.enabled = true;
         }
-        transform.DOMove(new Vector3(transform.position.x, 0, transform.position.z), .5f).SetEase(Ease.OutBounce);
+        transform.DOMove(new (transform.position.x, 0, transform.position.z), .5f).SetEase(Ease.OutBounce);
     }
 
     protected virtual void OnTriggerEnter(Collider other)
