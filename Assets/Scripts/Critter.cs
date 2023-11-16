@@ -13,7 +13,7 @@ public class Critter : MonoBehaviour
         Roaming,
         SeekingFood,
         Eating,
-        ReceivingAttention,
+        //ReceivingAttention,
         SeekingStimulation,
         Playing
     }
@@ -114,6 +114,12 @@ public class Critter : MonoBehaviour
     [SerializeField]
     Image moodFillBar;
 
+    [BoxGroup("VFX")]
+    [Tooltip("The particle system that will play when the critter is pet")]
+    [SerializeField]
+    ParticleSystem petVFX;
+
+
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
     CritterState currentState;
@@ -206,9 +212,9 @@ public class Critter : MonoBehaviour
             case CritterState.Playing:
                 Play();
                 break;
-            case CritterState.ReceivingAttention:
-                ReceiveAttention();
-                break;
+            //case CritterState.ReceivingAttention:
+            //ReceiveAttention();
+            //break;
             case CritterState.Roaming:
                 CheckNeeds();
                 break;
@@ -344,6 +350,10 @@ public class Critter : MonoBehaviour
                 targetInteraction.currentCritters--;
                 ChangeState(onSuccessState);
             }
+            else
+            {
+                agent.isStopped = false;
+            }
         }
         else
         {
@@ -382,11 +392,10 @@ public class Critter : MonoBehaviour
     public void ReceivePlayerInteraction()
     {
         //TODO: Add timer logic for time between player interactions
-        mood = Mathf.Min(100, mood + 10f);
-        if (currentState == CritterState.SeekingStimulation)
-        {
-            ChangeState(CritterState.ReceivingAttention);
-        }
+        mood = Mathf.Min(100, mood + 20f);
+        petVFX.Play();
+        agent.isStopped = true;
+        ChangeState(CritterState.Idle);
     }
 
     // Called when giving food to the critter
@@ -396,15 +405,16 @@ public class Critter : MonoBehaviour
         ChangeState(CritterState.Idle);
     }
 
-    private void ReceiveAttention()
-    {
-        // Logic for what happens when receiving attention
-        mood = Mathf.Min(100, mood + 50f);
-        ChangeState(CritterState.Idle);
-    }
+    //private void ReceiveAttention()
+    //{
+    //    // Logic for what happens when receiving attention
+    //    mood = Mathf.Min(100, mood + 50f);
+    //    ChangeState(CritterState.Idle);
+    //}
 
     private IEnumerator Roam()
     {
+        agent.isStopped = false;
         while (true) // Keep roaming indefinitely
         {
             // Wait for a random time within the specified range before choosing a new destination

@@ -1,32 +1,61 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventorySystem : UIListManager<Interactable>
 {
+    protected override void Start()
+    {
+        base.Start();
+        SubscribeToInventoryEvents();
+    }
+
+    private void SubscribeToInventoryEvents()
+    {
+        if (playerInventory != null)
+        {
+            playerInventory.OnItemAdded += HandleItemAdded;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (playerInventory != null)
+        {
+            playerInventory.OnItemAdded -= HandleItemAdded;
+        }
+    }
+
+    private void HandleItemAdded(ItemData itemData)
+    {
+        Debug.Log(itemData.itemName + " added to inventory.");
+        PopulateList(playerInventory.Inventory.GetItems(), UseItem);
+    }
+
     private void UseItem(Item item)
     {
         PlayerController player = FindObjectOfType<PlayerController>();
         if (player != null)
         {
-            bool equipped = player.EquipItem(item.item);
+            bool equipped = player.EquipItem(item.itemData.itemPrefab);
             if (!equipped)
             {
                 footerText.text = errorText;
                 return;
             }
             footerText.text = "";
-            playerInventory.RemoveItem(item);
-            Debug.Log($"Player equipped {item.item.itemName}, {item.quantity} left in inventory.");
-            if (item.quantity <= 0)
-            {
-                RemoveItemUI(item);
-            }
-            else
+
+            item.quantity--;
+            if (item.quantity > 0)
             {
                 UpdateUI(item);
             }
+            else
+            {
+                playerInventory.RemoveItem(item.itemData);
+                RemoveItemUI(item);
+            }
         }
     }
-
 
     public void ToggleInventory()
     {

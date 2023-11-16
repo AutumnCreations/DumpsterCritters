@@ -55,11 +55,11 @@ public class InteractableContainer : MonoBehaviour
         if (player != null)
         {
             player.SetNearbyComponents(this.gameObject, true);
-            if (currentObject == null && (this is not FoodContainer && this is not FoodBowl))
+            if (currentObject == null && this is not FoodBowl)
             {
                 highlight.color = actionHighlight;
             }
-            if (this is not FoodContainer) ToggleUI(true);
+            ToggleUI(true);
         }
     }
     protected virtual void OnTriggerExit(Collider other)
@@ -69,13 +69,13 @@ public class InteractableContainer : MonoBehaviour
         {
             player.SetNearbyComponents(this.gameObject, false);
             highlight.color = defaultHighlight;
+            ToggleUI(false);
         }
-        if (this is not FoodContainer) ToggleUI(false);
     }
 
-    public virtual void SetObject(Interactable newObject)
+    public virtual void SetObject(ItemData newObject, Interactable interactable = null)
     {
-        currentObject = newObject;
+        currentObject = newObject.itemPrefab;
     }
 
     public virtual void RemoveObject(PlayerController player)

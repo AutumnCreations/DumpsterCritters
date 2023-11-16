@@ -419,6 +419,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7946689958016062350, guid: a7c9316bc59dae3498ec405dbd519c3c, type: 3}
+      propertyPath: foodItem
+      value: 
+      objectReference: {fileID: 11400000, guid: a3ac3ea5041da2e42be6520bd42d1364, type: 2}
+    - target: {fileID: 7946689958016062350, guid: a7c9316bc59dae3498ec405dbd519c3c, type: 3}
+      propertyPath: respawnTime
+      value: 120
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8431748087456227903, guid: a7c9316bc59dae3498ec405dbd519c3c, type: 3}

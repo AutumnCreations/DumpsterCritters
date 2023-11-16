@@ -164,7 +164,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8501907734154941728, guid: e74f1106ae9936943943407abaa10641, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -637300778015786652}
+      addedObject: {fileID: 8902936406281458122}
   m_SourcePrefab: {fileID: 100100000, guid: e74f1106ae9936943943407abaa10641, type: 3}
 --- !u!4 &2770724182427071906 stripped
 Transform:
@@ -176,7 +176,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8501907734154941728, guid: e74f1106ae9936943943407abaa10641, type: 3}
   m_PrefabInstance: {fileID: 5918840318729259853}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-637300778015786652
+--- !u!114 &8902936406281458122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,15 +185,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2873061142747258477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ee3367d66ff6447a940d2bbd1da686, type: 3}
+  m_Script: {fileID: 11500000, guid: 4c37a8a5f951a4f4ebbb949aab5f336b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Cheese
-  itemSprite: {fileID: -176298493, guid: b638c0615113680458da3d8350b53291, type: 3}
+  itemData: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}
   pickupPoint: {fileID: 9118919881820016138}
   dropSpeed: 0.5
   dropThreshold: 0.01
-  rationCount: 4
 --- !u!4 &9118919881820016138 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3219819439750841671, guid: e74f1106ae9936943943407abaa10641, type: 3}

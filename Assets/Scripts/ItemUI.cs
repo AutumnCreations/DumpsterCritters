@@ -10,4 +10,5 @@ public class ItemUI : MonoBehaviour
     public TextMeshProUGUI itemQuantityText;
     public TextMeshProUGUI itemPriceText;
     public Image itemImage;
+    public TextMeshProUGUI itemRationText;
 }

@@ -41,13 +41,13 @@ public abstract class UIListManager<T> : MonoBehaviour
         var consolidatedItems = new Dictionary<string, Item>();
         foreach (var item in items)
         {
-            if (consolidatedItems.ContainsKey(item.item.name))
+            if (consolidatedItems.ContainsKey(item.itemData.itemName))
             {
-                consolidatedItems[item.item.name].quantity += item.quantity;
+                consolidatedItems[item.itemData.itemName].quantity += item.quantity;
             }
             else
             {
-                consolidatedItems.Add(item.item.name, new Item { item = item.item, quantity = item.quantity, cost = item.cost });
+                consolidatedItems.Add(item.itemData.itemName, item);
             }
         }
 
@@ -64,54 +64,43 @@ public abstract class UIListManager<T> : MonoBehaviour
     protected virtual void SetupItemUI(GameObject itemGO, Item item)
     {
         ItemUI itemUI = itemGO.GetComponent<ItemUI>();
-        itemUI.itemNameText.text = item.item.itemName + " x" + item.quantity;
-        itemUI.itemPriceText.text = $"{item.cost}";
+        itemUI.itemNameText.text = item.itemData.itemName;
+        itemUI.itemQuantityText.text = item.quantity.ToString();
+        itemUI.itemPriceText.text = $"{item.itemData.cost}";
+        itemUI.itemImage.sprite = item.itemData.itemSprite;
+        Debug.Log(item.itemData.itemPrefab);
+        itemUI.itemRationText.text = item.itemData.rationCount > 0 ? item.itemData.rationCount.ToString() : "";
 
-        // Check if the item is already in the dictionary, if not, add it
         if (!itemUIElements.ContainsKey(item))
         {
-            itemUIElements.Add(item, itemGO);
+            itemUIElements[item] = itemGO;
+        }
+        else
+        {
+            // Update existing UI with new quantity
+            UpdateUI(item);
         }
     }
 
-
-    //protected void PopulateList(List<Item> items, System.Action<Item> onItemAction)
-    //{
-    //    //foreach (Transform child in itemContainer)
-    //    //{
-    //    //    Destroy(child.gameObject);
-    //    //}
-    //    foreach (var item in items)
-    //    {
-    //        //Debug.Log(item);
-    //        if (!itemUIElements.ContainsKey(item))
-    //        {
-    //            GameObject itemGO = Instantiate(itemUIPrefab, itemListContainer);
-    //            SetupItemUI(itemGO, item);
-    //            Button itemButton = itemGO.GetComponent<Button>();
-    //            itemButton.onClick.AddListener(() => onItemAction(item));
-    //        }
-    //    }
-    //}
-
-    //protected virtual void SetupItemUI(GameObject itemGO, Item item)
-    //{
-    //    ItemUI itemUI = itemGO.GetComponent<ItemUI>();
-    //    itemUI.itemNameText.text = item.item.itemName;
-    //    itemUI.itemPriceText.text = $"{item.cost}";
-    //    itemUI.itemImage.sprite = item.item.itemSprite;
-
-    //    itemUIElements.Add(item, itemGO);
-    //}
     protected virtual void UpdateUI(Item item, string newText = null)
     {
         if (itemUIElements.TryGetValue(item, out var itemGO))
         {
             ItemUI itemUI = itemGO.GetComponent<ItemUI>();
-            Button itemButton = itemUI.GetComponent<Button>();
-            itemButton.interactable = false;
-            newText = newText ?? item.item.itemName + " x" + item.quantity;
+            newText = newText ?? item.itemData.itemName;
             itemUI.itemNameText.text = newText;
+            itemUI.itemRationText.text = item.itemData.rationCount > 0 ? item.itemData.rationCount.ToString() : "";
+
+            if (item.quantity > 0)
+            {
+                itemUI.itemQuantityText.text = item.quantity.ToString();
+            }
+            else
+            {
+                itemUI.itemQuantityText.text = "";
+                Button itemButton = itemUI.GetComponent<Button>();
+                itemButton.interactable = false;
+            }
         }
     }
 

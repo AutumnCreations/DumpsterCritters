@@ -8,6 +8,10 @@ public class FoodBowl : InteractableContainer
     [SerializeField]
     int foodAmount;
 
+    [BoxGroup("Food Bowl")]
+    [Required]
+    public Transform foodDropPoint;
+
     [BoxGroup("UI")]
     [SerializeField]
     TextMeshProUGUI currentRationCount;
@@ -22,12 +26,6 @@ public class FoodBowl : InteractableContainer
         foodAmount += amount;
         currentRationCount.text = foodAmount.ToString();
     }
-
-    //public void TakeFood()
-    //{
-    //    if (CanCritterInteract()) foodAmount--;
-    //    currentRationCount.text = foodAmount.ToString();
-    //}
 
     internal override bool CanCritterInteract()
     {

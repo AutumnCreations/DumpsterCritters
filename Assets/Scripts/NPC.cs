@@ -6,11 +6,8 @@ using UnityEngine.AI;
 
 public class NPC : MonoBehaviour
 {
-
     [SerializeField]
     Dialogue dialogue;
-    //[SerializeField]
-    //List<Item> itemsForSale;
     [SerializeField]
     private Inventory inventory = new Inventory();
 

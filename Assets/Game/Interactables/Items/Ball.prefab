@@ -65,6 +65,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: ItemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 761aae232929c5c49a046610d64e91e2, type: 2}
+    - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: itemData
+      value: 
+      objectReference: {fileID: 11400000, guid: 761aae232929c5c49a046610d64e91e2, type: 2}
+    - target: {fileID: 5983737191206297480, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: itemName
       value: Ball
       objectReference: {fileID: 0}

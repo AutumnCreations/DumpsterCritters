@@ -44,6 +44,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e0128c457f96474b8c8a91fd7e72377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1056858601041319962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3845177735663326097}
+  m_Layer: 7
+  m_Name: Store Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3845177735663326097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056858601041319962}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.035, z: 0.307}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1035516382537453085}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1189710101896131949
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +378,7 @@ Transform:
   - {fileID: 4678795224274550399}
   - {fileID: 7951742649963136035}
   - {fileID: 9088618467348752141}
+  - {fileID: 3845177735663326097}
   - {fileID: 7537560983580399948}
   - {fileID: 3489349901632628694}
   m_Father: {fileID: 0}
@@ -370,6 +402,7 @@ MonoBehaviour:
   maxRayDistance: 500
   interactRange: 1.25
   grabPoint: {fileID: 9088618467348752141}
+  storePoint: {fileID: 3845177735663326097}
   pickupIcon: {fileID: 2041905440727308559}
   nearbyContainer: {fileID: 0}
   nearbyInteractable: {fileID: 0}
@@ -389,21 +422,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0229a2f8b2709484db78d0303a2160a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventory:
+    items: []
   foodRations: 0
   ghostBucks: 4
-  inventoryItems:
-  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
-    cost: 0
-  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
-    cost: 0
-  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
-    cost: 0
-  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
-    cost: 0
-  - item: {fileID: -637300778015786652, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
-    cost: 0
-  - item: {fileID: 4221439911093660943, guid: dce472568d0573e43b9266dfd4efb75f, type: 3}
-    cost: 0
 --- !u!195 &119525009216344623
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -13,10 +13,10 @@ public class Placemat : InteractableContainer
         obstacle.enabled = false;
     }
 
-    public override void SetObject(Interactable newObject)
+    public override void SetObject(ItemData newObject, Interactable interactable)
     {
-        currentObject = newObject;
-        currentObject.PickUp(interactionPoint);
+        currentObject = interactable;
+        currentObject.PickUp(interactionPoint, true);
         highlight.color = defaultHighlight;
         obstacle.enabled = true;
     }
@@ -26,7 +26,7 @@ public class Placemat : InteractableContainer
         if (currentObject != null)
         {
             obstacle.enabled = false;
-            currentObject.PickUp(player.grabPoint);
+            currentObject.PickUp(player.grabPoint, true);
             currentObject = null;
             highlight.color = actionHighlight;
         }

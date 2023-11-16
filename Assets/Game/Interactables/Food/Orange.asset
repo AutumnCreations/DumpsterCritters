@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd39cf42a78dae34e8c2b55082346b4a, type: 3}
+  m_Name: Orange
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: -6649998683471861445, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
+  itemName: Orange
+  itemSprite: {fileID: 21300000, guid: 5ef34eaaf4c3d884db3dfc6ab24f80fc, type: 3}
+  cost: 2
+  rationCount: 2

@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using System;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices.WindowsRuntime;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -45,6 +46,12 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Where objects will be held relative to the character.")]
     [Required]
     public Transform grabPoint;
+
+    [BoxGroup("Interactions")]
+    [Tooltip("Where objects animate when stored with the character.")]
+    [Required]
+    [SerializeField]
+    Transform storePoint;
 
     [BoxGroup("Interactions")]
     [Required]
@@ -186,6 +193,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (nearbyContainer != null && nearbyContainer.currentObject != null)
             {
+                //Pickup item from mat
                 currentHeldItem = nearbyContainer.currentObject;
                 nearbyContainer.RemoveObject(this);
                 pickupIcon.SetActive(false);
@@ -197,20 +205,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer
             && nearbyContainer is not FoodBowl
-            && currentHeldItem is not Food)
+            && currentHeldItem.itemData.rationCount == 0)
         {
-            pickupIcon.SetActive(true);
-            nearbyContainer.SetObject(currentHeldItem);
-            currentHeldItem = null;
-            StopMoving();
+            PlaceItemOnMat();
         }
-        else if (nearbyContainer != null && nearbyContainer is FoodBowl && currentHeldItem is Food)
+        else if (nearbyContainer != null && nearbyContainer is FoodBowl && currentHeldItem.itemData.rationCount > 0)
         {
-            pickupIcon.SetActive(false);
-            nearbyContainer.GetComponent<FoodBowl>().AddFood(currentHeldItem.GetComponent<Food>().rationCount);
-            Destroy(currentHeldItem.gameObject);
-            currentHeldItem = null;
-            StopMoving();
+            AddFoodToBowl();
         }
         else if (nearbyCritter != null)
         {
@@ -220,9 +221,27 @@ public class PlayerController : MonoBehaviour
         {
             StoreItem();
             StopMoving();
-            //DropItem();
         }
-        //If talking to NPC, petting animal, etc. should stop movement
+    }
+
+    private void PlaceItemOnMat()
+    {
+        pickupIcon.SetActive(true);
+        nearbyContainer.SetObject(currentHeldItem.itemData, currentHeldItem);
+        currentHeldItem = null;
+        StopMoving();
+    }
+
+    private void AddFoodToBowl()
+    {
+        pickupIcon.SetActive(false);
+        FoodBowl bowl = nearbyContainer as FoodBowl;
+        bowl.AddFood(currentHeldItem.itemData.rationCount);
+        currentHeldItem.transform.DOMove(bowl.foodDropPoint.position, .5f).SetEase(Ease.OutBounce);
+        currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => Destroy(currentHeldItem.gameObject));
+        //Destroy(currentHeldItem.gameObject);
+        currentHeldItem = null;
+        StopMoving();
     }
 
     private void PetCritter()
@@ -236,7 +255,7 @@ public class PlayerController : MonoBehaviour
     {
         currentHeldItem = nearbyInteractable;
         nearbyInteractable = null;
-        currentHeldItem.PickUp(grabPoint);
+        currentHeldItem.PickUp(grabPoint, true);
         pickupIcon.SetActive(false);
     }
 
@@ -260,11 +279,8 @@ public class PlayerController : MonoBehaviour
     public bool EquipItem(Interactable interactable)
     {
         if (currentHeldItem != null) return false;
-        foreach (Transform item in grabPoint)
-        {
-            if (item.gameObject == interactable.gameObject) currentHeldItem = interactable;
-        }
-        if (currentHeldItem == null) currentHeldItem = Instantiate(interactable);
+
+        currentHeldItem = Instantiate(interactable);
 
         currentHeldItem.InitializeInteractable();
         currentHeldItem.PickUp(grabPoint);
@@ -275,11 +291,16 @@ public class PlayerController : MonoBehaviour
 
     public void StoreItem()
     {
-        Item newItem = new Item { cost = 0, item = currentHeldItem };
-        inventory.AddItem(newItem);
-        currentHeldItem.gameObject.SetActive(false);
-        currentHeldItem = null;
+        if (currentHeldItem != null)
+        {
+            inventory.AddItem(currentHeldItem.itemData);
+            currentHeldItem.transform.DOMove(storePoint.position, .5f).SetEase(Ease.Linear);
+            currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => Destroy(currentHeldItem.gameObject));
+            //Destroy(currentHeldItem.gameObject);
+            currentHeldItem = null;
+        }
     }
+
 
     internal void SetNearbyComponents(GameObject component, bool active)
     {
@@ -307,7 +328,7 @@ public class PlayerController : MonoBehaviour
             {
                 nearbyContainer = interactableContainer;
                 if (currentHeldItem == null && interactableContainer.currentObject != null) pickupIcon.SetActive(active);
-                else if (currentHeldItem != null && currentHeldItem is Food && nearbyContainer is FoodBowl) pickupIcon.SetActive(active);
+                else if (currentHeldItem != null && currentHeldItem.itemData.rationCount > 0 && nearbyContainer is FoodBowl) pickupIcon.SetActive(active);
             }
             else
             {
@@ -440,7 +461,7 @@ public class PlayerController : MonoBehaviour
     private void OnCancel(InputAction.CallbackContext context)
     {
         // Should be able to cancel out of dialogue, shop, etc.
-        if (!isPaused) return;
+        if (isPaused) return;
         DropItem();
     }
 

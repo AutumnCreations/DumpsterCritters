@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 
 public class PlayerInventory : MonoBehaviour
 {
+    //[AssetList(Path = "Assets/Interactables/Items")]
     [SerializeField]
     private Inventory inventory = new Inventory();
     [SerializeField]
@@ -11,13 +12,20 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField]
     int ghostBucks;
     [SerializeField]
-    //[AssetList(Path = "Assets/Interactables/Items")]
-    List<Item> inventoryItems = new List<Item>();
 
     public Inventory Inventory => inventory;
 
-    public void AddItem(Item item) => inventory.AddItem(item);
-    public bool RemoveItem(Item item) => inventory.RemoveItem(item);
+    public delegate void ItemAddedHandler(ItemData itemData);
+
+    public event ItemAddedHandler OnItemAdded;
+
+    public void AddItem(ItemData itemData)
+    {
+        inventory.AddItem(itemData);
+        OnItemAdded?.Invoke(itemData);
+    }
+
+    public bool RemoveItem(ItemData itemData) => inventory.RemoveItem(itemData);
 
     public int FoodRations
     {
@@ -30,21 +38,6 @@ public class PlayerInventory : MonoBehaviour
         get => ghostBucks;
         set => ghostBucks = Mathf.Max(0, value);
     }
-
-    //public List<Item> InventoryItems => new List<Item>(inventoryItems);
-
-    //public void AddItem(Item item)
-    //{
-    //    if (item != null && !inventoryItems.Contains(item))
-    //    {
-    //        inventoryItems.Add(item);
-    //    }
-    //}
-
-    //public bool RemoveItem(Item item)
-    //{
-    //    return item != null && inventoryItems.Remove(item);
-    //}
 
     // Use this for consuming food rations
     public void ConsumeFood(int amount)

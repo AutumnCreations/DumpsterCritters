@@ -6,25 +6,29 @@ public class Inventory
 {
     public List<Item> items = new List<Item>();
 
-    public void AddItem(Item newItem)
+    public void AddItem(ItemData newItem)
     {
-        var existingItem = items.Find(i => i.item.itemName == newItem.item.itemName);
+        var existingItem = items.Find(i => i.itemData.itemName == newItem.itemName);
         if (existingItem != null)
         {
-            existingItem.quantity += newItem.quantity;
+            existingItem.quantity += 1;
         }
         else
         {
-            items.Add(newItem);
+            items.Add(new Item
+            {
+                itemData = newItem
+            });
         }
     }
 
-    public bool RemoveItem(Item item)
+    public bool RemoveItem(ItemData item)
     {
-        var existingItem = items.Find(i => i.item.itemName == item.item.itemName);
+        var existingItem = items.Find(i => i.itemData.itemName == item.itemName);
         if (existingItem != null)
         {
             existingItem.quantity -= 1;
+            Debug.Log($"Removed {item.itemName} from inventory, {existingItem.quantity} remaining.");
             if (existingItem.quantity <= 0)
             {
                 items.Remove(existingItem);

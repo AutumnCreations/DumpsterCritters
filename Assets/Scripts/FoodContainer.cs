@@ -5,9 +5,13 @@ using UnityEngine.UI;
 
 public class FoodContainer : InteractableContainer
 {
+    [AssetList(AutoPopulate = true, Path = "Assets/Game/Interactables/Food")]
+    [InlineEditor]
+    [Title("Food Item")]
+    [HideLabel]
     [BoxGroup("Food")]
     [SerializeField]
-    Interactable foodItem;
+    ItemData foodItem;
 
     [BoxGroup("Food")]
     [SerializeField]
@@ -23,17 +27,20 @@ public class FoodContainer : InteractableContainer
     [SerializeField]
     Image fillTimer;
 
+    float timePassed = 0;
+
     private void Start()
     {
         if (foodItem != null)
         {
             SetObject(foodItem);
+            timePassed = respawnTime + 1;
         }
     }
 
-    public override void SetObject(Interactable newObject)
+    public override void SetObject(ItemData food, Interactable interactable = null)
     {
-        currentObject = Instantiate(newObject);
+        currentObject = Instantiate(food.itemPrefab);
         currentObject.PickUp(interactionPoint);
         highlight.color = defaultHighlight;
     }
@@ -42,7 +49,7 @@ public class FoodContainer : InteractableContainer
     {
         if (currentObject != null)
         {
-            currentObject.PickUp(player.grabPoint);
+            currentObject.PickUp(player.grabPoint, true);
             currentObject = null;
             StartCoroutine(RespawnFruit());
         }
@@ -53,7 +60,7 @@ public class FoodContainer : InteractableContainer
         if (respawnTime == 0) yield break;
         Debug.Log("Respawning Fruit...");
         ToggleUI(true);
-        float timePassed = 0;
+        timePassed = 0;
 
         while (timePassed < respawnTime)
         {
@@ -69,5 +76,27 @@ public class FoodContainer : InteractableContainer
     private void UpdateFillBar(float amount)
     {
         fillTimer.fillAmount = amount;
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.SetNearbyComponents(this.gameObject, true);
+            if (timePassed < respawnTime)
+            {
+                ToggleUI(true);
+            }
+        }
+    }
+    protected override void OnTriggerExit(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.SetNearbyComponents(this.gameObject, false);
+            ToggleUI(false);
+        }
     }
 }
