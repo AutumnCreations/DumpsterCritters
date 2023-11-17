@@ -2,21 +2,18 @@ using UnityEngine;
 
 public class FaceCamera : MonoBehaviour
 {
-    private Camera mainCamera;
-    private Quaternion initialRotation;
+    Vector3 initialRotation;
 
     void Start()
     {
-        mainCamera = Camera.main;
-        initialRotation = transform.rotation;
+        initialRotation = transform.localEulerAngles;
     }
 
     void LateUpdate()
     {
-        // Calculate the rotation needed to undo the camera's rotation
-        Quaternion counterRotation = Quaternion.Euler(30, 45, 0);
+        float newYRotation = initialRotation.y + (transform.parent.eulerAngles.y * -1);
+        Vector3 newRotation = new Vector3(initialRotation.x, newYRotation, initialRotation.z);
 
-        // Apply this rotation to the game object
-        transform.rotation = counterRotation * initialRotation;
+        transform.localEulerAngles = newRotation;
     }
-}
+} 

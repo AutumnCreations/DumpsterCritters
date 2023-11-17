@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd39cf42a78dae34e8c2b55082346b4a, type: 3}
+  m_Name: Bell
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 6828946324636589963, guid: 32875e46b9c1b8a4cb41d84e356903de, type: 3}
+  itemName: Bell
+  itemSprite: {fileID: 1489633936, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
+  cost: 5
+  rationCount: 0
+  entertainmentValue: 2

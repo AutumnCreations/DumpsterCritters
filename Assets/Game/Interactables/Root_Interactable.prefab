@@ -264,12 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c37a8a5f951a4f4ebbb949aab5f336b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFood: 1
-  rationCount: 1
   pickupPoint: {fileID: 3994422423606632428}
   dropSpeed: 0.5
   dropThreshold: 0.01
-  PickupEvent: 
+  itemSprite: {fileID: 21300000, guid: 18931e48a743fc148ba3cb4deebcd3b3, type: 3}
 --- !u!208 &-4061111713028958277
 NavMeshObstacle:
   m_ObjectHideFlags: 0

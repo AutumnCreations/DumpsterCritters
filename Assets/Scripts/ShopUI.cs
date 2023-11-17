@@ -25,12 +25,12 @@ public class ShopUI : MonoBehaviour
             GameObject itemEntryGO = Instantiate(itemEntryPrefab, itemEntryContainer);
             ItemUI itemUI = itemEntryGO.GetComponent<ItemUI>();
             itemEntryGameObjects.Add(itemUI);
-            itemUI.itemNameText.text = item.item.name;
-            itemUI.itemPriceText.text = $"{item.cost}";
+            itemUI.itemNameText.text = item.itemData.itemName;
+            itemUI.itemPriceText.text = $"{item.itemData.cost}";
             //itemUI.itemImage.sprite = item.item.icon;
 
             Button purchaseButton = itemEntryGO.GetComponent<Button>();
-            Debug.Log($"{purchaseButton} {itemEntryGO} {item.item}");
+            Debug.Log($"{purchaseButton} {itemEntryGO} {item.itemData.itemPrefab}");
             purchaseButton.onClick.AddListener(() => shopSystem.BuyItem(item));
         }
     }
@@ -39,7 +39,7 @@ public class ShopUI : MonoBehaviour
     {
         //Only designed to match by unique name for now
         ItemUI itemUI = itemEntryGameObjects.Find(
-            item => item.itemNameText.text == purchasedItem.item.name);
+            item => item.itemNameText.text == purchasedItem.itemData.itemName);
 
         Button purchaseButton = itemUI.GetComponent<Button>();
         purchaseButton.interactable = false;

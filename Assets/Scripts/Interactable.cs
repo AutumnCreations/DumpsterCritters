@@ -3,40 +3,33 @@ using System.Linq;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
-using Unity.AI.Navigation;
+using DG.Tweening;
+using UnityEditor;
 
 public class Interactable : MonoBehaviour
 {
-    //[BoxGroup("Food")]
-    //[Tooltip("If food, will destroy and increase food count instead of being picked up.")]
-    //public bool isFood = false;
+    [BoxGroup("Interactable Details")]
+    [SerializeField]
+    internal ItemData itemData;
 
-    //[ShowIf("isFood")]
-    //[BoxGroup("Food")]
-    //[Tooltip("How many rations does this fill?")]
-    //public int rationCount = 0;
-
-    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("Where item will be held from if it can be held.")]
     [SerializeField]
     Transform pickupPoint;
 
-    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How fast should the item fall to the ground/target?")]
     [SerializeField]
     float dropSpeed = .5f;
 
-    //[HideIf("isFood")]
     [BoxGroup("Interactable Details")]
     [Tooltip("How close should the item get to the ground/target?")]
     [SerializeField]
     float dropThreshold = .01f;
 
-    float dropPoint;
+
     List<Collider> colliders;
-    bool isDropping = false;
+    bool isDropped = false;
     NavMeshObstacle obstacle;
 
 
@@ -54,42 +47,53 @@ public class Interactable : MonoBehaviour
         {
             pickupPoint = transform;
         }
-        dropPoint = transform.position.y;
+        itemData.itemName = itemData.itemName == "" ? gameObject.name : itemData.itemName;
     }
 
-    private void Update()
+    public void PickUp(Transform settlePoint, bool animateMove = false)
     {
-        if (isDropping)
-        {
-            Vector3 target = new Vector3(transform.position.x, dropPoint, transform.position.z);
-            float dropStep = dropSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target, dropStep);
-            if (Vector3.Distance(transform.position, target) < dropThreshold) isDropping = false;
-        }
-    }
-
-    public void PickUp(Transform grabPoint)
-    {
-        isDropping = false;
+        isDropped = false;
         // Disable collider and NavMeshObstacle on the item when picked up
-        obstacle.enabled = false;
+        if (obstacle != null) obstacle.enabled = false;
+
         foreach (Collider collider in colliders)
         {
             collider.enabled = false;
         }
+        if (!animateMove)
+        {
+            Vector3 offsetFromRoot = pickupPoint.position - transform.position;
+            transform.position = settlePoint.position - offsetFromRoot;
+        }
 
-        Vector3 offsetFromRoot = pickupPoint.position - transform.position;
-        transform.position = grabPoint.position - offsetFromRoot;
+        transform.DOKill();
 
-        transform.parent = grabPoint;
+        Vector3 worldScale = transform.lossyScale;
+        transform.SetParent(settlePoint, true);
+
+        // Calculate the new local scale     
+        Vector3 newLocalScale = new(
+            worldScale.x / settlePoint.lossyScale.x,
+            worldScale.y / settlePoint.lossyScale.y,
+            worldScale.z / settlePoint.lossyScale.z);
+        transform.localScale = newLocalScale;
+
         transform.localRotation = Quaternion.identity;
-        transform.localPosition = Vector3.zero;
+        if (animateMove)
+        {
+            transform.DOLocalMove(Vector3.zero, .5f).SetEase(Ease.InBack);
+        }
+        else
+        {
+            transform.localScale = Vector3.zero;
+            transform.DOScale(newLocalScale, 1f).SetEase(Ease.OutCirc);
+        }
     }
 
     public void Drop()
     {
         transform.parent = null;
-        isDropping = true;
+        isDropped = true;
 
         // Re-enable all colliders and NavMeshObstacle on the item when dropped
         obstacle.enabled = true;
@@ -97,6 +101,7 @@ public class Interactable : MonoBehaviour
         {
             collider.enabled = true;
         }
+        transform.DOMove(new (transform.position.x, 0, transform.position.z), .5f).SetEase(Ease.OutBounce);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

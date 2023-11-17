@@ -9,14 +9,20 @@ public class NPC : MonoBehaviour
     [SerializeField]
     Dialogue dialogue;
     [SerializeField]
-    //[AssetList(Path = "Assets/Game/Interactables/Items")]
-    List<Item> itemsForSale;
+    private Inventory inventory = new Inventory();
 
     private DialogueManager dialogueManager;
+
+    public Inventory Inventory => inventory;
 
     private void Awake()
     {
         dialogueManager = FindObjectOfType<DialogueManager>();
+    }
+
+    public List<Item> GetItemsForSale()
+    {
+        return inventory.GetItems();
     }
 
     public void Interact(PlayerController player)
@@ -29,10 +35,10 @@ public class NPC : MonoBehaviour
         GetComponent<NavMeshAgent>().SetDestination(spot);
     }
 
-    public List<Item> GetItemsForSale()
-    {
-        return itemsForSale;
-    }
+    //public List<Item> GetItemsForSale()
+    //{
+    //    return itemsForSale;
+    //}
 
     protected virtual void OnTriggerEnter(Collider other)
     {

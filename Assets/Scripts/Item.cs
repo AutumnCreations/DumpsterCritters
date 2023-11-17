@@ -1,6 +1,6 @@
 [System.Serializable]
 public class Item
 {
-    public Interactable item;
-    public int cost;
+    public ItemData itemData;
+    public int quantity = 1;
 }

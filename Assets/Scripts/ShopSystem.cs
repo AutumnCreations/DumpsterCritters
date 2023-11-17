@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,48 +6,50 @@ using UnityEngine.UI;
 
 public class ShopSystem : UIListManager<Item>
 {
-
-    //Temporary solution to NPC inventory issue
+    public Action OnShopClosed;
     NPC npcInstance;
-    private void Start()
+
+    protected override void Start()
     {
+        base.Start();
         npcInstance = FindObjectOfType<NPC>();
     }
 
     public void OpenShop(NPC npc)
     {
         ShowUI(true);
-        PopulateList(npc.GetItemsForSale(), BuyItem);
+        PopulateList(npc.Inventory.GetItems(), BuyItem);
     }
 
     public void CloseShop()
     {
         ShowUI(false);
+        OnShopClosed?.Invoke();
     }
 
     public void BuyItem(Item item)
     {
-        Debug.Log(item.item.name);
-        if (playerInventory.GhostBucks >= item.cost)
+        //Debug.Log(item.item.name);
+        if (playerInventory.GhostBucks >= item.itemData.cost)
         {
-            playerInventory.SpendGhostBucks(item.cost);
-            playerInventory.AddItem(item);
-            npcInstance.GetItemsForSale().Remove(item);
-            //if (item.item.isFood)
-            //{
-            //    playerInventory.FoodRations += item.item.rationCount;
-            //}
-            //else
-            //{
-            //    playerInventory.AddItem(item.item);
-            //}
+            playerInventory.SpendGhostBucks(item.itemData.cost);
+            playerInventory.AddItem(item.itemData);
+            npcInstance.Inventory.RemoveItem(item.itemData);
+            footerText.text = "";
 
-            UpdateUI(item, "SOLD OUT");
-            
+            if (item.quantity > 0)
+            {
+                UpdateUI(item);
+            }
+            else
+            {
+                UpdateUI(item, "SOLD OUT");
+            }
         }
         else
         {
-            Debug.Log("Not enough Ghost Bucks");
+            footerText.text = errorText;
+            //Debug.Log("Not enough Ghost Bucks");
         }
     }
 }

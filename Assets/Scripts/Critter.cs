@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using Sirenix.OdinInspector;
 using System.Collections;
+using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Critter : MonoBehaviour
 {
@@ -11,8 +13,9 @@ public class Critter : MonoBehaviour
         Roaming,
         SeekingFood,
         Eating,
-        SeekingAttention,
-        ReceivingAttention
+        //ReceivingAttention,
+        SeekingStimulation,
+        Playing
     }
 
     [BoxGroup("Settings")]
@@ -61,7 +64,6 @@ public class Critter : MonoBehaviour
     [SerializeField, Range(0, 20)]
     float moodDecreaseRate = 1f;
 
-
     [BoxGroup("Roaming")]
     [Tooltip("The radius within which the critter will randomly roam.")]
     [SerializeField, Range(5, 100)]
@@ -78,15 +80,64 @@ public class Critter : MonoBehaviour
     float maxRoamIdleTime = 10f;
 
     [BoxGroup("Roaming")]
-    [GUIColor("orange")]
     [Tooltip("How long the critter will eat for in seconds")]
     [SerializeField, Range(0, 10)]
     float eatingDuration = 3f;
 
-    NavMeshAgent agent;
+    [BoxGroup("Roaming")]
+    [Tooltip("How long the critter will play for in seconds")]
+    [SerializeField, Range(0, 10)]
+    float playDuration = 5f;
+
+    [BoxGroup("Roaming")]
+    [Tooltip("How far away can the critter interact with food/placemats from")]
+    [SerializeField, Range(0, 10)]
+    float interactionDistance = .5f;
+
+    [BoxGroup("Roaming")]
+    [Tooltip("How far away should the critter move after interacting with something")]
+    [SerializeField, Range(0, 10)]
+    float moveAwayDistance = 5f;
+
+    [BoxGroup("UI")]
+    [Tooltip("The Worlspace UI GameObject")]
+    [SerializeField]
+    GameObject worldSpaceUI;
+
+    [BoxGroup("UI")]
+    [Tooltip("The bar that will display the critter's hunger level")]
+    [SerializeField]
+    Image hungerFillBar;
+
+    [BoxGroup("UI")]
+    [Tooltip("The bar that will display the critter's mood level")]
+    [SerializeField]
+    Image moodFillBar;
+
+    [BoxGroup("VFX")]
+    [Tooltip("The particle system that will play when the critter is pet")]
+    [SerializeField]
+    ParticleSystem petVFX;
+
+    [BoxGroup("VFX")]
+    [Tooltip("The point where food will travel to when player feeds this critter")]
+    public Transform feedPoint;
+
+
+    [ShowInInspector, ReadOnly]
+    [BoxGroup("Debug")]
     CritterState currentState;
-    FoodBowl targetFoodBowl;
-    Transform targetAttentionLocation;
+
+    [ShowInInspector, ReadOnly]
+    [BoxGroup("Debug")]
+    InteractableContainer targetInteraction;
+
+    [ShowInInspector, ReadOnly]
+    [BoxGroup("Debug")]
+    float interactionRefill = 0;
+
+    NavMeshAgent agent;
+    CritterAnimation critterAnimation;
 
     private void OnValidate()
     {
@@ -105,11 +156,6 @@ public class Critter : MonoBehaviour
             eatingDuration = Mathf.RoundToInt(eatingDuration);
         }
     }
-
-    //private void OnEnable()
-    //{
-    //    GameStateManager.Instance.onGameStateChange += OnGameStateChange;
-    //}
 
     private void OnDisable()
     {
@@ -141,6 +187,8 @@ public class Critter : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        critterAnimation = GetComponent<CritterAnimation>();
+        ToggleUI(false);
     }
 
     private void Start()
@@ -163,16 +211,16 @@ public class Critter : MonoBehaviour
                 CheckNeeds();
                 break;
             case CritterState.SeekingFood:
-                SeekFood();
+                SeekInteraction<FoodBowl>(CritterState.Eating, hunger);
                 break;
             case CritterState.Eating:
                 Eat();
                 break;
-            case CritterState.SeekingAttention:
-                SeekAttention();
+            case CritterState.SeekingStimulation:
+                SeekInteraction<Placemat>(CritterState.Playing, mood);
                 break;
-            case CritterState.ReceivingAttention:
-                ReceiveAttention();
+            case CritterState.Playing:
+                Play();
                 break;
             case CritterState.Roaming:
                 CheckNeeds();
@@ -185,72 +233,75 @@ public class Critter : MonoBehaviour
     private void CheckNeeds()
     {
         if (hunger >= needFood) ChangeState(CritterState.SeekingFood);
-        else if (mood <= needAttention) ChangeState(CritterState.SeekingAttention);
+        else if (mood <= needAttention) ChangeState(CritterState.SeekingStimulation);
     }
 
     private void IncreaseHunger()
     {
         hunger += hungerIncreaseRate * Time.deltaTime;
         hunger = Mathf.Clamp(hunger, 0f, 100f);
+        UpdateFillAmount((hunger - 100) * -1, hungerFillBar);
     }
 
     private void DecreaseMood()
     {
         mood -= moodDecreaseRate * Time.deltaTime;
         mood = Mathf.Clamp(mood, 0f, 100f);
+        UpdateFillAmount(mood, moodFillBar);
     }
 
     private void ChangeState(CritterState newState)
     {
         // Exiting current state logic
-        if (currentState == CritterState.Eating && newState != CritterState.Eating)
+        if (currentState == CritterState.Eating && newState != CritterState.Eating ||
+            currentState == CritterState.Playing && newState != CritterState.Playing)
         {
-            // When done eating, we want to evaluate if we should roam, seek attention, or stay idle
+            critterAnimation.StopWalk();
+            // When done with the specific activity, evaluate the next state
             StopAllCoroutines();
             StartCoroutine(WaitAndEvaluate());
         }
         else if (currentState == CritterState.Roaming && newState != CritterState.Roaming)
         {
-            // If we're currently roaming and transitioning to another state, stop the roaming coroutine
+            critterAnimation.StopWalk();
+            // Stop roaming coroutine if transitioning out of Roaming state
             StopAllCoroutines();
         }
 
-        // If we're entering Eating state, handle the eating duration
-        if (newState == CritterState.Eating)
-        {
-            StopAllCoroutines();
-            StartCoroutine(WaitAndChangeState(CritterState.Idle, eatingDuration));
-        }
-
-        currentState = newState;
-
-        // Handle any entry logic for new states as needed
+        // Entering new state logic
         switch (newState)
         {
+            case CritterState.Eating:
+                StopAllCoroutines();
+                critterAnimation.StopWalk();
+                StartCoroutine(WaitAndChangeState(CritterState.Idle, eatingDuration));
+                break;
+            case CritterState.Playing:
+                StopAllCoroutines();
+                critterAnimation.StopWalk();
+                StartCoroutine(WaitAndChangeState(CritterState.Idle, playDuration));
+                break;
             case CritterState.Idle:
                 // Start idle time before beginning to roam again
+                critterAnimation.StopWalk();
                 StartCoroutine(StartIdleRoamingTime());
                 break;
             case CritterState.Roaming:
-                // Start the roaming coroutine
+                critterAnimation.Walk();
                 StartCoroutine(Roam());
                 break;
             case CritterState.SeekingFood:
-                FindFoodBowl();
+                critterAnimation.Walk();
+                SeekInteraction<FoodBowl>(CritterState.Eating, hunger);
                 break;
-            case CritterState.SeekingAttention:
-                GetComponent<MeshRenderer>().material.color = Color.blue;
-                if (mood > needAttention)
-                {
-                    GetComponent<MeshRenderer>().material.color = Color.white;
-                    ChangeState(CritterState.Idle);
-                }
-                // Likely should add some UI prompts here. Maybe go to interactable placemat that has a toy?
+            case CritterState.SeekingStimulation:
+                critterAnimation.Walk();
+                SeekInteraction<Placemat>(CritterState.Playing, mood);
                 break;
         }
-
-        //Debug.Log($"{name} state: {currentState} mood: {mood} hunger: {hunger}");
+        currentState = newState;
     }
+
 
     private IEnumerator StartIdleRoamingTime()
     {
@@ -264,10 +315,22 @@ public class Critter : MonoBehaviour
 
     private IEnumerator WaitAndEvaluate()
     {
-        yield return new WaitForSeconds(eatingDuration); // Or however long you want to wait after eating
+        transform.LookAt(targetInteraction.transform.position);
+        yield return new WaitForSeconds(eatingDuration);
+        MoveAwayFromInteraction();
         if (hunger >= needFood) ChangeState(CritterState.SeekingFood);
-        else if (mood <= needAttention) ChangeState(CritterState.SeekingAttention);
+        else if (mood <= needAttention) ChangeState(CritterState.SeekingStimulation);
         else ChangeState(CritterState.Idle);
+    }
+
+    private void MoveAwayFromInteraction()
+    {
+        Vector3 directionAwayFromBowl = (transform.position - targetInteraction.transform.position).normalized;
+        targetInteraction = null;
+        Vector3 newDestination = transform.position + directionAwayFromBowl * moveAwayDistance;
+        agent.SetDestination(newDestination);
+        critterAnimation.Walk();
+        agent.isStopped = false;
     }
 
     private IEnumerator WaitAndChangeState(CritterState newState, float delay)
@@ -279,96 +342,111 @@ public class Critter : MonoBehaviour
 
     private void Eat()
     {
-        hunger = Mathf.Max(0, hunger - 50f);
-        Debug.Log($"{this.name} ate and is now at {hunger}");
+        hunger = Mathf.Max(0, hunger - interactionRefill);
+        //Debug.Log($"{this.name} ate and is now at {hunger} hunger");
     }
 
-    private void SeekFood()
+    private void Play()
     {
-        // Assume targetFoodBowl is already set by FindFoodBowl()
-        if (targetFoodBowl != null && targetFoodBowl.HasFood())
-        {
-            agent.SetDestination(targetFoodBowl.transform.position);
+        mood = Mathf.Max(0, mood + interactionRefill);
+        //Debug.Log($"{this.name} played and is now at {mood} mood");
+    }
 
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !agent.hasPath)
+    private void SeekInteraction<T>(CritterState onSuccessState, float need) where T : InteractableContainer, new()
+    {
+        if (targetInteraction != null && targetInteraction.CanCritterInteract())
+        {
+            agent.SetDestination(targetInteraction.transform.position);
+            //Debug.Log($"{this.name} is seeking a {targetInteraction.name} with {agent.remainingDistance} left to reach it.");
+            if (Vector3.Distance(transform.position, targetInteraction.transform.position) <= interactionDistance)
             {
-                targetFoodBowl.TakeFood();
-                ChangeState(CritterState.Eating);
+                //Debug.Log($"{this.name} reached interaction {targetInteraction.name}");
+                critterAnimation.StopWalk();
+                agent.isStopped = true;
+                transform.LookAt(targetInteraction.transform.position);
+                //Either eat or play, should return a value that can be used to refill mood or hunger
+                interactionRefill = targetInteraction.CritterInteract(need);
+
+                //Might need to move this to moveaway method
+                targetInteraction.currentCritters--;
+
+                ChangeState(onSuccessState);
             }
+            else
+            {
+                agent.isStopped = false;
+            }
+        }
+        else
+        {
+            //Debug.Log($"{this.name} has needs and could not find an interaction to fulfill {onSuccessState}");
+            FindInteraction<T>();
         }
     }
 
-    private void FindFoodBowl()
+    private void FindInteraction<T>() where T : InteractableContainer, new()
     {
-        FoodBowl[] foodBowls = FindObjectsOfType<FoodBowl>();
-        FoodBowl closestBowl = null;
+        T[] containers = FindObjectsOfType<T>();
+        T closestContainer = null;
         float closestDistance = Mathf.Infinity;
 
-        foreach (FoodBowl bowl in foodBowls)
+        foreach (T container in containers)
         {
-            if (bowl.HasFood())
+            if (container.CanCritterInteract() && container.currentCritters < container.maxCritters)
             {
-                float distanceToBowl = Vector3.Distance(transform.position, bowl.transform.position);
-                if (distanceToBowl < closestDistance)
+                float distanceToContainer = Vector3.Distance(transform.position, container.transform.position);
+                if (distanceToContainer < closestDistance)
                 {
-                    closestBowl = bowl;
-                    closestDistance = distanceToBowl;
+                    closestContainer = container;
+                    closestDistance = distanceToContainer;
                 }
             }
         }
 
-        targetFoodBowl = closestBowl;
-    }
-
-    private void SeekAttention()
-    {
-        // Logic for the critter to seek attention from the player or a designated attention point
-        // Can set the targetAttentionLocation when the player is close or based on some game logic
-        if (targetAttentionLocation != null)
+        if (closestContainer != null)
         {
-            agent.SetDestination(targetAttentionLocation.position);
-
-            // Check if the critter is close enough to the player or attention point (player or placemat) to receive attention
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && !agent.hasPath)
-            {
-                // Reached the attention point
-                ChangeState(CritterState.ReceivingAttention);
-            }
+            closestContainer.currentCritters++;
+            targetInteraction = closestContainer;
         }
     }
 
     // Call this from the PlayerController when the player interacts with the critter
     public void ReceivePlayerInteraction()
     {
-        mood = Mathf.Min(100, mood + 10f);
-        if (currentState == CritterState.SeekingAttention)
-        {
-            targetAttentionLocation = GameObject.FindGameObjectWithTag("Player").transform;
-            ChangeState(CritterState.ReceivingAttention);
-        }
+        //TODO: Add timer logic for time between player interactions
+        mood = Mathf.Min(100, mood + 20f);
+        petVFX.Play();
+        agent.isStopped = true;
+        ChangeState(CritterState.Idle);
     }
+
+    // Call this from the PlayerController when the player feeds the critter
+    public void ReceivePlayerFood(int rations)
+    {
+        //TODO: Add timer logic for time between player feedings
+        //Check needs before continuing states
+        hunger = Mathf.Max(0, hunger - (25f * rations));
+        petVFX.Play();
+        agent.isStopped = true;
+        ChangeState(CritterState.Idle);
+    }
+
 
     // Called when giving food to the critter
-    public void Feed()
-    {
-        hunger = Mathf.Max(0, hunger - 50f); // Decrease hunger
-        ChangeState(CritterState.Idle);
-    }
-
-    private void ReceiveAttention()
-    {
-        // Logic for what happens when receiving attention
-        mood = Mathf.Min(100, mood + 50f);
-        ChangeState(CritterState.Idle);
-    }
+    //public void Feed()
+    //{
+    //    //Fill per ration
+    //    hunger = Mathf.Max(0, hunger - 25f);
+    //    ChangeState(CritterState.Idle);
+    //}
 
     private IEnumerator Roam()
     {
+        agent.isStopped = false;
         while (true) // Keep roaming indefinitely
         {
             // Wait for a random time within the specified range before choosing a new destination
             yield return new WaitForSeconds(Random.Range(minRoamIdleTime, maxRoamIdleTime));
-
             // Choose a new random destination and move to it
             Vector3 randomDirection = Random.insideUnitSphere * roamRadius;
             randomDirection += transform.position;
@@ -387,4 +465,36 @@ public class Critter : MonoBehaviour
         }
     }
 
+    #region UI
+
+    protected virtual void ToggleUI(bool active)
+    {
+        if (worldSpaceUI != null) worldSpaceUI.SetActive(active);
+    }
+
+    private void UpdateFillAmount(float amount, Image fillBar)
+    {
+        fillBar.fillAmount = amount / 100;
+    }
+    #endregion
+
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            ToggleUI(true);
+            player.SetNearbyComponents(this.gameObject, true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            ToggleUI(false);
+            player.SetNearbyComponents(this.gameObject, false);
+        }
+    }
 }

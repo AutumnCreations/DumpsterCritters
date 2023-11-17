@@ -121,7 +121,7 @@ NavMeshObstacle:
   m_Shape: 0
   m_Extents: {x: 0.25, y: 1, z: 0.25}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
@@ -144,8 +144,23 @@ MonoBehaviour:
     - Thank you
     - Come again!
     shopLineIndex: 2
-  itemsForSale:
-  - item: {fileID: 1939188951624027758, guid: eb71b969ed27f9646a4ea04c0eced979, type: 3}
-    cost: 0
-  - item: {fileID: 6828946324636589963, guid: 823473391137bfc458d0bfe725941056, type: 3}
-    cost: 2
+  inventory:
+    items:
+    - itemData: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: b50f3301d8b1b8341b2bd8b778a0a4d9, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: d377074bca4d89d44b6bca918646130d, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: a3ac3ea5041da2e42be6520bd42d1364, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: 6c8cbad826a8f214e8f4b2741f5fb388, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: 761aae232929c5c49a046610d64e91e2, type: 2}
+      quantity: 10
+    - itemData: {fileID: 11400000, guid: e055a256f8b8ace438c5a9bc356fe79f, type: 2}
+      quantity: 1
+    - itemData: {fileID: 11400000, guid: e2019742e6c251044b92800d8363c6a9, type: 2}
+      quantity: 1
+    - itemData: {fileID: 0}
+      quantity: 1

@@ -1,15 +1,25 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
+using System.Collections;
 
 public class DialogueManager : MonoBehaviour
 {
-    public TMP_Text dialogueText;
-    public GameObject dialogueUI;
-    public Button continueButton;
+    [SerializeField]
+    TMP_Text dialogueText;
+    [SerializeField]
+    GameObject dialogueUI;
+    [SerializeField]
+    Button continueButton;
+    [SerializeField, Range(0.01f, 2f)]
+    float textSpeed = 0.05f;
+
     NPC currentNPC;
     Dialogue currentDialogue;
     int currentLineIndex;
+    Coroutine typewriter;
+    bool isTypewriterEffectRunning = false;
 
     private void Awake()
     {
@@ -28,10 +38,41 @@ public class DialogueManager : MonoBehaviour
         currentLineIndex = 0;
         dialogueUI.SetActive(true);
         ShowLine();
+
+        ShopSystem shopSystem = GetComponent<ShopSystem>();
+        shopSystem.OnShopClosed += ContinueDialogueAfterShop;
+    }
+
+    private void ShowLine()
+    {
+        if (currentLineIndex == currentDialogue.shopLineIndex)
+        {
+            // Open the shop UI when the shop line index is reached
+            dialogueUI.SetActive(false);
+            ShopSystem shopSystem = GetComponent<ShopSystem>();
+            shopSystem.OpenShop(currentNPC);
+        }
+        else
+        {
+            StopAllCoroutines();
+            typewriter = StartCoroutine(ShowTextWithTypewriterEffect(currentDialogue.lines[currentLineIndex], textSpeed));
+        }
+        currentLineIndex++;
     }
 
     public void ContinueDialogue()
     {
+        if (isTypewriterEffectRunning)
+        {
+            // Set flag to stop the coroutine loop
+            isTypewriterEffectRunning = false;
+            // Stop the current coroutine
+            StopCoroutine(typewriter);
+            // Show the full text of the current line
+            dialogueText.text = currentDialogue.lines[currentLineIndex - 1];
+            return;
+        }
+
         if (currentLineIndex < currentDialogue.lines.Length)
         {
             ShowLine();
@@ -42,22 +83,49 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void ShowLine()
+    private void ContinueDialogueAfterShop()
     {
-        dialogueText.text = currentDialogue.lines[currentLineIndex];
-        if (currentLineIndex == currentDialogue.shopLineIndex)
+        GameStateManager.Instance.ChangeState(GameStateManager.GameState.Dialogue);
+        dialogueUI.SetActive(true);
+        // Unsubscribe to avoid repeated calls
+        ShopSystem shopSystem = GetComponent<ShopSystem>();
+        shopSystem.OnShopClosed -= ContinueDialogueAfterShop;
+
+        if (currentLineIndex < currentDialogue.lines.Length)
         {
-            // Open the shop UI when the shop line index is reached
-            dialogueUI.SetActive(false);
-            ShopSystem shopSystem = GetComponent<ShopSystem>();
-            shopSystem.OpenShop(currentNPC);
+            ShowLine();
         }
-        currentLineIndex++;
+        else
+        {
+            EndDialogue();
+        }
     }
 
     private void EndDialogue()
     {
         GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
         dialogueUI.SetActive(false);
+    }
+
+    private IEnumerator ShowTextWithTypewriterEffect(string text, float speed)
+    {
+        isTypewriterEffectRunning = true;
+        dialogueText.text = "";
+
+        foreach (char c in text)
+        {
+            dialogueText.text += c;
+            yield return new WaitForSeconds(speed);
+
+            // Check if player clicked through dialogue
+            if (!isTypewriterEffectRunning)
+            {
+                // Display full text
+                dialogueText.text = text;
+                break;
+            }
+        }
+
+        isTypewriterEffectRunning = false;
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class ItemUI : MonoBehaviour
 {
     public TextMeshProUGUI itemNameText;
+    public TextMeshProUGUI itemQuantityText;
     public TextMeshProUGUI itemPriceText;
     public Image itemImage;
+    public TextMeshProUGUI itemRationText;
 }
