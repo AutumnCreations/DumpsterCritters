@@ -712,7 +712,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: needFood
-      value: 70
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: roamRadius
@@ -2092,7 +2092,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: needFood
-      value: 70
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: roamRadius
@@ -2362,7 +2362,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: needFood
-      value: 70
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: roamRadius
@@ -2448,6 +2448,10 @@ PrefabInstance:
       propertyPath: m_BaseOffset
       value: -0.02
       objectReference: {fileID: 0}
+    - target: {fileID: 3635204123164923738, guid: 42b668ab039b275438201bbf188faf00, type: 3}
+      propertyPath: bodyRotateEase
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4659726675989386914, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: m_Name
       value: Mouse (2)
@@ -2472,7 +2476,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: needFood
-      value: 70
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: roamRadius
@@ -2581,7 +2585,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: needFood
-      value: 15
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: eatingDistance
@@ -2817,7 +2821,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 650399742965580778, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.000030517578
+      objectReference: {fileID: 0}
+    - target: {fileID: 714385448834516772, guid: 0088a879c670840418e16143df72a31f, type: 3}
+      propertyPath: m_Size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 714385448834516772, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_Value
@@ -2873,7 +2881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1448267043180700421, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 1951798873236421116, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2898,10 +2906,6 @@ PrefabInstance:
     - target: {fileID: 2940152107997858086, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2982302903955393938, guid: 0088a879c670840418e16143df72a31f, type: 3}
-      propertyPath: interactionCooldown
-      value: 0.51
       objectReference: {fileID: 0}
     - target: {fileID: 5803457849542859109, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2954,6 +2958,10 @@ PrefabInstance:
     - target: {fileID: 5981220257217955215, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7097689361783621082, guid: 0088a879c670840418e16143df72a31f, type: 3}
+      propertyPath: m_Size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7097689361783621082, guid: 0088a879c670840418e16143df72a31f, type: 3}
       propertyPath: m_Value
@@ -3073,8 +3081,29 @@ PrefabInstance:
       value: Test_NPC
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
+      propertyPath: dialogue.lines.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: inventory.items.Array.size
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
+      propertyPath: dialogue.lines.Array.data[0]
+      value: Welcome, little ghost, to my humble corner of curiosities and treats.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
+      propertyPath: dialogue.lines.Array.data[1]
+      value: Care to trade some ghost bucks? I promise you, these goods are purr-fect
+        for your critter friends.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
+      propertyPath: dialogue.lines.Array.data[2]
+      value: OPEN SHOP - NOT DIALOGUE
+      objectReference: {fileID: 0}
+    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
+      propertyPath: dialogue.lines.Array.data[3]
+      value: Do come back soon! The mice and I always appreciate your ghostly presence.
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: inventory.items.Array.data[0].quantity

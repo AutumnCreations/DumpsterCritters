@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour
     bool isMouseHeldDown = false;
     PlayerInventory inventory;
     InventorySystem inventorySystem;
+    PlayerAnimation playerAnimation;
     Interactable currentHeldItem;
     NavMeshAgent navMeshAgent;
     DialogueManager dialogueManager;
@@ -114,6 +115,7 @@ public class PlayerController : MonoBehaviour
         playerInputActions = new Player_Input();
         inventory = GetComponent<PlayerInventory>();
         inventorySystem = FindObjectOfType<InventorySystem>();
+        playerAnimation = GetComponent<PlayerAnimation>();
 
         // Setup Click to Move/Interact
         clickAction = playerInputActions.Player.MoveInteract;
@@ -221,6 +223,7 @@ public class PlayerController : MonoBehaviour
             {
                 //Pickup item from mat
                 currentHeldItem = nearbyContainer.currentObject;
+                playerAnimation.ArmsHold();
                 nearbyContainer.RemoveObject(this);
                 pickupIcon.SetActive(false);
             }
@@ -325,6 +328,7 @@ public class PlayerController : MonoBehaviour
         pickupIcon.SetActive(true);
         nearbyContainer.SetObject(currentHeldItem.itemData, currentHeldItem);
         currentHeldItem = null;
+        playerAnimation.ArmsReturn();
         StopMoving();
     }
 
@@ -335,14 +339,17 @@ public class PlayerController : MonoBehaviour
         bowl.AddFood(currentHeldItem.itemData.rationCount);
         currentHeldItem.transform.DOMove(bowl.foodDropPoint.position, .5f).SetEase(Ease.OutBounce);
         currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => Destroy(currentHeldItem.gameObject));
-        //Destroy(currentHeldItem.gameObject);
+
         currentHeldItem = null;
+        playerAnimation.ArmsReturn();
+
         StopMoving();
     }
 
     private void PetCritter()
     {
         nearbyCritter.ReceivePlayerInteraction();
+        playerAnimation.ArmsPet();
         Debug.Log($"Player pet {nearbyCritter}");
     }
 
@@ -354,6 +361,7 @@ public class PlayerController : MonoBehaviour
         // Move the food to the critter's position
         currentHeldItem.transform.SetParent(nearbyCritter.transform);
         currentHeldItem.transform.DOMove(nearbyCritter.feedPoint.position, 0.15f * currentHeldItem.itemData.rationCount).SetEase(Ease.Linear).OnComplete(() => Destroy(currentHeldItem.gameObject));
+        playerAnimation.ArmsReturn();
 
         int rations = currentHeldItem.itemData.rationCount;
         Vector3 originalScale = currentHeldItem.transform.localScale;
@@ -378,6 +386,7 @@ public class PlayerController : MonoBehaviour
     private void AttemptPickup()
     {
         currentHeldItem = nearbyInteractable;
+        playerAnimation.ArmsHold();
         nearbyInteractable = null;
         currentHeldItem.PickUp(grabPoint, true);
         pickupIcon.SetActive(false);
@@ -389,6 +398,7 @@ public class PlayerController : MonoBehaviour
         {
             currentHeldItem.Drop();
             currentHeldItem = null;
+            playerAnimation.ArmsReturn();
             return true;
         }
         return false;
@@ -407,6 +417,7 @@ public class PlayerController : MonoBehaviour
         DestroyHeldItems();
 
         currentHeldItem = Instantiate(interactable);
+        playerAnimation.ArmsHold();
 
         currentHeldItem.InitializeInteractable();
         currentHeldItem.PickUp(grabPoint);
@@ -423,6 +434,7 @@ public class PlayerController : MonoBehaviour
             currentHeldItem.transform.DOMove(storePoint.position, .5f).SetEase(Ease.Linear);
             currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => DestroyHeldItems());
             currentHeldItem = null;
+            playerAnimation.ArmsPocket();
         }
         else
         {
@@ -513,6 +525,10 @@ public class PlayerController : MonoBehaviour
 
     void OnClickPerformed(InputAction.CallbackContext context)
     {
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        {
+            return;
+        }
         isMouseHeldDown = true;
         HandleClickInput(true);
     }

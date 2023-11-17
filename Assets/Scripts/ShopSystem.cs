@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,7 +6,9 @@ using UnityEngine.UI;
 
 public class ShopSystem : UIListManager<Item>
 {
+    public Action OnShopClosed;
     NPC npcInstance;
+
     protected override void Start()
     {
         base.Start();
@@ -21,6 +24,7 @@ public class ShopSystem : UIListManager<Item>
     public void CloseShop()
     {
         ShowUI(false);
+        OnShopClosed?.Invoke();
     }
 
     public void BuyItem(Item item)

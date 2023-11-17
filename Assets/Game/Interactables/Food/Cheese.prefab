@@ -152,6 +152,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cheese
       objectReference: {fileID: 0}
+    - target: {fileID: 8850576999718300874, guid: e74f1106ae9936943943407abaa10641, type: 3}
+      propertyPath: sideToSideRotation
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5245167421701457187, guid: e74f1106ae9936943943407abaa10641, type: 3}
     m_RemovedGameObjects:

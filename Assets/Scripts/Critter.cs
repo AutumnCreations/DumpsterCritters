@@ -137,6 +137,7 @@ public class Critter : MonoBehaviour
     float interactionRefill = 0;
 
     NavMeshAgent agent;
+    CritterAnimation critterAnimation;
 
     private void OnValidate()
     {
@@ -186,6 +187,7 @@ public class Critter : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        critterAnimation = GetComponent<CritterAnimation>();
         ToggleUI(false);
     }
 
@@ -254,12 +256,14 @@ public class Critter : MonoBehaviour
         if (currentState == CritterState.Eating && newState != CritterState.Eating ||
             currentState == CritterState.Playing && newState != CritterState.Playing)
         {
+            critterAnimation.StopWalk();
             // When done with the specific activity, evaluate the next state
             StopAllCoroutines();
             StartCoroutine(WaitAndEvaluate());
         }
         else if (currentState == CritterState.Roaming && newState != CritterState.Roaming)
         {
+            critterAnimation.StopWalk();
             // Stop roaming coroutine if transitioning out of Roaming state
             StopAllCoroutines();
         }
@@ -269,23 +273,29 @@ public class Critter : MonoBehaviour
         {
             case CritterState.Eating:
                 StopAllCoroutines();
+                critterAnimation.StopWalk();
                 StartCoroutine(WaitAndChangeState(CritterState.Idle, eatingDuration));
                 break;
             case CritterState.Playing:
                 StopAllCoroutines();
+                critterAnimation.StopWalk();
                 StartCoroutine(WaitAndChangeState(CritterState.Idle, playDuration));
                 break;
             case CritterState.Idle:
                 // Start idle time before beginning to roam again
+                critterAnimation.StopWalk();
                 StartCoroutine(StartIdleRoamingTime());
                 break;
             case CritterState.Roaming:
+                critterAnimation.Walk();
                 StartCoroutine(Roam());
                 break;
             case CritterState.SeekingFood:
+                critterAnimation.Walk();
                 SeekInteraction<FoodBowl>(CritterState.Eating, hunger);
                 break;
             case CritterState.SeekingStimulation:
+                critterAnimation.Walk();
                 SeekInteraction<Placemat>(CritterState.Playing, mood);
                 break;
         }
@@ -319,6 +329,7 @@ public class Critter : MonoBehaviour
         targetInteraction = null;
         Vector3 newDestination = transform.position + directionAwayFromBowl * moveAwayDistance;
         agent.SetDestination(newDestination);
+        critterAnimation.Walk();
         agent.isStopped = false;
     }
 
@@ -350,6 +361,7 @@ public class Critter : MonoBehaviour
             if (Vector3.Distance(transform.position, targetInteraction.transform.position) <= interactionDistance)
             {
                 //Debug.Log($"{this.name} reached interaction {targetInteraction.name}");
+                critterAnimation.StopWalk();
                 agent.isStopped = true;
                 transform.LookAt(targetInteraction.transform.position);
                 //Either eat or play, should return a value that can be used to refill mood or hunger
@@ -435,7 +447,6 @@ public class Critter : MonoBehaviour
         {
             // Wait for a random time within the specified range before choosing a new destination
             yield return new WaitForSeconds(Random.Range(minRoamIdleTime, maxRoamIdleTime));
-
             // Choose a new random destination and move to it
             Vector3 randomDirection = Random.insideUnitSphere * roamRadius;
             randomDirection += transform.position;
