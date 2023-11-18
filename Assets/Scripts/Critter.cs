@@ -219,7 +219,7 @@ public class Critter : MonoBehaviour
                 Eat();
                 break;
             case CritterState.SeekingStimulation:
-                SeekInteraction<Placemat>(CritterState.Playing, mood);
+                SeekInteraction<Placemat>(CritterState.Playing, 100-mood);
                 break;
             case CritterState.Playing:
                 Play();
@@ -234,10 +234,12 @@ public class Critter : MonoBehaviour
 
     private void CheckNeeds()
     {
-        if (hunger >= needFood) ChangeState(CritterState.SeekingFood);
-        else if (mood <= needAttention) ChangeState(CritterState.SeekingStimulation);
-    }
+        if (hunger >= needFood && targetInteraction == null)
+            ChangeState(CritterState.SeekingFood);
 
+        else if (mood <= needAttention && targetInteraction == null)
+            ChangeState(CritterState.SeekingStimulation);
+    }
     private void IncreaseHunger()
     {
         hunger += hungerIncreaseRate * Time.deltaTime;
@@ -368,6 +370,7 @@ public class Critter : MonoBehaviour
                 agent.isStopped = true;
                 transform.LookAt(targetInteraction.transform.position);
                 //Either eat or play, should return a value that can be used to refill mood or hunger
+                Debug.Log($"Needs: {need} for {onSuccessState} using {targetInteraction}");
                 interactionRefill = targetInteraction.CritterInteract(need);
 
                 //Might need to move this to moveaway method
