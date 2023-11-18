@@ -123,6 +123,8 @@ public class Critter : MonoBehaviour
     [Tooltip("The point where food will travel to when player feeds this critter")]
     public Transform feedPoint;
 
+    [BoxGroup("Audio")]
+    public string InteractSuccessSound;
 
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
@@ -419,6 +421,7 @@ public class Critter : MonoBehaviour
         petVFX.Play();
         agent.isStopped = true;
         ChangeState(CritterState.Idle);
+        FMODUnity.RuntimeManager.PlayOneShot(InteractSuccessSound, transform.position);
     }
 
     // Call this from the PlayerController when the player feeds the critter
@@ -430,6 +433,7 @@ public class Critter : MonoBehaviour
         petVFX.Play();
         agent.isStopped = true;
         ChangeState(CritterState.Idle);
+        FMODUnity.RuntimeManager.PlayOneShot(InteractSuccessSound, transform.position);
     }
 
 

@@ -85,9 +85,9 @@ MonoBehaviour:
   useIntegers: 1
   isPaused: 0
   hunger: 0
-  needFood: 70
+  needFood: 30
   hungerIncreaseRate: 1
-  mood: 100
+  mood: 35
   needAttention: 30
   moodDecreaseRate: 1
   roamRadius: 15
@@ -102,6 +102,7 @@ MonoBehaviour:
   moodFillBar: {fileID: 8700608642439573009}
   petVFX: {fileID: 6658103531255478484}
   feedPoint: {fileID: 1822031403060922586}
+  InteractSuccessSound: event:/NPC/Mouse/Mouse_Heart
 --- !u!195 &3582670485941969408
 NavMeshAgent:
   m_ObjectHideFlags: 0

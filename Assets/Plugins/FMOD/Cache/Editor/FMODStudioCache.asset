@@ -69,7 +69,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638358495736674656
+  lastModified: 638358986168660031
   FileSizes:
   - Name: Desktop
     Value: 74400
@@ -127,7 +127,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 23414
+  Length: 24352
 --- !u!114 &-1268228530010879422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,10 +143,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638358495737003167
+  lastModified: 638358986168853189
   FileSizes:
   - Name: Desktop
-    Value: 1164192
+    Value: 1136992
   Exists: 1
 --- !u!114 &-912637174236405889
 MonoBehaviour:
@@ -163,10 +163,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638358495736694786
+  lastModified: 638358986168690559
   FileSizes:
   - Name: Desktop
-    Value: 1130
+    Value: 1222
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -212,6 +212,7 @@ MonoBehaviour:
   - {fileID: 1804358996151935307}
   - {fileID: -1268228530010879422}
   - {fileID: -4531838588142307115}
+  - {fileID: 1877582287338633043}
   EditorEvents:
   - {fileID: -810296171214793645}
   - {fileID: -9207259309009039789}
@@ -219,12 +220,13 @@ MonoBehaviour:
   - {fileID: -3577010096288489248}
   - {fileID: -7165239327317729953}
   - {fileID: -3724875788118183746}
+  - {fileID: 7593846719657407176}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638358495737003167
+  cacheTime: 638358986169037282
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -241,10 +243,30 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638358495736694786
+  lastModified: 638358986168680591
   FileSizes:
   - Name: Desktop
     Value: 1036
+  Exists: 1
+--- !u!114 &1877582287338633043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Critters.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/DumpsterCritters/Build/Desktop/Critters.bank
+  Name: Critters
+  StudioPath: bank:/Critters
+  lastModified: 638358986169037282
+  FileSizes:
+  - Name: Desktop
+    Value: 93248
   Exists: 1
 --- !u!114 &5400760093261263374
 MonoBehaviour:
@@ -273,3 +295,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 100
   Length: 1718
+--- !u!114 &7593846719657407176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/NPC/Mouse/Mouse_Heart
+  m_EditorClassIdentifier: 
+  Path: event:/NPC/Mouse/Mouse_Heart
+  Guid:
+    Data1: 253919983
+    Data2: 1090206971
+    Data3: 1049874305
+    Data4: -1546347035
+  Banks:
+  - {fileID: 1877582287338633043}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2430

@@ -1017,6 +1017,7 @@ MonoBehaviour:
   moodFillBar: {fileID: 0}
   petVFX: {fileID: 0}
   feedPoint: {fileID: 0}
+  InteractSuccessSound: 
 --- !u!4 &964240045
 Transform:
   m_ObjectHideFlags: 0
@@ -2717,14 +2718,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1935613944}
     m_Modifications:
-    - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
-      propertyPath: mood
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
-      propertyPath: needFood
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: eatingDistance
       value: 1
