@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4854836697526680888
+--- !u!114 &-9207259309009039789
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,24 +10,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Env/Env_BushRustle
+  m_Name: event:/Env/MouseTrap_Disarm
   m_EditorClassIdentifier: 
-  Path: event:/Env/Env_BushRustle
+  Path: event:/Env/MouseTrap_Disarm
   Guid:
-    Data1: -1693004164
-    Data2: 1316737780
-    Data3: -1528146290
-    Data4: 94929576
+    Data1: 886745666
+    Data2: 1205265541
+    Data3: 397308601
+    Data4: -711161691
   Banks:
   - {fileID: -4531838588142307115}
-  - {fileID: 1804358996151935307}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 433
+--- !u!114 &-7165239327317729953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Pickup_Main
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Pickup_Main
+  Guid:
+    Data1: -1452729503
+    Data2: 1215336332
+    Data3: 461005464
+    Data4: 1821542544
+  Banks:
+  - {fileID: -4531838588142307115}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 100
-  Length: 1718
+  MaxDistance: 20
+  Length: 428
 --- !u!114 &-4531838588142307115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,11 +69,38 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638358359009309820
+  lastModified: 638358491050354285
   FileSizes:
   - Name: Desktop
-    Value: 51680
+    Value: 72192
   Exists: 1
+--- !u!114 &-3577010096288489248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/SleazyFurball
+  m_EditorClassIdentifier: 
+  Path: event:/Music/SleazyFurball
+  Guid:
+    Data1: 2135758808
+    Data2: 1109922592
+    Data3: 243192744
+    Data4: 1215083186
+  Banks:
+  - {fileID: -1268228530010879422}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 23414
 --- !u!114 &-1268228530010879422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,10 +116,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638358359009788022
+  lastModified: 638358491050555400
   FileSizes:
   - Name: Desktop
-    Value: 841440
+    Value: 1164192
   Exists: 1
 --- !u!114 &-912637174236405889
 MonoBehaviour:
@@ -83,10 +136,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638358359009625486
+  lastModified: 638358491050374215
   FileSizes:
   - Name: Desktop
-    Value: 980
+    Value: 1088
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -102,19 +155,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Music/MePlusMice
   Guid:
-    Data1: 1100318787
-    Data2: 1226435727
-    Data3: 86166688
-    Data4: -654496215
+    Data1: 518073395
+    Data2: 1253257199
+    Data3: 1383448712
+    Data4: -192001396
   Banks:
   - {fileID: -1268228530010879422}
   IsStream: 1
-  Is3D: 1
+  Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 66604
+  Length: 63302
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,43 +187,17 @@ MonoBehaviour:
   - {fileID: -4531838588142307115}
   EditorEvents:
   - {fileID: -810296171214793645}
-  - {fileID: -4854836697526680888}
-  - {fileID: 1309124513694683780}
+  - {fileID: -9207259309009039789}
+  - {fileID: 5400760093261263374}
+  - {fileID: -3577010096288489248}
+  - {fileID: -7165239327317729953}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638358359009788022
+  cacheTime: 638358491050555400
   cacheVersion: 131608
---- !u!114 &1309124513694683780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Player/PC_PickupFruit
-  m_EditorClassIdentifier: 
-  Path: event:/Player/PC_PickupFruit
-  Guid:
-    Data1: -648677657
-    Data2: 1325711953
-    Data3: -611690856
-    Data4: -1065962720
-  Banks:
-  - {fileID: -4531838588142307115}
-  - {fileID: 1804358996151935307}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 1718
 --- !u!114 &1804358996151935307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,8 +213,35 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638358359009610460
+  lastModified: 638358491050374215
   FileSizes:
   - Name: Desktop
-    Value: 52192
+    Value: 1036
   Exists: 1
+--- !u!114 &5400760093261263374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Env/Bush_Rustle
+  m_EditorClassIdentifier: 
+  Path: event:/Env/Bush_Rustle
+  Guid:
+    Data1: -1693004164
+    Data2: 1316737780
+    Data3: -1528146290
+    Data4: 94929576
+  Banks:
+  - {fileID: -4531838588142307115}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 100
+  Length: 1718
