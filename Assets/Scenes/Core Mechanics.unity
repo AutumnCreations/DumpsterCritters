@@ -834,6 +834,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mouse (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4659726675989386914, guid: 42b668ab039b275438201bbf188faf00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2245,6 +2249,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mouse (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 4659726675989386914, guid: 42b668ab039b275438201bbf188faf00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2519,6 +2527,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mouse (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4659726675989386914, guid: 42b668ab039b275438201bbf188faf00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2633,6 +2645,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mouse (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4659726675989386914, guid: 42b668ab039b275438201bbf188faf00, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2648,11 +2664,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: mood
-      value: 35
+      value: 67
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: needFood
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 840198253385730893, guid: 42b668ab039b275438201bbf188faf00, type: 3}
       propertyPath: eatingDistance
