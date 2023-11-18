@@ -163,6 +163,7 @@ public class Critter : MonoBehaviour
     {
         if (GameStateManager.Instance != null)
         {
+            GameStateManager.Instance.UpdateCritterCount(-1);
             GameStateManager.Instance.onGameStateChange -= OnGameStateChange;
         }
     }
@@ -198,6 +199,7 @@ public class Critter : MonoBehaviour
         // Start the roaming coroutine
         ChangeState(CritterState.Roaming);
         GameStateManager.Instance.onGameStateChange += OnGameStateChange;
+        GameStateManager.Instance.UpdateCritterCount(1);
     }
 
     private void Update()
@@ -219,7 +221,7 @@ public class Critter : MonoBehaviour
                 Eat();
                 break;
             case CritterState.SeekingStimulation:
-                SeekInteraction<Placemat>(CritterState.Playing, 100-mood);
+                SeekInteraction<Placemat>(CritterState.Playing, 100 - mood);
                 break;
             case CritterState.Playing:
                 Play();

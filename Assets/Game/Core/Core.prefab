@@ -366,6 +366,8 @@ MonoBehaviour:
   masterVolume: 0
   musicVolume: 0
   sfxVolume: 0
+  critterCount: 0
+  critterCountText: {fileID: 8281126833933730903}
 --- !u!1 &3817020557260463913
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,7 +722,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 228545586491639395, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Size
-      value: 0.49532193
+      value: 0.99999994
       objectReference: {fileID: 0}
     - target: {fileID: 228545586491639395, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Value
@@ -728,7 +730,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 272287290428228269, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 444543564520705264, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -796,7 +798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2222724276780065346, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 2453459061127514209, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -838,6 +840,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4749189781993072304, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: dff8bd2e82c2b3d419c196f6c3ffa843, type: 3}
     - target: {fileID: 6324885119456184046, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -944,11 +950,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7512560640062555293, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Size
-      value: 0.49532193
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7512560640062555293, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8098178707674390844, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1016,6 +1022,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5715235675020964189 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5012906981274398746, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+  m_PrefabInstance: {fileID: 775169750172696903}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5863547674437388743 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6601843077307205760, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
@@ -1037,6 +1054,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6076898093972409118, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
   m_PrefabInstance: {fileID: 775169750172696903}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8281126833933730903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8659731852984010000, guid: 5199ddd1a1ca3ad41948c23a7ebda55e, type: 3}
+  m_PrefabInstance: {fileID: 775169750172696903}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3862873734742729692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1121,6 +1149,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5803457849542859109}
     m_Modifications:
+    - target: {fileID: 933729803052580111, guid: 0ba0f2a697649714182e68be325ef5c7, type: 3}
+      propertyPath: ghostBuckText
+      value: 
+      objectReference: {fileID: 5715235675020964189}
     - target: {fileID: 1035516382537453085, guid: 0ba0f2a697649714182e68be325ef5c7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

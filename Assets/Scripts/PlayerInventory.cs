@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using TMPro;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -11,13 +12,19 @@ public class PlayerInventory : MonoBehaviour
     int foodRations;
     [SerializeField]
     int ghostBucks;
-    [SerializeField]
+    
+    public TextMeshProUGUI ghostBuckText;
 
     public Inventory Inventory => inventory;
 
     public delegate void ItemAddedHandler(ItemData itemData);
 
     public event ItemAddedHandler OnItemAdded;
+
+    private void Awake()
+    {
+        ghostBuckText.text = GhostBucks.ToString();
+    }
 
     public void AddItem(ItemData itemData)
     {
@@ -49,5 +56,6 @@ public class PlayerInventory : MonoBehaviour
     public void SpendGhostBucks(int amount)
     {
         GhostBucks -= amount;
+        ghostBuckText.text = GhostBucks.ToString();
     }
 }

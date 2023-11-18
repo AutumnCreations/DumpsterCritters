@@ -442,6 +442,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void PickupGhostBuck()
+    {
+        inventory.GhostBucks++;
+        inventory.ghostBuckText.text = inventory.GhostBucks.ToString();
+    }
+
     private void DestroyHeldItems()
     {
         foreach (Transform child in grabPoint)
