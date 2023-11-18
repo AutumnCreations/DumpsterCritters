@@ -83,7 +83,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Food
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3994422423606632428, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
@@ -117,6 +118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteTransform: {fileID: 8381312292871503599}
-  sideToSideDistance: 15
+  sideToSideRotation: 15
   idleEaseType: 10
   idleMotionDuration: 0.5
