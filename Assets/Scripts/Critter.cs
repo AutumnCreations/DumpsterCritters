@@ -325,6 +325,7 @@ public class Critter : MonoBehaviour
 
     private void MoveAwayFromInteraction()
     {
+        targetInteraction.CritterCountChange(-1);
         Vector3 directionAwayFromBowl = (transform.position - targetInteraction.transform.position).normalized;
         targetInteraction = null;
         Vector3 newDestination = transform.position + directionAwayFromBowl * moveAwayDistance;
@@ -368,7 +369,7 @@ public class Critter : MonoBehaviour
                 interactionRefill = targetInteraction.CritterInteract(need);
 
                 //Might need to move this to moveaway method
-                targetInteraction.currentCritters--;
+                targetInteraction.CritterCountChange(1);
 
                 ChangeState(onSuccessState);
             }
@@ -392,7 +393,7 @@ public class Critter : MonoBehaviour
 
         foreach (T container in containers)
         {
-            if (container.CanCritterInteract() && container.currentCritters < container.maxCritters)
+            if (container.CanCritterInteract() && container.GetCritters() < container.maxCritters)
             {
                 float distanceToContainer = Vector3.Distance(transform.position, container.transform.position);
                 if (distanceToContainer < closestDistance)
@@ -405,7 +406,7 @@ public class Critter : MonoBehaviour
 
         if (closestContainer != null)
         {
-            closestContainer.currentCritters++;
+            //closestContainer.CritterCountChange(1);
             targetInteraction = closestContainer;
         }
     }

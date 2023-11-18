@@ -94,7 +94,7 @@ public class CritterAnimation : MonoBehaviour
         sequence.Append(body.DOLocalRotate(new Vector3(initialRotation.x,
                   body.localRotation.eulerAngles.y, body.localRotation.eulerAngles.z), rotateAnimationDuration)
                   .SetEase(bodyRotateEase));
-        sequence.SetLoops(-1, LoopType.Restart);
+        sequence.SetLoops(-1, LoopType.Yoyo);
     }
     public void StopWalk()
     {

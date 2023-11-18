@@ -148,8 +148,53 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bell
       objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: jump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: roll
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: jumps
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: baseSprite
+      value: 
+      objectReference: {fileID: 2579140885429155004}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: jumpHeight
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: jumpDistance
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: jumpEaseType
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: rollDistance
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: rollDuration
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: rollEaseType
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+--- !u!4 &2579140885429155004 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3316119639024055487, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+  m_PrefabInstance: {fileID: 995238092074467331}
+  m_PrefabAsset: {fileID: 0}

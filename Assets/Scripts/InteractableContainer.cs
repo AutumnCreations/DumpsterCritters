@@ -1,6 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
+using System;
 
 public class InteractableContainer : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class InteractableContainer : MonoBehaviour
     [BoxGroup("Critter Interactions")]
     [SerializeField]
     [ReadOnly]
-    internal int currentCritters = 0;
+    protected int currentCritters = 0;
 
     [BoxGroup("Critter Interactions")]
     [SerializeField, Range(0, 5)]
@@ -88,10 +89,20 @@ public class InteractableContainer : MonoBehaviour
         if (worldSpaceUI != null) worldSpaceUI.SetActive(active);
     }
 
+    public virtual void CritterCountChange(int critters)
+    {
+        currentCritters += critters;
+    }
+
     internal virtual bool CanCritterInteract()
     {
         return false;
     }
 
     internal virtual float CritterInteract(float need) { return 0; }
+
+    internal int GetCritters()
+    {
+        return currentCritters;
+    }
 }
