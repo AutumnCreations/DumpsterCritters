@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{b02acd16-6207-4b03-8f71-5bf1e8e51c0f}">
+		<property name="assetPath">
+			<value>Heart3.ogg</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.3930839002267574</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{95607ba9-ba60-49f4-a03f-0d5afaec54b4}</destination>
+		</relationship>
+	</object>
+</objects>
