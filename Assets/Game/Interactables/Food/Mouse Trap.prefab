@@ -293,6 +293,7 @@ MonoBehaviour:
   quantity: 1
   respawnTime: 0
   fillTimer: {fileID: 4581515805984766646}
-  FMODEvent: event:/Env/MouseTrap_Disarm
+  PickupEvent: event:/Env/MouseTrap_Disarm
+  RespawnEvent: 
   destroyDelay: 3
   spriteRenderer: {fileID: 1832546218638140704}
