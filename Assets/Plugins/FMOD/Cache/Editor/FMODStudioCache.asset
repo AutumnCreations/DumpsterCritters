@@ -20,6 +20,7 @@ MonoBehaviour:
     Data4: 94929576
   Banks:
   - {fileID: -4531838588142307115}
+  - {fileID: 1804358996151935307}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -42,10 +43,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638354177147869517
+  lastModified: 638358359009309820
   FileSizes:
   - Name: Desktop
-    Value: 41728
+    Value: 51680
   Exists: 1
 --- !u!114 &-1268228530010879422
 MonoBehaviour:
@@ -62,7 +63,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638354177147562640
+  lastModified: 638358359009788022
   FileSizes:
   - Name: Desktop
     Value: 841440
@@ -82,10 +83,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638354177147252318
+  lastModified: 638358359009625486
   FileSizes:
   - Name: Desktop
-    Value: 928
+    Value: 980
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -134,13 +135,42 @@ MonoBehaviour:
   EditorEvents:
   - {fileID: -810296171214793645}
   - {fileID: -4854836697526680888}
+  - {fileID: 1309124513694683780}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638354177147869517
+  cacheTime: 638358359009788022
   cacheVersion: 131608
+--- !u!114 &1309124513694683780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/PC_PickupFruit
+  m_EditorClassIdentifier: 
+  Path: event:/Player/PC_PickupFruit
+  Guid:
+    Data1: -648677657
+    Data2: 1325711953
+    Data3: -611690856
+    Data4: -1065962720
+  Banks:
+  - {fileID: -4531838588142307115}
+  - {fileID: 1804358996151935307}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1718
 --- !u!114 &1804358996151935307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,8 +186,8 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638354177147237241
+  lastModified: 638358359009610460
   FileSizes:
   - Name: Desktop
-    Value: 1036
+    Value: 52192
   Exists: 1

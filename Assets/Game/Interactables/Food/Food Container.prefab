@@ -251,6 +251,7 @@ MonoBehaviour:
   quantity: 1
   respawnTime: 10
   fillTimer: {fileID: 3248227669743131638}
+  PickupEvent: event:/Player/PC_PickupFruit
 --- !u!1001 &4325195116725070943
 PrefabInstance:
   m_ObjectHideFlags: 0
