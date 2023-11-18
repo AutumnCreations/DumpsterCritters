@@ -1290,6 +1290,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7729218269714206831, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}
+      propertyPath: tune.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729218269714206831, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}
+      propertyPath: tune.Array.data[0]
+      value: event:/Music/MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729218269714206831, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}
+      propertyPath: tune.Array.data[1]
+      value: event:/Music/MePlusMice
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729218269714206831, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}
+      propertyPath: tune.Array.data[2]
+      value: event:/Music/SleazyFurball
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3233,12 +3249,6 @@ PrefabInstance:
     - target: {fileID: 5949049609225871776, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: m_Name
       value: Test_NPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
-      propertyPath: dialogue.lines.Array.data[2]
-      value: 'stay clean daddy-o... hehe...
-
-        B^)'
       objectReference: {fileID: 0}
     - target: {fileID: 8782756958568158920, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: m_LocalPosition.x

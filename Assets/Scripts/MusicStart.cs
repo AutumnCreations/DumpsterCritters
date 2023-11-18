@@ -5,17 +5,31 @@ using FMOD.Studio;
 
 public class MusicStart : MonoBehaviour
 {
-    //[FMODUnity.EventRef]
-    //public string mainMusicEvent = "event:/Music/MePlusMice";
-    public FMOD.Studio.EventInstance mainMusic;
+    private static MusicStart instance;
 
-    //[FMODUnity.EventRef]
-    //public string shopMusicEvent = "event:/Music/SleazyFurball";
-    public FMOD.Studio.EventInstance shopMusic;
+    public string[] tune;
 
-    void Awake()
+    public FMOD.Studio.EventInstance musicEvent;
+
+    private void Awake()
     {
-        mainMusic = FMODUnity.RuntimeManager.CreateInstance("event:/Music/MePlusMice");
-        mainMusic.start();
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }    
+        //else
+        {
+            //Destroy(gameObject);
+        }      
+        
+    }
+
+    private void Start()
+    {
+        int n = tune.Length;
+        string musicEventName = tune[n];        
+        musicEvent = FMODUnity.RuntimeManager.CreateInstance(musicEventName);
+        musicEvent.start();
     }
 }
