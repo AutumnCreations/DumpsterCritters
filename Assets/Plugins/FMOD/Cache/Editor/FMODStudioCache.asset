@@ -69,11 +69,38 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638358491050354285
+  lastModified: 638358495736674656
   FileSizes:
   - Name: Desktop
-    Value: 72192
+    Value: 74400
   Exists: 1
+--- !u!114 &-3724875788118183746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Env/Tree_Rustle
+  m_EditorClassIdentifier: 
+  Path: event:/Env/Tree_Rustle
+  Guid:
+    Data1: -285458288
+    Data2: 1337023261
+    Data3: -419367497
+    Data4: 843988128
+  Banks:
+  - {fileID: -4531838588142307115}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 100
+  Length: 1718
 --- !u!114 &-3577010096288489248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +143,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638358491050555400
+  lastModified: 638358495737003167
   FileSizes:
   - Name: Desktop
     Value: 1164192
@@ -136,10 +163,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638358491050374215
+  lastModified: 638358495736694786
   FileSizes:
   - Name: Desktop
-    Value: 1088
+    Value: 1130
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -191,12 +218,13 @@ MonoBehaviour:
   - {fileID: 5400760093261263374}
   - {fileID: -3577010096288489248}
   - {fileID: -7165239327317729953}
+  - {fileID: -3724875788118183746}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638358491050555400
+  cacheTime: 638358495737003167
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -213,7 +241,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638358491050374215
+  lastModified: 638358495736694786
   FileSizes:
   - Name: Desktop
     Value: 1036
