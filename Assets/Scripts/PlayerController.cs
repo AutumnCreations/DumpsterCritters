@@ -6,6 +6,8 @@ using System;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices.WindowsRuntime;
 using DG.Tweening;
+using FMOD.Studio;
+using System.IO;
 
 public class PlayerController : MonoBehaviour
 {
@@ -226,6 +228,7 @@ public class PlayerController : MonoBehaviour
                 playerAnimation.ArmsHold();
                 nearbyContainer.RemoveObject(this);
                 pickupIcon.SetActive(false);
+                FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Pickup_Main");
             }
             else if (nearbyCritter != null)
             {
@@ -330,6 +333,7 @@ public class PlayerController : MonoBehaviour
         currentHeldItem = null;
         playerAnimation.ArmsReturn();
         StopMoving();
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
     }
 
     private void AddFoodToBowl()
@@ -390,6 +394,7 @@ public class PlayerController : MonoBehaviour
         nearbyInteractable = null;
         currentHeldItem.PickUp(grabPoint, true);
         pickupIcon.SetActive(false);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/Pickup_Main");
     }
 
     private bool DropItem()

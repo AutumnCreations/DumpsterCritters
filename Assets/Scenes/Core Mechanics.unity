@@ -3210,6 +3210,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test_NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
+      propertyPath: dialogue.lines.Array.data[2]
+      value: 'stay clean daddy-o... hehe...
+
+        B^)'
+      objectReference: {fileID: 0}
     - target: {fileID: 8782756958568158920, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.84
