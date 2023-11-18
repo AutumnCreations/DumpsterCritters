@@ -28,7 +28,7 @@ public class FoodContainer : InteractableContainer
     Image fillTimer;
 
     [BoxGroup("Audio")]
-    public string FMODEvent;
+    public string PickupEvent;
 
     float timePassed = 0;
 
@@ -53,7 +53,7 @@ public class FoodContainer : InteractableContainer
         if (currentObject != null)
         {
             currentObject.PickUp(player.grabPoint, true);
-            FMODUnity.RuntimeManager.PlayOneShot(FMODEvent, transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot(PickupEvent, transform.position);
             currentObject = null;
             StartCoroutine(RespawnFruit());
         }

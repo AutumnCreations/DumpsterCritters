@@ -54,6 +54,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 428
+--- !u!114 &-5153838353331511861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Pickup_Fruit
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Pickup_Fruit
+  Guid:
+    Data1: -336513239
+    Data2: 1209962115
+    Data3: 1653381512
+    Data4: -523838840
+  Banks:
+  - {fileID: -4531838588142307115}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1718
 --- !u!114 &-4531838588142307115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,10 +96,30 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638358986168660031
+  lastModified: 638359000450320989
   FileSizes:
   - Name: Desktop
-    Value: 74400
+    Value: 76224
+  Exists: 1
+--- !u!114 &-4486252711333880414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/UI.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/Audio/DumpsterCritters/Build/Desktop/UI.bank
+  Name: UI
+  StudioPath: bank:/UI
+  lastModified: 638359000451303911
+  FileSizes:
+  - Name: Desktop
+    Value: 3360
   Exists: 1
 --- !u!114 &-3724875788118183746
 MonoBehaviour:
@@ -143,7 +190,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638358986168853189
+  lastModified: 638359000450520393
   FileSizes:
   - Name: Desktop
     Value: 1136992
@@ -163,10 +210,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638358986168690559
+  lastModified: 638359000450343044
   FileSizes:
   - Name: Desktop
-    Value: 1222
+    Value: 1350
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -213,6 +260,7 @@ MonoBehaviour:
   - {fileID: -1268228530010879422}
   - {fileID: -4531838588142307115}
   - {fileID: 1877582287338633043}
+  - {fileID: -4486252711333880414}
   EditorEvents:
   - {fileID: -810296171214793645}
   - {fileID: -9207259309009039789}
@@ -221,12 +269,14 @@ MonoBehaviour:
   - {fileID: -7165239327317729953}
   - {fileID: -3724875788118183746}
   - {fileID: 7593846719657407176}
+  - {fileID: -5153838353331511861}
+  - {fileID: 8028270116690618479}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638358986169037282
+  cacheTime: 638359000451303911
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -243,7 +293,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638358986168680591
+  lastModified: 638359000450343044
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -263,7 +313,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Critters.bank
   Name: Critters
   StudioPath: bank:/Critters
-  lastModified: 638358986169037282
+  lastModified: 638359000450710503
   FileSizes:
   - Name: Desktop
     Value: 93248
@@ -322,3 +372,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2430
+--- !u!114 &8028270116690618479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI/UI_MenuSelect
+  m_EditorClassIdentifier: 
+  Path: event:/UI/UI_MenuSelect
+  Guid:
+    Data1: 349002727
+    Data2: 1228373062
+    Data3: -956809820
+    Data4: -780029767
+  Banks:
+  - {fileID: -4486252711333880414}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 433
