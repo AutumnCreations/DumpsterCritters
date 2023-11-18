@@ -138,7 +138,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{d0d3a8a4-c4dd-4f89-9dfb-a8447d711463}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-10</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -164,6 +164,7 @@
 	<object class="MixerBusEffectChain" id="{81bb21c1-1fdd-492b-9d74-1ed2aff07a77}">
 		<relationship name="effects">
 			<destination>{1868e125-b730-4d6c-9641-7df011cd4146}</destination>
+			<destination>{a93f7316-ca69-4bde-a710-7a21ba14b76c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{024fc7a4-9ca5-4445-8e94-b85d1f4209ae}" />
@@ -196,6 +197,17 @@
 	</object>
 	<object class="MixerBusPanner" id="{69a1617e-cc3f-4c17-9035-7721747a41c5}" />
 	<object class="MixerBusFader" id="{1868e125-b730-4d6c-9641-7df011cd4146}" />
+	<object class="CompressorEffect" id="{a93f7316-ca69-4bde-a710-7a21ba14b76c}">
+		<property name="threshold">
+			<value>-20</value>
+		</property>
+		<property name="ratio">
+			<value>1.89999998</value>
+		</property>
+		<property name="attackTime">
+			<value>0.100000001</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{da2981f6-a4c6-4bc1-9232-8585e45c0858}" />
 	<object class="MixerBusFader" id="{a126bf91-738b-4919-920a-f9148c0007f4}" />
 </objects>
