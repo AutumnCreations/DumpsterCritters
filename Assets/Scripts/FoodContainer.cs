@@ -29,6 +29,7 @@ public class FoodContainer : InteractableContainer
 
     [BoxGroup("Audio")]
     public string PickupEvent;
+    public string RespawnEvent;
 
     float timePassed = 0;
 
@@ -74,6 +75,7 @@ public class FoodContainer : InteractableContainer
         }
         ToggleUI(false);
         SetObject(foodItem);
+        FMODUnity.RuntimeManager.PlayOneShot(RespawnEvent, transform.position);
         Debug.Log("Fruit Respawned!");
     }
 
