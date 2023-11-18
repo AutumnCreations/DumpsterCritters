@@ -139,12 +139,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     lines:
-    - Welcome, little ghost, to my humble corner of curiosities and treats.
-    - Care to trade some ghost bucks? I promise you, these goods are purr-fect for
-      your critter friends.
+    - 'whats cookin jack? check it... fine goods, see? take a look...
+
+      B^)'
     - OPEN SHOP - NOT DIALOGUE
-    - Do come back soon! The mice and I always appreciate your ghostly presence.
-    shopLineIndex: 2
+    - 'stay clean daddy-o... ahhaha...
+
+      B^)'
+    shopLineIndex: 1
   inventory:
     items:
     - itemData: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}

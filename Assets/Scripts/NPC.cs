@@ -1,8 +1,10 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
+using FMOD.Studio;
 
 public class NPC : MonoBehaviour
 {
@@ -14,6 +16,9 @@ public class NPC : MonoBehaviour
     private DialogueManager dialogueManager;
 
     public Inventory Inventory => inventory;
+
+    //public GameObject Music;
+    //private Music.GetComponent<MusicStart>;
 
     private void Awake()
     {
@@ -28,6 +33,7 @@ public class NPC : MonoBehaviour
     public void Interact(PlayerController player)
     {
         dialogueManager.StartDialogue(this);
+               
     }
 
     public void GoToShopSpot(Vector3 spot)
@@ -59,6 +65,8 @@ public class NPC : MonoBehaviour
 
     internal Dialogue GetDialogue()
     {
+        //shopMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        //mainMusic.start();
         return dialogue;
     }
 }
