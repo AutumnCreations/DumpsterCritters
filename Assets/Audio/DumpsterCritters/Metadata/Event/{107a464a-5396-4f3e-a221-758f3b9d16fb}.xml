@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{107a464a-5396-4f3e-a221-758f3b9d16fb}">
 		<property name="name">
-			<value>Pocket_Main</value>
+			<value>RandomTakSound</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{cf1dd1ef-5ee1-47fa-8269-63f9bf0ea65b}</destination>
+			<destination>{baf8c205-5591-413f-8a2f-75cab5c2e623}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{d85438ce-15b2-4772-8d54-0e22d87bb4bf}</destination>
@@ -30,9 +30,6 @@
 		</relationship>
 		<relationship name="timeline">
 			<destination>{37a32d5e-b0a2-4925-8724-cffe8bfb7304}</destination>
-		</relationship>
-		<relationship name="banks">
-			<destination>{2d3735be-354d-4689-9d73-becc12a86577}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{d85438ce-15b2-4772-8d54-0e22d87bb4bf}">
@@ -97,6 +94,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b02a625e-f2cf-4d5c-8a95-9010ec349932}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>

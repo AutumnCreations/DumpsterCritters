@@ -42,6 +42,8 @@ public class MouseSpawner : MonoBehaviour
 
     private void SpawnCritter()
     {
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/NPC/Mouse/Mouse_Squeak");
         Vector3 spawnPosition = spawnArea.position + Random.insideUnitSphere * spawnRadius;
         spawnPosition.y = spawnArea.position.y; 
 
