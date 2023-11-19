@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4879462491626622498}
   - component: {fileID: 7729218269714206831}
+  - component: {fileID: 3270786309816277643}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -48,3 +49,34 @@ MonoBehaviour:
   - event:/Music/MainMenu
   - event:/Music/MePlusMice
   - event:/Music/SleazyFurball
+--- !u!114 &3270786309816277643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3109894614178335163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 518073395
+      Data2: 1253257199
+      Data3: 1383448712
+      Data4: -192001396
+    Path: event:/Music/MePlusMice
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
