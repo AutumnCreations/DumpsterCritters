@@ -24,7 +24,7 @@ public class MusicPlayer : MonoBehaviour
         }    
         else
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }      
     }
 

@@ -406,6 +406,8 @@ public class PlayerController : MonoBehaviour
         currentHeldItem = null;
         playerAnimation.ArmsReturn();
 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
+
         StopMoving();
     }
 
@@ -478,6 +480,7 @@ public class PlayerController : MonoBehaviour
             currentHeldItem.Drop();
             currentHeldItem = null;
             playerAnimation.ArmsReturn();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
             return true;
         }
         return false;
@@ -514,6 +517,7 @@ public class PlayerController : MonoBehaviour
             currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => DestroyHeldItems());
             currentHeldItem = null;
             playerAnimation.ArmsPocket();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
         }
         else
         {

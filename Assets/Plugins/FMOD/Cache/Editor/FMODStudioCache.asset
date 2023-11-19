@@ -109,6 +109,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1718
+--- !u!114 &-5126880004390054937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Coin
+  m_EditorClassIdentifier: 
+  Path: event:/Coin
+  Guid:
+    Data1: 778489415
+    Data2: 1280490088
+    Data3: -382749818
+    Data4: -2114236498
+  Banks:
+  - {fileID: 1804358996151935307}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 428
 --- !u!114 &-4531838588142307115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +151,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638359306398868846
+  lastModified: 638359485953443063
   FileSizes:
   - Name: Desktop
     Value: 77248
@@ -144,7 +171,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638359306408060826
+  lastModified: 638359485954196253
   FileSizes:
   - Name: Desktop
     Value: 3360
@@ -218,7 +245,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638359306748224927
+  lastModified: 638359485953806170
   FileSizes:
   - Name: Desktop
     Value: 1690080
@@ -238,10 +265,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638359306748125219
+  lastModified: 638359485953618973
   FileSizes:
   - Name: Desktop
-    Value: 1490
+    Value: 1566
   Exists: 1
 --- !u!114 &-810296171214793645
 MonoBehaviour:
@@ -302,12 +329,14 @@ MonoBehaviour:
   - {fileID: 8028270116690618479}
   - {fileID: 3235822223524559298}
   - {fileID: -7605039503745019482}
+  - {fileID: -5126880004390054937}
+  - {fileID: 4331510655393328551}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638359306748224927
+  cacheTime: 638359485954196253
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -324,10 +353,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638359306398878808
+  lastModified: 638359485953618973
   FileSizes:
   - Name: Desktop
-    Value: 1036
+    Value: 11584
   Exists: 1
 --- !u!114 &1877582287338633043
 MonoBehaviour:
@@ -344,7 +373,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Critters.bank
   Name: Critters
   StudioPath: bank:/Critters
-  lastModified: 638359306398659054
+  lastModified: 638359485953224084
   FileSizes:
   - Name: Desktop
     Value: 93248
@@ -376,6 +405,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 433
+--- !u!114 &4331510655393328551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Pocket_Main
+  m_EditorClassIdentifier: 
+  Path: event:/Player/Pocket_Main
+  Guid:
+    Data1: 276448842
+    Data2: 1329484694
+    Data3: -1888149086
+    Data4: -82404037
+  Banks:
+  - {fileID: 8582868707327317829}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 428
 --- !u!114 &5400760093261263374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,8 +529,8 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 638359306407740590
+  lastModified: 638359485954027738
   FileSizes:
   - Name: Desktop
-    Value: 64992
+    Value: 67712
   Exists: 1
