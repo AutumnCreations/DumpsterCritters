@@ -151,7 +151,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638359842715748220
+  lastModified: 638359889559647323
   FileSizes:
   - Name: Desktop
     Value: 145984
@@ -171,7 +171,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638359842716509565
+  lastModified: 638359889560391667
   FileSizes:
   - Name: Desktop
     Value: 3360
@@ -272,10 +272,10 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638359842716122411
+  lastModified: 638359889560014094
   FileSizes:
   - Name: Desktop
-    Value: 1690080
+    Value: 1690464
   Exists: 1
 --- !u!114 &-912637174236405889
 MonoBehaviour:
@@ -292,7 +292,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638359842715941746
+  lastModified: 638359889559833692
   FileSizes:
   - Name: Desktop
     Value: 1776
@@ -394,7 +394,7 @@ MonoBehaviour:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638359842716509565
+  cacheTime: 638359889560391667
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -411,7 +411,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638359842715931725
+  lastModified: 638359889559823719
   FileSizes:
   - Name: Desktop
     Value: 11584
@@ -431,7 +431,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Critters.bank
   Name: Critters
   StudioPath: bank:/Critters
-  lastModified: 638359842715443191
+  lastModified: 638359889559407567
   FileSizes:
   - Name: Desktop
     Value: 93792
@@ -614,7 +614,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 638359842716338593
+  lastModified: 638359889560231527
   FileSizes:
   - Name: Desktop
     Value: 64992

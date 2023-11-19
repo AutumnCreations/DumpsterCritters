@@ -131,10 +131,10 @@
 			<value>0</value>
 		</property>
 		<property name="releaseTime">
-			<value>160</value>
+			<value>400</value>
 		</property>
 		<property name="releaseShape">
-			<value>-0.112210982</value>
+			<value>-0.23367238</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
