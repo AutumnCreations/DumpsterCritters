@@ -427,7 +427,7 @@ MonoBehaviour:
   inventory:
     items: []
   foodRations: 0
-  ghostBucks: 20
+  ghostBucks: 1
   ghostBuckText: {fileID: 0}
 --- !u!195 &119525009216344623
 NavMeshAgent:

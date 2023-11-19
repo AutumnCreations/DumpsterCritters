@@ -5308,16 +5308,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71cd322f88c53f741ac38872cb05e70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useIntegers: 1
+  useIntegers: 0
   isPaused: 0
-  hunger: 0
-  needFood: 30
-  hungerIncreaseRate: 1
-  mood: 35
-  needAttention: 30
-  moodDecreaseRate: 1
-  petCooldown: 20
-  feedCooldown: 20
+  hunger: 50
+  needFood: 80
+  hungerIncreaseRate: 0.5
+  mood: 50
+  needAttention: 20
+  moodDecreaseRate: 0.25
+  petCooldown: 10
+  feedCooldown: 10
   roamRadius: 15
   minRoamIdleTime: 1
   maxRoamIdleTime: 7
@@ -5337,10 +5337,11 @@ MonoBehaviour:
   fedVFX: {fileID: 224161509393877855}
   feedPoint: {fileID: 1822031403060922586}
   InteractSuccessSound: event:/NPC/Mouse/Mouse_Heart
-  ghostBuckDropChance: 0.05
-  hungerThresholdForGhostBuck: 10
-  moodThresholdForGhostBuck: 90
+  ghostBuckDropChance: 0.2
+  hungerThresholdForGhostBuck: 20
+  moodThresholdForGhostBuck: 80
   ghostBuckPrefab: {fileID: 5541199498955550374, guid: a3d9ce3c72d00d2448635024dec101e7, type: 3}
+  currentState: 0
   lastPet: 3.4028235e+38
   lastFed: 3.4028235e+38
 --- !u!195 &3582670485941969408

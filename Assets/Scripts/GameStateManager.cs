@@ -51,6 +51,7 @@ public class GameStateManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        ChangeState(GameState.Dialogue);
     }
 
     public void ChangeState(GameState newState)
