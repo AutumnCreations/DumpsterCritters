@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class MusicPlayer : MonoBehaviour
 
     public FMOD.Studio.EventInstance musicEvent;
 
+
     //public string musicEventName;
 
     private void Awake()
@@ -24,10 +26,11 @@ public class MusicPlayer : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the event
         }
         else
         {
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -46,6 +49,7 @@ public class MusicPlayer : MonoBehaviour
 
     public void PlayTrack(int trackIndex)
     {
+        musicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         if (trackIndex >= 0 && trackIndex < tunes.Length + 1)
         {
             musicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
@@ -61,4 +65,27 @@ public class MusicPlayer : MonoBehaviour
             Debug.LogWarning("INDEX OUT OF RANGE DUMMY");
         }
     }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        StopMusic();
+        currentTrack += 1;
+        PlayTrack(currentTrack);
+    }
+
+    public void StopMusic()
+    {
+        if (musicEvent.isValid())
+        {
+            musicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+            musicEvent.release();
+        }
+    }
+
 }

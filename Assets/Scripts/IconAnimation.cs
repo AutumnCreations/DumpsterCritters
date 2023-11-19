@@ -8,12 +8,10 @@ public class IconAnimation : MonoBehaviour
 {
     #region Shake
     [BoxGroup("Shake Settings")]
-    [ShowIf("shake")]
     [SerializeField]
     Ease shakeEaseType = Ease.InOutCubic;
 
     [BoxGroup("Shake Settings")]
-    [ShowIf("shake")]
     [SerializeField]
     float shakeDuration = .5f;
 
