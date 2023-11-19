@@ -9,6 +9,9 @@ public class MusicPlayer : MonoBehaviour
 
     public string[] tunes;
 
+    [Tooltip("Set to 1+ if you want to override the music player logic")]
+    public int trackOverride = -1;
+
     private int currentTrack;
 
     public FMOD.Studio.EventInstance musicEvent;
@@ -21,22 +24,29 @@ public class MusicPlayer : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-        }    
+        }
         else
         {
             //Destroy(gameObject);
-        }      
+        }
     }
 
     private void Start()
     {
-        currentTrack = 2;
+        if (trackOverride >= 1)
+        {
+            currentTrack = trackOverride;
+        }
+        else
+        {
+            currentTrack = 2;
+        }
         PlayTrack(currentTrack);
     }
 
     public void PlayTrack(int trackIndex)
     {
-        if (trackIndex >= 0 && trackIndex < tunes.Length +1)
+        if (trackIndex >= 0 && trackIndex < tunes.Length + 1)
         {
             musicEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             musicEvent.release();
@@ -49,6 +59,6 @@ public class MusicPlayer : MonoBehaviour
         else
         {
             Debug.LogWarning("INDEX OUT OF RANGE DUMMY");
-        }        
+        }
     }
 }
