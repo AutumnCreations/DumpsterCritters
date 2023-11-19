@@ -5,7 +5,7 @@
 			<value>Mouse_Squeak</value>
 		</property>
 		<property name="outputFormat">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<relationship name="folder">
 			<destination>{e750da6c-d3e0-4e14-8c60-c846e4c702fa}</destination>
@@ -30,6 +30,9 @@
 		</relationship>
 		<relationship name="timeline">
 			<destination>{17e0d32e-5505-44f8-a45f-2960a4288827}</destination>
+		</relationship>
+		<relationship name="banks">
+			<destination>{e366e42f-71f3-487c-a1c9-a46b7693a551}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{9eb952d6-8a02-4d37-bc45-7a7cf71ec61a}">
@@ -69,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{ad563fed-002d-4c37-8cff-d9abd6520f0e}">
+		<property name="volume">
+			<value>-3.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{0ef4e962-7d46-4982-814b-56da4c6fd1ed}</destination>
 		</relationship>
@@ -95,9 +101,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{98d6fce4-28d2-4b2d-ac25-1a7b05b38b55}">
-		<property name="volume">
-			<value>4.5</value>
-		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -114,6 +117,7 @@
 	<object class="MixerBusEffectChain" id="{0ef4e962-7d46-4982-814b-56da4c6fd1ed}">
 		<relationship name="effects">
 			<destination>{d6c3e4ff-9e0e-4656-8eeb-6d7d9de2acd9}</destination>
+			<destination>{a9751713-5148-411e-a893-42acef41a3dc}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{c09a2700-922d-4b76-9aa8-898454fbd5cd}" />
@@ -135,5 +139,13 @@
 	</object>
 	<object class="MixerBusPanner" id="{ae59ce61-5e75-4cc7-ba12-f044bb2d448a}" />
 	<object class="MixerBusFader" id="{d6c3e4ff-9e0e-4656-8eeb-6d7d9de2acd9}" />
+	<object class="SpatialiserEffect" id="{a9751713-5148-411e-a893-42acef41a3dc}">
+		<property name="maximumDistance">
+			<value>70</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{148090aa-75de-4c02-85de-68de4a006e2a}" />
 </objects>

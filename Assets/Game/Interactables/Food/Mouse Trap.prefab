@@ -293,7 +293,9 @@ MonoBehaviour:
   quantity: 1
   respawnTime: 0
   fillTimer: {fileID: 4581515805984766646}
+  ghostBuckDropChance: 0.1
+  ghostBuckPrefab: {fileID: 0}
   PickupEvent: event:/Env/MouseTrap_Disarm
-  RespawnEvent: 
+  RespawnEvent: event:/Env/MouseTrap_Arm
   destroyDelay: 3
   spriteRenderer: {fileID: 1832546218638140704}

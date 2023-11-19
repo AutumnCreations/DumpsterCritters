@@ -364,11 +364,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7946689958016062350, guid: a7c9316bc59dae3498ec405dbd519c3c, type: 3}
       propertyPath: respawnTime
-      value: 90
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7946689958016062350, guid: a7c9316bc59dae3498ec405dbd519c3c, type: 3}
       propertyPath: RespawnEvent
-      value: event:/Env/Bush_Rustle
+      value: event:/Env/Bush_Respawn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

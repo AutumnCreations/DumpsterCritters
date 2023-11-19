@@ -118,6 +118,7 @@ public class Placemat : InteractableContainer
         critterCount.text = $"{currentCritters} / {maxCritters}";
         repairVFX.gameObject.SetActive(true);
         unlockText.gameObject.SetActive(false);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Env/Mat_RepairSuccess");
     }
 
     protected override void OnTriggerEnter(Collider other)
