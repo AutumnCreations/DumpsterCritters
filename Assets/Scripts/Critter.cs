@@ -13,7 +13,6 @@ public class Critter : MonoBehaviour
         Roaming,
         SeekingFood,
         Eating,
-        //ReceivingAttention,
         SeekingStimulation,
         Playing
     }
@@ -63,6 +62,16 @@ public class Critter : MonoBehaviour
     [Tooltip("How fast the critter's mood decreases in seconds")]
     [SerializeField, Range(0, 20)]
     float moodDecreaseRate = 1f;
+
+    [BoxGroup("Stats")]
+    [Tooltip("How often can the critter be pet?")]
+    [SerializeField, Range(0, 120)]
+    public float petCooldown = 20f;
+
+    [BoxGroup("Stats")]
+    [Tooltip("How often can the critter be fed?")]
+    [SerializeField, Range(0, 120)]
+    public float feedCooldown = 20f;
 
     [BoxGroup("Roaming")]
     [Tooltip("The radius within which the critter will randomly roam.")]
@@ -114,10 +123,35 @@ public class Critter : MonoBehaviour
     [SerializeField]
     Image moodFillBar;
 
+    [BoxGroup("UI")]
+    [SerializeField]
+    Image thoughtBubble;
+
+    [BoxGroup("UI")]
+    [SerializeField]
+    Image hungryIcon;
+
+    [BoxGroup("UI")]
+    [SerializeField]
+    Image playIcon;
+
+    [BoxGroup("UI")]
+    [SerializeField]
+    Image upsetIcon;
+
+    [BoxGroup("UI")]
+    [SerializeField]
+    float upsetTime;
+
     [BoxGroup("VFX")]
     [Tooltip("The particle system that will play when the critter is pet")]
     [SerializeField]
     ParticleSystem petVFX;
+
+    [BoxGroup("VFX")]
+    [Tooltip("The particle system that will play when the critter is fed")]
+    [SerializeField]
+    ParticleSystem fedVFX;
 
     [BoxGroup("VFX")]
     [Tooltip("The point where food will travel to when player feeds this critter")]
@@ -125,6 +159,25 @@ public class Critter : MonoBehaviour
 
     [BoxGroup("Audio")]
     public string InteractSuccessSound;
+
+    [BoxGroup("GhostBuck Settings")]
+    [SerializeField, Tooltip("Chance of dropping GhostBuck on each check while roaming")]
+    [Range(0f, 1f)] // 0% to 100%
+    float ghostBuckDropChance = 0.05f; // 5% chance
+
+    [BoxGroup("GhostBuck Settings")]
+    [SerializeField, Tooltip("Hunger threshold below which GhostBucks can be dropped")]
+    [Range(0, 100)]
+    float hungerThresholdForGhostBuck = 20f; // <=20 hunger
+
+    [BoxGroup("GhostBuck Settings")]
+    [SerializeField, Tooltip("Mood threshold above which GhostBucks can be dropped")]
+    [Range(0, 100)]
+    float moodThresholdForGhostBuck = 80f; // >=80 mood
+
+    [BoxGroup("GhostBuck Settings")]
+    [SerializeField, Tooltip("GhostBuck prefab to instantiate")]
+    GameObject ghostBuckPrefab;
 
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
@@ -137,6 +190,14 @@ public class Critter : MonoBehaviour
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
     float interactionRefill = 0;
+
+    [ReadOnly]
+    [BoxGroup("Debug")]
+    public float lastPet = float.MaxValue;
+
+    [ReadOnly]
+    [BoxGroup("Debug")]
+    public float lastFed = float.MaxValue;
 
     NavMeshAgent agent;
     CritterAnimation critterAnimation;
@@ -156,6 +217,8 @@ public class Critter : MonoBehaviour
             minRoamIdleTime = Mathf.RoundToInt(minRoamIdleTime);
             maxRoamIdleTime = Mathf.RoundToInt(maxRoamIdleTime);
             eatingDuration = Mathf.RoundToInt(eatingDuration);
+
+            upsetTime = Mathf.RoundToInt(upsetTime);
         }
     }
 
@@ -192,6 +255,9 @@ public class Critter : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         critterAnimation = GetComponent<CritterAnimation>();
         ToggleUI(false);
+        StartCoroutine(Upset(false));
+        Playful(false);
+        Hungry(false);
     }
 
     private void Start()
@@ -205,7 +271,7 @@ public class Critter : MonoBehaviour
     private void Update()
     {
         if (isPaused) return;
-
+        IncreaseInteractionTimers();
         IncreaseHunger();
         DecreaseMood();
 
@@ -234,12 +300,18 @@ public class Critter : MonoBehaviour
         }
     }
 
+    private void IncreaseInteractionTimers()
+    {
+        lastFed += Time.deltaTime;
+        lastPet += Time.deltaTime;
+    }
+
     private void CheckNeeds()
     {
-        if (hunger >= needFood && targetInteraction == null)
+        if (hunger >= needFood)
             ChangeState(CritterState.SeekingFood);
 
-        else if (mood <= needAttention && targetInteraction == null)
+        else if (mood <= needAttention)
             ChangeState(CritterState.SeekingStimulation);
     }
     private void IncreaseHunger()
@@ -279,11 +351,13 @@ public class Critter : MonoBehaviour
         {
             case CritterState.Eating:
                 StopAllCoroutines();
+                Hungry(false);
                 critterAnimation.StopWalk();
                 StartCoroutine(WaitAndChangeState(CritterState.Idle, eatingDuration));
                 break;
             case CritterState.Playing:
                 StopAllCoroutines();
+                Playful(false);
                 critterAnimation.StopWalk();
                 StartCoroutine(WaitAndChangeState(CritterState.Idle, playDuration));
                 break;
@@ -297,11 +371,15 @@ public class Critter : MonoBehaviour
                 StartCoroutine(Roam());
                 break;
             case CritterState.SeekingFood:
+                Hungry(true);
                 critterAnimation.Walk();
+                targetInteraction = null;
                 SeekInteraction<FoodBowl>(CritterState.Eating, hunger);
                 break;
             case CritterState.SeekingStimulation:
+                Playful(true);
                 critterAnimation.Walk();
+                targetInteraction = null;
                 SeekInteraction<Placemat>(CritterState.Playing, mood);
                 break;
         }
@@ -421,7 +499,7 @@ public class Critter : MonoBehaviour
     // Call this from the PlayerController when the player interacts with the critter
     public void ReceivePlayerInteraction()
     {
-        //TODO: Add timer logic for time between player interactions
+        lastPet = 0;
         mood = Mathf.Min(100, mood + 20f);
         petVFX.Play();
         agent.isStopped = true;
@@ -432,23 +510,14 @@ public class Critter : MonoBehaviour
     // Call this from the PlayerController when the player feeds the critter
     public void ReceivePlayerFood(int rations)
     {
-        //TODO: Add timer logic for time between player feedings
         //Check needs before continuing states
+        lastFed = 0;
         hunger = Mathf.Max(0, hunger - (25f * rations));
-        petVFX.Play();
+        fedVFX.Play();
         agent.isStopped = true;
         ChangeState(CritterState.Idle);
         FMODUnity.RuntimeManager.PlayOneShot(InteractSuccessSound, transform.position);
     }
-
-
-    // Called when giving food to the critter
-    //public void Feed()
-    //{
-    //    //Fill per ration
-    //    hunger = Mathf.Max(0, hunger - 25f);
-    //    ChangeState(CritterState.Idle);
-    //}
 
     private IEnumerator Roam()
     {
@@ -457,6 +526,13 @@ public class Critter : MonoBehaviour
         {
             // Wait for a random time within the specified range before choosing a new destination
             yield return new WaitForSeconds(Random.Range(minRoamIdleTime, maxRoamIdleTime));
+
+            // Check for GhostBuck drop
+            if (ShouldDropGhostBuck())
+            {
+                DropGhostBuck();
+            }
+
             // Choose a new random destination and move to it
             Vector3 randomDirection = Random.insideUnitSphere * roamRadius;
             randomDirection += transform.position;
@@ -475,6 +551,21 @@ public class Critter : MonoBehaviour
         }
     }
 
+    private bool ShouldDropGhostBuck()
+    {
+        return hunger <= hungerThresholdForGhostBuck &&
+               mood >= moodThresholdForGhostBuck &&
+               Random.value < ghostBuckDropChance;
+    }
+
+    private void DropGhostBuck()
+    {
+        if (ghostBuckPrefab != null)
+        {
+            Instantiate(ghostBuckPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
     #region UI
 
     protected virtual void ToggleUI(bool active)
@@ -485,6 +576,30 @@ public class Critter : MonoBehaviour
     private void UpdateFillAmount(float amount, Image fillBar)
     {
         fillBar.fillAmount = amount / 100;
+    }
+
+    public IEnumerator Upset(bool active, bool timed = false)
+    {
+        thoughtBubble.gameObject.SetActive(active);
+        upsetIcon.gameObject.SetActive(active);
+        if (timed)
+        {
+            yield return new WaitForSeconds(upsetTime);
+            thoughtBubble.gameObject.SetActive(!active);
+            upsetIcon.gameObject.SetActive(!active);
+        }
+    }
+
+    public void Playful(bool active)
+    {
+        thoughtBubble.gameObject.SetActive(active);
+        playIcon.gameObject.SetActive(active);
+    }
+
+    public void Hungry(bool active)
+    {
+        thoughtBubble.gameObject.SetActive(active);
+        hungryIcon.gameObject.SetActive(active);
     }
     #endregion
 

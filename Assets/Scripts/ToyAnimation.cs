@@ -15,6 +15,10 @@ public class ToyAnimation : MonoBehaviour
 
     [BoxGroup("Settings/Preferences")]
     [SerializeField]
+    bool shake = false;
+
+    [BoxGroup("Settings/Preferences")]
+    [SerializeField]
     bool roll = false;
 
     [BoxGroup("Settings/Preferences")]
@@ -37,6 +41,21 @@ public class ToyAnimation : MonoBehaviour
     [ShowIf("wiggle")]
     [SerializeField]
     float wiggleDuration = .5f;
+
+    #endregion
+
+
+    #region Shake
+
+    [BoxGroup("Shake Settings")]
+    [ShowIf("shake")]
+    [SerializeField]
+    Ease shakeEaseType = Ease.InOutCubic;
+
+    [BoxGroup("Shake Settings")]
+    [ShowIf("shake")]
+    [SerializeField]
+    float shakeDuration = .5f;
 
     #endregion
 
@@ -101,6 +120,7 @@ public class ToyAnimation : MonoBehaviour
         initialRotation = baseSprite.localRotation;
 
         if (wiggle) Wiggle();
+        if (shake) Shake();
     }
 
     public void RollnJump()
@@ -155,6 +175,13 @@ public class ToyAnimation : MonoBehaviour
             baseSprite.localRotation.eulerAngles.y, wiggleRotation), wiggleDuration)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(wiggleEaseType);
+    }
+
+    public void Shake()
+    {
+        baseSprite.DOShakeRotation(shakeDuration, 50, 10, 50, true)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(shakeEaseType);
     }
 
     internal void Stop()

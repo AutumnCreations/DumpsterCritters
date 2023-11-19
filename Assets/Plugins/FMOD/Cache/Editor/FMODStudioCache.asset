@@ -97,7 +97,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Environment.bank
   Name: Environment
   StudioPath: bank:/Environment
-  lastModified: 638359154735533958
+  lastModified: 638359219395162829
   FileSizes:
   - Name: Desktop
     Value: 77376
@@ -117,7 +117,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638359154735603980
+  lastModified: 638359219395475294
   FileSizes:
   - Name: Desktop
     Value: 3360
@@ -191,7 +191,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638359154735583947
+  lastModified: 638359219395319084
   FileSizes:
   - Name: Desktop
     Value: 1136992
@@ -211,7 +211,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638359154735543945
+  lastModified: 638359219395162829
   FileSizes:
   - Name: Desktop
     Value: 1440
@@ -279,7 +279,7 @@ MonoBehaviour:
   - {fileID: 1804358996151935307}
   StringsBanks:
   - {fileID: -912637174236405889}
-  cacheTime: 638359154735603980
+  cacheTime: 638359219395475294
   cacheVersion: 131608
 --- !u!114 &1804358996151935307
 MonoBehaviour:
@@ -296,7 +296,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638351400817512713
+  lastModified: 638359219395162829
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -316,7 +316,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Critters.bank
   Name: Critters
   StudioPath: bank:/Critters
-  lastModified: 638359154735523956
+  lastModified: 638359219395162829
   FileSizes:
   - Name: Desktop
     Value: 93248
@@ -445,7 +445,7 @@ MonoBehaviour:
   Path: Assets/Audio/DumpsterCritters/Build/Desktop/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 638359154735593938
+  lastModified: 638359219395319084
   FileSizes:
   - Name: Desktop
     Value: 64960

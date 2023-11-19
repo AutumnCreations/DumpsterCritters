@@ -328,6 +328,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlaceItemOnMat()
     {
+        if (!nearbyContainer.GetComponent<Placemat>().unlocked) { return; }
         pickupIcon.SetActive(true);
         nearbyContainer.SetObject(currentHeldItem.itemData, currentHeldItem);
         currentHeldItem = null;
@@ -352,38 +353,53 @@ public class PlayerController : MonoBehaviour
 
     private void PetCritter()
     {
-        nearbyCritter.ReceivePlayerInteraction();
-        playerAnimation.ArmsPet();
-        Debug.Log($"Player pet {nearbyCritter}");
+        if (nearbyCritter.lastPet > nearbyCritter.petCooldown)
+        {
+            nearbyCritter.ReceivePlayerInteraction();
+            playerAnimation.ArmsPet();
+            Debug.Log($"Player pet {nearbyCritter}");
+        }
+        else
+        {
+            StartCoroutine(nearbyCritter.Upset(true, true));
+            Debug.Log($"Player has pet {nearbyCritter} too recently");
+        }
     }
 
     private void FeedCritter()
     {
-        nearbyCritter.ReceivePlayerFood(currentHeldItem.itemData.rationCount);
-        Debug.Log($"Player fed {nearbyCritter} a {currentHeldItem.itemData.itemName}");
-
-        // Move the food to the critter's position
-        currentHeldItem.transform.SetParent(nearbyCritter.transform);
-        currentHeldItem.transform.DOMove(nearbyCritter.feedPoint.position, 0.15f * currentHeldItem.itemData.rationCount).SetEase(Ease.Linear).OnComplete(() => Destroy(currentHeldItem.gameObject));
-        playerAnimation.ArmsReturn();
-
-        int rations = currentHeldItem.itemData.rationCount;
-        Vector3 originalScale = currentHeldItem.transform.localScale;
-        Vector3 scalePerBite = originalScale / rations;
-
-        var sequence = DOTween.Sequence();
-        for (int ration = 1; ration <= rations; ration++)
+        if (nearbyCritter.lastFed > nearbyCritter.feedCooldown)
         {
-            Vector3 nextScale = originalScale - scalePerBite * ration;
-            sequence.Append(currentHeldItem.transform.DOScale(nextScale, 0.25f).SetEase(Ease.InQuint));
+            nearbyCritter.ReceivePlayerFood(currentHeldItem.itemData.rationCount);
+            Debug.Log($"Player fed {nearbyCritter} a {currentHeldItem.itemData.itemName}");
+
+            // Move the food to the critter's position
+            currentHeldItem.transform.SetParent(nearbyCritter.transform);
+            currentHeldItem.transform.DOMove(nearbyCritter.feedPoint.position, 0.15f * currentHeldItem.itemData.rationCount).SetEase(Ease.Linear).OnComplete(() => Destroy(currentHeldItem.gameObject));
+            playerAnimation.ArmsReturn();
+
+            int rations = currentHeldItem.itemData.rationCount;
+            Vector3 originalScale = currentHeldItem.transform.localScale;
+            Vector3 scalePerBite = originalScale / rations;
+
+            var sequence = DOTween.Sequence();
+            for (int ration = 1; ration <= rations; ration++)
+            {
+                Vector3 nextScale = originalScale - scalePerBite * ration;
+                sequence.Append(currentHeldItem.transform.DOScale(nextScale, 0.25f).SetEase(Ease.InQuint));
+            }
+
+            // When the sequence is complete, remove the food item
+            sequence.OnComplete(() =>
+            {
+                Destroy(currentHeldItem.gameObject);
+                currentHeldItem = null;
+            });
         }
-
-        // When the sequence is complete, remove the food item
-        sequence.OnComplete(() =>
+        else
         {
-            Destroy(currentHeldItem.gameObject);
-            currentHeldItem = null;
-        });
+            Debug.Log($"Player has fed {nearbyCritter} too recently");
+        }
     }
 
 

@@ -1,17 +1,40 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
+using TMPro;
 
 public class Placemat : InteractableContainer
 {
     NavMeshObstacle obstacle;
     ToyAnimation toyAnimation;
 
+    [BoxGroup("Placemat")]
+    public bool unlocked;
+
+    [BoxGroup("Placemat")]
+    [SerializeField]
+    SpriteRenderer lockedSprite;
+
+    [BoxGroup("Placemat")]
+    [SerializeField]
+    SpriteRenderer unlockedSprite;
+
+    [BoxGroup("Placemat")]
+    [SerializeField]
+    TextMeshProUGUI critterCount;
+
+    [BoxGroup("Placemat")]
+    [SerializeField]
+    int requiredCritters = 0;
+
     protected override void Awake()
     {
         base.Awake();
         obstacle = GetComponent<NavMeshObstacle>();
         obstacle.enabled = false;
+
+        lockedSprite.gameObject.SetActive(!unlocked);
+        unlockedSprite.gameObject.SetActive(unlocked);
     }
 
     public override void SetObject(ItemData newObject, Interactable interactable)
@@ -35,7 +58,11 @@ public class Placemat : InteractableContainer
 
     internal override bool CanCritterInteract()
     {
-        return currentObject != null;
+        if (unlocked)
+        {
+            return currentObject != null;
+        }
+        else return unlocked;
     }
 
     internal override float CritterInteract(float need)
@@ -62,6 +89,41 @@ public class Placemat : InteractableContainer
         else if (currentCritters == 1 && previousCritters == 0)
         {
             toyAnimation.RollnJump();
+        }
+    }
+
+    public void UnlockPlacemat()
+    {
+        lockedSprite.gameObject.SetActive(false);
+        unlockedSprite.gameObject.SetActive(true);
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.SetNearbyComponents(this.gameObject, true);
+            if (currentObject == null && unlocked)
+            {
+                highlight.color = actionHighlight;
+            }
+            else
+            {
+                //UI To show locked state and critter requirement
+                critterCount.text = $"{Mathf.Min(GameStateManager.Instance.critterCount, requiredCritters)} / {requiredCritters}";
+                ToggleUI(true);
+            }
+        }
+    }
+    protected override void OnTriggerExit(Collider other)
+    {
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.SetNearbyComponents(this.gameObject, false);
+            highlight.color = defaultHighlight;
+            ToggleUI(false);
         }
     }
 }
