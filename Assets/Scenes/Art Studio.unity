@@ -719,12 +719,12 @@ PrefabInstance:
       objectReference: {fileID: 199545823}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.size
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[0]
-      value: Whats cookin jack? Lookin' for supplies? Step into my emporium. I've
-        got everything your critters need.
+      value: Whats cookin jack? Lookin' for supplies? I've got everything your critters
+        need.
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[2]
@@ -733,23 +733,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[3]
-      value: Hey there, spirit! Name's Whiskers. I'll be your guide in this spectral
-        world.
+      value: No questions on where I get my goods, alright? Let's just say, they
+        'appear' when needed.
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[4]
-      value: First things first, those critters? They need your ghostly touch. Keep
-        'em fed, entertained, and out of trouble.
+      value: No questions on where I get my goods, alright? Let's just say, they
+        'appear' when needed.
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[5]
-      value: Watch out for those mouse traps. No danger to us spirits, but the critters?
-        That's another story.
+      value: No questions on where I get my goods, alright? Let's just say, they
+        'appear' when needed.
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[6]
-      value: 'Here''s a tip: swipe that cheese from the traps. Critters love a free
-        meal. You''ll be a hero.'
+      value: No questions on where I get my goods, alright? Let's just say, they
+        'appear' when needed.
       objectReference: {fileID: 0}
     - target: {fileID: 7094073254488288440, guid: d3d30db7e78ce234d90dac70a268e2cb, type: 3}
       propertyPath: dialogue.lines.Array.data[7]
