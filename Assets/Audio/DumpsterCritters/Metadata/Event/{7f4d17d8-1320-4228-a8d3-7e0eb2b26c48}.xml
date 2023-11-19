@@ -5,7 +5,7 @@
 			<value>SleazyFurball</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{7a7f7661-5064-4495-be22-4aae76126691}</destination>
@@ -60,7 +60,7 @@
 	<object class="MarkerTrack" id="{af946ccc-8209-443b-b03f-2ce38d053bb2}" />
 	<object class="GroupTrack" id="{9a511643-ba4b-42c0-b5d9-f96869e55859}">
 		<relationship name="modules">
-			<destination>{adf72ed7-275b-4062-baa0-c5b71f1aa46a}</destination>
+			<destination>{36b643d1-bcc8-4373-9bba-d6bf5ff2312a}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{c84ec2d3-bc80-4e44-aad9-4c2cadb0d993}</destination>
@@ -68,7 +68,7 @@
 	</object>
 	<object class="Timeline" id="{5b2b23f3-4f0f-40d2-8692-f116df64a164}">
 		<relationship name="modules">
-			<destination>{adf72ed7-275b-4062-baa0-c5b71f1aa46a}</destination>
+			<destination>{36b643d1-bcc8-4373-9bba-d6bf5ff2312a}</destination>
 		</relationship>
 		<relationship name="markers">
 			<destination>{3cbe904b-1bef-4d44-8ad5-c9ca66e1ef52}</destination>
@@ -91,15 +91,18 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{67e594ff-9790-46ef-83bf-76d585713b18}" />
-	<object class="SingleSound" id="{adf72ed7-275b-4062-baa0-c5b71f1aa46a}">
+	<object class="SingleSound" id="{36b643d1-bcc8-4373-9bba-d6bf5ff2312a}">
 		<property name="length">
-			<value>24.352131519274376</value>
+			<value>23.414648526077098</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{6062041e-febb-4bf3-8d56-d2354674d5d9}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{c84ec2d3-bc80-4e44-aad9-4c2cadb0d993}">
+		<property name="volume">
+			<value>-2</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -133,7 +136,6 @@
 	<object class="MixerBusEffectChain" id="{95f141da-8ccb-41bb-95aa-3f5c832884f3}">
 		<relationship name="effects">
 			<destination>{2df8141e-59be-4e8e-b438-ab3c5b7520d4}</destination>
-			<destination>{070fc5fb-325e-4caa-9aae-a4d7d9f3de74}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{5b52e515-a6f6-4b5b-8569-c037d9c6383d}" />
@@ -141,9 +143,6 @@
 	<object class="ADSRModulator" id="{23118646-73a3-4b64-ae2c-847876bc00e1}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>volume</value>
-		</property>
-		<property name="initialValue">
-			<value>-80</value>
 		</property>
 		<property name="attackTime">
 			<value>0</value>
@@ -165,6 +164,5 @@
 	</object>
 	<object class="MixerBusPanner" id="{0ce3fc7f-010e-4d20-9938-eaa2d0215c3d}" />
 	<object class="MixerBusFader" id="{2df8141e-59be-4e8e-b438-ab3c5b7520d4}" />
-	<object class="SpatialiserEffect" id="{070fc5fb-325e-4caa-9aae-a4d7d9f3de74}" />
 	<object class="MixerBusFader" id="{56b2ca17-c762-4727-8b47-707c4a96ea04}" />
 </objects>

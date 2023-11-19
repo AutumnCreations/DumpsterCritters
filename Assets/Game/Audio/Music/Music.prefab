@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4879462491626622498}
-  - component: {fileID: 7729218269714206831}
+  - component: {fileID: 9069645292460664237}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7729218269714206831
+--- !u!114 &9069645292460664237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,6 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3109894614178335163}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9be11d8787da1d429e8da31d18c304c, type: 3}
+  m_Script: {fileID: 11500000, guid: 491cca0a19c9563488cb975403cc4064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tunes:
+  - event:/Music/MainMenu
+  - event:/Music/MePlusMice
+  - event:/Music/SleazyFurball

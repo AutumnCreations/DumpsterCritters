@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using DG.Tweening;
 using FMOD.Studio;
 using System.IO;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -234,6 +235,16 @@ public class PlayerController : MonoBehaviour
             {
                 PetCritter();
             }
+            else if (nearbyContainer != null && nearbyContainer is Placemat)
+            {
+                Debug.Log($"Attempting to unlock a placemat");
+                Placemat placemat = nearbyContainer.GetComponent<Placemat>();
+                //Attempt unlock of placemat
+                if (!placemat.unlocked)
+                {
+                    AttemptUnlock(placemat);
+                }
+            }
         }
         else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer
             && nearbyContainer is not FoodBowl
@@ -262,6 +273,57 @@ public class PlayerController : MonoBehaviour
             StoreItem();
             StopMoving();
         }
+    }
+
+    private void AttemptUnlock(Placemat placemat)
+    {
+        if (GameStateManager.Instance.critterCount >= placemat.requiredCritters)
+        {
+            Critter[] critters = FindObjectsOfType<Critter>();
+            int count = 0;
+
+            foreach (var critter in critters)
+            {
+                if (count < placemat.requiredCritters)
+                {
+                    critter.GroupInteractWithPlacemat(placemat, placemat.groupInteractionDuration);
+                    count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            StartCoroutine(WaitForGroupInteractionCompletion(critters, placemat));
+        }
+    }
+
+    private IEnumerator WaitForGroupInteractionCompletion(Critter[] critters, Placemat placemat)
+    {
+        placemat.repairIcon.GetComponent<IconAnimation>().Shake();
+        placemat.unlockText.gameObject.SetActive(true);
+
+        bool allCrittersArrived = false;
+
+        while (!allCrittersArrived)
+        {
+            allCrittersArrived = true;
+            foreach (var critter in critters)
+            {
+                if (critter.currentState != Critter.CritterState.GroupInteract)
+                {
+                    allCrittersArrived = false;
+                    break;
+                }
+            }
+            yield return null;
+        }
+
+        // Start the timer when all critters have arrived
+        yield return new WaitForSeconds(placemat.groupInteractionDuration);
+        placemat.UnlockPlacemat();
+        // Unlock logic or other post-interaction logic goes here
     }
 
     private void HandleClickInput(bool holdDown)
@@ -328,6 +390,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlaceItemOnMat()
     {
+        if (!nearbyContainer.GetComponent<Placemat>().unlocked) { return; }
         pickupIcon.SetActive(true);
         nearbyContainer.SetObject(currentHeldItem.itemData, currentHeldItem);
         currentHeldItem = null;
@@ -347,43 +410,60 @@ public class PlayerController : MonoBehaviour
         currentHeldItem = null;
         playerAnimation.ArmsReturn();
 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
+
         StopMoving();
     }
 
     private void PetCritter()
     {
-        nearbyCritter.ReceivePlayerInteraction();
-        playerAnimation.ArmsPet();
-        Debug.Log($"Player pet {nearbyCritter}");
+        if (nearbyCritter.lastPet > nearbyCritter.petCooldown)
+        {
+            nearbyCritter.ReceivePlayerInteraction();
+            playerAnimation.ArmsPet();
+            Debug.Log($"Player pet {nearbyCritter}");
+        }
+        else
+        {
+            StartCoroutine(nearbyCritter.Upset(true, true));
+            Debug.Log($"Player has pet {nearbyCritter} too recently");
+        }
     }
 
     private void FeedCritter()
     {
-        nearbyCritter.ReceivePlayerFood(currentHeldItem.itemData.rationCount);
-        Debug.Log($"Player fed {nearbyCritter} a {currentHeldItem.itemData.itemName}");
-
-        // Move the food to the critter's position
-        currentHeldItem.transform.SetParent(nearbyCritter.transform);
-        currentHeldItem.transform.DOMove(nearbyCritter.feedPoint.position, 0.15f * currentHeldItem.itemData.rationCount).SetEase(Ease.Linear).OnComplete(() => Destroy(currentHeldItem.gameObject));
-        playerAnimation.ArmsReturn();
-
-        int rations = currentHeldItem.itemData.rationCount;
-        Vector3 originalScale = currentHeldItem.transform.localScale;
-        Vector3 scalePerBite = originalScale / rations;
-
-        var sequence = DOTween.Sequence();
-        for (int ration = 1; ration <= rations; ration++)
+        if (nearbyCritter.lastFed > nearbyCritter.feedCooldown)
         {
-            Vector3 nextScale = originalScale - scalePerBite * ration;
-            sequence.Append(currentHeldItem.transform.DOScale(nextScale, 0.25f).SetEase(Ease.InQuint));
+            nearbyCritter.ReceivePlayerFood(currentHeldItem.itemData.rationCount);
+            Debug.Log($"Player fed {nearbyCritter} a {currentHeldItem.itemData.itemName}");
+
+            // Move the food to the critter's position
+            currentHeldItem.transform.SetParent(nearbyCritter.transform);
+            currentHeldItem.transform.DOMove(nearbyCritter.feedPoint.position, 0.15f * currentHeldItem.itemData.rationCount).SetEase(Ease.Linear).OnComplete(() => Destroy(currentHeldItem.gameObject));
+            playerAnimation.ArmsReturn();
+
+            int rations = currentHeldItem.itemData.rationCount;
+            Vector3 originalScale = currentHeldItem.transform.localScale;
+            Vector3 scalePerBite = originalScale / rations;
+
+            var sequence = DOTween.Sequence();
+            for (int ration = 1; ration <= rations; ration++)
+            {
+                Vector3 nextScale = originalScale - scalePerBite * ration;
+                sequence.Append(currentHeldItem.transform.DOScale(nextScale, 0.25f).SetEase(Ease.InQuint));
+            }
+
+            // When the sequence is complete, remove the food item
+            sequence.OnComplete(() =>
+            {
+                Destroy(currentHeldItem.gameObject);
+                currentHeldItem = null;
+            });
         }
-
-        // When the sequence is complete, remove the food item
-        sequence.OnComplete(() =>
+        else
         {
-            Destroy(currentHeldItem.gameObject);
-            currentHeldItem = null;
-        });
+            Debug.Log($"Player has fed {nearbyCritter} too recently");
+        }
     }
 
 
@@ -404,6 +484,7 @@ public class PlayerController : MonoBehaviour
             currentHeldItem.Drop();
             currentHeldItem = null;
             playerAnimation.ArmsReturn();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
             return true;
         }
         return false;
@@ -440,11 +521,18 @@ public class PlayerController : MonoBehaviour
             currentHeldItem.transform.DOScale(Vector3.zero, .5f).SetEase(Ease.InQuint).OnComplete(() => DestroyHeldItems());
             currentHeldItem = null;
             playerAnimation.ArmsPocket();
+            FMODUnity.RuntimeManager.PlayOneShot("event:/Player/PutDown_Main");
         }
         else
         {
             DestroyHeldItems();
         }
+    }
+
+    public void PickupGhostBuck()
+    {
+        inventory.GhostBucks++;
+        inventory.ghostBuckText.text = inventory.GhostBucks.ToString();
     }
 
     private void DestroyHeldItems()

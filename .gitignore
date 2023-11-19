@@ -85,3 +85,30 @@ crashlytics-build.properties
 *.mat text eol=lf
 *.mask text eol=lf
 *.spriteatlas text eol=lf
+
+### FMOD Unity Integration ###
+# Never ignore DLLs in the FMOD subfolder, so make sure that the FMOD-folder is in the correct path.
+!/[Aa]ssets/Plugins/FMOD/**/*.dll
+
+# Don't ignore images and gizmos used by FMOD in the Unity Editor
+!/[Aa}ssets/Gizmos/FMOD/*
+!/[Aa}ssets/Editor Default Resources/FMOD/*
+
+# Ignore the Cache-file since it is updated locally either way
+/[Aa]ssets/**/FMODStudioCache.asset
+/[Aa]ssets/**/FMODStudioCache.asset.meta
+/[Aa]ssets/Plugins/FMOD/Cache.meta
+/[Aa]ssets/Plugins/FMOD/Cache/Editor.meta
+
+# Log-files
+fmod.log
+fmod_editor.log
+
+# FMOD 1.10.x (Legacy)
+/Assets/FMODAssets/*
+/Assets/FMODStudioCache.meta
+/Assets/Audio/DumpsterCritters/Metadata/AudioFile/{1a6960c4-8d27-4cc3-a378-fdfaf668c591}.xml.meta
+/Assets/Audio/DumpsterCritters/Metadata/AudioFile/{5771e81a-2494-4a4b-8e96-e7b0a7e3ea87}.xml.meta
+/Assets/Audio/DumpsterCritters/Metadata/AudioFile/{89ce2d44-f499-4055-822e-7d431aa93ed9}.xml.meta
+/Assets/Audio/DumpsterCritters/Metadata/Event/{107a464a-5396-4f3e-a221-758f3b9d16fb}.xml.meta
+/Assets/Audio/DumpsterCritters/Metadata/Event/{2e66ce47-ba68-4c52-86b3-2fe9ae4ffb81}.xml.meta

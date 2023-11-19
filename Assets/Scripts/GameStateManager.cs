@@ -1,5 +1,6 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
+using TMPro;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -25,6 +26,14 @@ public class GameStateManager : MonoBehaviour
     [BoxGroup("Game Configuration")]
     [Range(0, 100)]
     public int sfxVolume;
+
+    [BoxGroup("Critters")]
+    [ReadOnly]  
+    public int critterCount;
+
+    [BoxGroup("Critters")]
+    [SerializeField]
+    TextMeshProUGUI critterCountText;
 
     public GameState CurrentState { get; private set; }
     public static GameStateManager Instance { get; private set; }
@@ -63,6 +72,12 @@ public class GameStateManager : MonoBehaviour
     public void SetSFXVolume(int newVolume)
     {
         sfxVolume = newVolume;
+    }
+
+    public void UpdateCritterCount(int change)
+    {
+        critterCount += change;
+        critterCountText.text = critterCount.ToString();
     }
 
 }
