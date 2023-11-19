@@ -301,6 +301,9 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator WaitForGroupInteractionCompletion(Critter[] critters, Placemat placemat)
     {
+        placemat.repairIcon.GetComponent<IconAnimation>().Shake();
+        placemat.unlockText.gameObject.SetActive(true);
+
         bool allCrittersArrived = false;
 
         while (!allCrittersArrived)
@@ -319,6 +322,7 @@ public class PlayerController : MonoBehaviour
 
         // Start the timer when all critters have arrived
         yield return new WaitForSeconds(placemat.groupInteractionDuration);
+        placemat.UnlockPlacemat();
         // Unlock logic or other post-interaction logic goes here
     }
 

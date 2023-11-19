@@ -2,6 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
 using TMPro;
+using UnityEngine.UI;
 
 public class Placemat : InteractableContainer
 {
@@ -20,6 +21,13 @@ public class Placemat : InteractableContainer
     SpriteRenderer unlockedSprite;
 
     [BoxGroup("Placemat")]
+    public Image repairIcon;
+
+    [BoxGroup("Placemat")]
+    public TextMeshProUGUI unlockText;
+
+
+    [BoxGroup("Placemat")]
     [SerializeField]
     TextMeshProUGUI critterCount;
 
@@ -29,11 +37,17 @@ public class Placemat : InteractableContainer
     [BoxGroup("Placemat")]
     public float groupInteractionDuration = 10f;
 
+    [BoxGroup("Placemat")]
+    [SerializeField]
+    ParticleSystem repairVFX;
+
     protected override void Awake()
     {
         base.Awake();
+        unlockText.gameObject.SetActive(false);
         obstacle = GetComponent<NavMeshObstacle>();
         obstacle.enabled = false;
+        repairVFX.gameObject.SetActive(false);
 
         lockedSprite.gameObject.SetActive(!unlocked);
         unlockedSprite.gameObject.SetActive(unlocked);
@@ -96,8 +110,14 @@ public class Placemat : InteractableContainer
 
     public void UnlockPlacemat()
     {
+        unlocked = true;
         lockedSprite.gameObject.SetActive(false);
         unlockedSprite.gameObject.SetActive(true);
+        repairIcon.gameObject.SetActive(false);
+        highlight.color = actionHighlight;
+        critterCount.text = $"{currentCritters} / {maxCritters}";
+        repairVFX.gameObject.SetActive(true);
+        unlockText.gameObject.SetActive(false);
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -109,11 +129,15 @@ public class Placemat : InteractableContainer
             if (currentObject == null && unlocked)
             {
                 highlight.color = actionHighlight;
+                critterCount.text = $"{currentCritters} / {maxCritters}";
+                repairIcon.gameObject.SetActive(false);
+                ToggleUI(true);
             }
-            else
+            else if (!unlocked)
             {
                 //UI To show locked state and critter requirement
                 critterCount.text = $"{Mathf.Min(GameStateManager.Instance.critterCount, requiredCritters)} / {requiredCritters}";
+                repairIcon.gameObject.SetActive(true);
                 ToggleUI(true);
             }
         }

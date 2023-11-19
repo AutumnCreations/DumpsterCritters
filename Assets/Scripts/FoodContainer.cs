@@ -2,6 +2,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class FoodContainer : InteractableContainer
 {
@@ -27,8 +28,18 @@ public class FoodContainer : InteractableContainer
     [SerializeField]
     Image fillTimer;
 
+    [BoxGroup("Ghost Bucks")]
+    [SerializeField]
+    [Range(0, 1)]
+    float ghostBuckDropChance = 0.1f;
+
+    [BoxGroup("Ghost Bucks")]
+    [SerializeField]
+    GameObject ghostBuckPrefab;
+
     [BoxGroup("Audio")]
     public string PickupEvent;
+    [BoxGroup("Audio")]
     public string RespawnEvent;
 
     float timePassed = 0;
@@ -53,6 +64,10 @@ public class FoodContainer : InteractableContainer
     {
         if (currentObject != null)
         {
+            if (ShouldDropGhostBuck())
+            {
+                DropGhostBuck();
+            }
             currentObject.PickUp(player.grabPoint, true);
             FMODUnity.RuntimeManager.PlayOneShot(PickupEvent, transform.position);
             currentObject = null;
@@ -103,6 +118,19 @@ public class FoodContainer : InteractableContainer
         {
             player.SetNearbyComponents(this.gameObject, false);
             ToggleUI(false);
+        }
+    }
+
+    private bool ShouldDropGhostBuck()
+    {
+        return Random.value < ghostBuckDropChance;
+    }
+
+    private void DropGhostBuck()
+    {
+        if (ghostBuckPrefab != null)
+        {
+            Instantiate(ghostBuckPrefab, transform.position, Quaternion.identity);
         }
     }
 }

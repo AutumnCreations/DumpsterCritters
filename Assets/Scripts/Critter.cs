@@ -163,7 +163,7 @@ public class Critter : MonoBehaviour
 
     [BoxGroup("GhostBuck Settings")]
     [SerializeField, Tooltip("Chance of dropping GhostBuck on each check while roaming")]
-    [Range(0f, 1f)] // 0% to 100%
+    [Range(0f, 1f)]
     float ghostBuckDropChance = 0.05f; // 5% chance
 
     [BoxGroup("GhostBuck Settings")]
@@ -202,6 +202,7 @@ public class Critter : MonoBehaviour
 
     NavMeshAgent agent;
     CritterAnimation critterAnimation;
+    Material material;
 
     private void OnValidate()
     {
@@ -255,6 +256,7 @@ public class Critter : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         critterAnimation = GetComponent<CritterAnimation>();
+        material = GetComponentInChildren<SkinnedMeshRenderer>().material;
         ToggleUI(false);
         StartCoroutine(Upset(false));
         Playful(false);
@@ -267,6 +269,7 @@ public class Critter : MonoBehaviour
         ChangeState(CritterState.Roaming);
         GameStateManager.Instance.onGameStateChange += OnGameStateChange;
         GameStateManager.Instance.UpdateCritterCount(1);
+        material.SetColor("_Color", Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f));
     }
 
     private void Update()
@@ -406,6 +409,8 @@ public class Critter : MonoBehaviour
 
     private IEnumerator GroupInteractionRoutine(Placemat placemat, float waitDuration)
     {
+        agent.isStopped = false;
+        targetInteraction = placemat;
         // Move to placemat
         agent.SetDestination(placemat.transform.position);
         while (Vector3.Distance(transform.position, placemat.transform.position) > interactionDistance)
