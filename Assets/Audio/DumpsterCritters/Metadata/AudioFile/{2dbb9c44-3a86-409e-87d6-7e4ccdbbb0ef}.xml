@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{6062041e-febb-4bf3-8d56-d2354674d5d9}">
+	<object class="AudioFile" id="{2dbb9c44-3a86-409e-87d6-7e4ccdbbb0ef}">
 		<property name="assetPath">
-			<value>035_sleazyfurball2.ogg</value>
+			<value>037_ellipses.ogg</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
@@ -14,7 +14,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>23.414648526077098</value>
+			<value>46.265056689342401</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{95607ba9-ba60-49f4-a03f-0d5afaec54b4}</destination>

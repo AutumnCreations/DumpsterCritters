@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
-using FMOD.Studio;
+using FMODUnity;
 
 public class NPC : MonoBehaviour
 {
@@ -17,12 +17,13 @@ public class NPC : MonoBehaviour
 
     public Inventory Inventory => inventory;
 
-    //public GameObject Music;
-    //private Music.GetComponent<MusicStart>;
+    public GameObject Music;
+    private MusicPlayer musicPlayer;
 
     private void Awake()
     {
         dialogueManager = FindObjectOfType<DialogueManager>();
+        musicPlayer = Music.GetComponent<MusicPlayer>();
     }
 
     public List<Item> GetItemsForSale()
@@ -33,7 +34,7 @@ public class NPC : MonoBehaviour
     public void Interact(PlayerController player)
     {
         dialogueManager.StartDialogue(this);
-               
+        musicPlayer.PlayTrack(3);
     }
 
     public void GoToShopSpot(Vector3 spot)
@@ -65,8 +66,6 @@ public class NPC : MonoBehaviour
 
     internal Dialogue GetDialogue()
     {
-        //shopMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        //mainMusic.start();
         return dialogue;
     }
 }
