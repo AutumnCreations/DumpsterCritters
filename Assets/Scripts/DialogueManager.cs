@@ -21,9 +21,13 @@ public class DialogueManager : MonoBehaviour
     Coroutine typewriter;
     bool isTypewriterEffectRunning = false;
 
+    public GameObject Music;
+    private MusicPlayer musicPlayer;
+
     private void Awake()
     {
         dialogueUI.SetActive(false);
+        musicPlayer = Music.GetComponent<MusicPlayer>();
     }
     private void Start()
     {
@@ -90,6 +94,7 @@ public class DialogueManager : MonoBehaviour
         // Unsubscribe to avoid repeated calls
         ShopSystem shopSystem = GetComponent<ShopSystem>();
         shopSystem.OnShopClosed -= ContinueDialogueAfterShop;
+        musicPlayer.PlayTrack(2);
 
         if (currentLineIndex < currentDialogue.lines.Length)
         {
