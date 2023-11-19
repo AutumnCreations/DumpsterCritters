@@ -1,8 +1,15 @@
-using Sirenix.OdinInspector;
-[System.Serializable]
+using System;
+
+[Serializable]
 public class Dialogue
 {
-    [MultiLineProperty(5)]
-    public string[] lines; // The dialogue lines
-    public int shopLineIndex; // The index of the line after which the shop opens
+    public string[] lines;
+    public string[] tutorialLines;   
+
+    public string[] greetingLines;
+    public string[] goodbyeLines;
+    public string[] tips;   
+
+    //Greeting -> Open Shop -> Goodbye -> Tip
+    public string[] regularLines;    
 }

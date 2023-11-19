@@ -249,6 +249,10 @@ public class Critter : MonoBehaviour
                 isPaused = true;
                 agent.isStopped = true;
                 break;
+            case GameStateManager.GameState.Tutorial:
+                isPaused = true;
+                agent.isStopped = true;
+                break;
         }
     }
 

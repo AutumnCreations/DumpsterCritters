@@ -224,14 +224,74 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     lines:
+    - 
+    - 
+    - 
+    - 
+    tutorialLines:
+    - Hey there, spirit! Name's Whiskers. I'll be your guide in this spectral world.
+    - First things first, those critters? They need your ghostly touch.
+    - ' Keep ''em fed, entertained, and out of trouble.'
+    - Watch out for those mouse traps.
+    - 'No danger to us spirits, but the critters? '
+    - Well they're smart but best to get rid of them anyhow.
+    - 'Here''s a tip: swipe that cheese from the traps. '
+    - Critters love a free meal. You'll be a hero.
+    - Oh, and don't forget the trees and bushes. They're ripe with fruit for your
+      critter pals.
+    - And hey, don't forget to jazz up the place. A little charm goes a long way.
+    - You ever need tips, tricks, or just a chat, I'm around. Us alley cats know
+      a thing or two about survival.
+    - Alright, I'm off. Remember, Whiskers' shop - quality goods, 'mysteriously'
+      sourced!
+    greetingLines:
+    - Lookin' for supplies? Step into my emporium. I've got everything your critters
+      need.
+    - Toys, food, you name it. I've got the best deals in the afterlife. All for
+      the critters, of course.
+    - Back for more wisdom, eh? Remember, a well-fed critter is a generous critter.
+    - Every time you visit, I've got more secrets to share. Like, did you know about
+      the magic in those bushes?
+    - You again? Must be for my charming conversation. Or maybe it's the tip about
+      those bushes...
+    - Ah, back for a chat? You won't believe what I found today. But first, how are
+      those critters?
+    goodbyeLines:
+    - No questions on where I get my goods, alright? Let's just say, they 'appear'
+      when needed.
+    - You know, a little sprucing up around here could work wonders. Maybe start
+      with that garden?
+    - So long, ghostly gardener. Keep those gardens and spirits high!
+    - Au revoir, phantom friend. Keep this place hoppin', you hear?
+    - Adieu, adieu! Keep spreading that spectral charm of yours!
+    - See ya later bone... errr ghost daddy? Guess you've got no bones left.
+    - Time to vanish? Alright, but the critters and I will be waiting.
+    - See ya, spirit. Remember, this old cat's always got something new in store!
+    - Goodbye for now. And hey, watch out for those mouse traps, will ya?
+    - Stay jazzy, ghost pal. And keep an eye on those mice!
+    tips:
+    - Remember, a happy critter is a happy spirit world. It's all connected, like
+      jazz notes in harmony
+    - You know the drill. Happy critters, happy life. And maybe some extra Ghost
+      Bucks too!
+    - Keep those spirits high and pockets full of fruit. It's the little things that
+      count.
+    - Your spirit hands can do more than just feed and play. Ever thought about fixing
+      up those play areas?
+    - Remember, a tidy place attracts more critters. They love a cozy, safe spot.
+    - Each repair job might need more critters. They're quite the little helpers,
+      you know.
+    - More happy critters means more hands to help. Or paws, in this case. Get fixing,
+      get more friends!
+    regularLines:
     - 'whats cookin jack? check it... fine goods, see? take a look...
 
       B^)'
-    - OPEN SHOP - NOT DIALOGUE
+    - open shop
     - 'stay clean daddy-o... hehe...
 
       B^)'
-    shopLineIndex: 1
+    - don't eat the blue peaches
   inventory:
     items:
     - itemData: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}

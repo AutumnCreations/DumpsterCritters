@@ -9,6 +9,7 @@ public class GameStateManager : MonoBehaviour
         Playing,
         Dialogue,
         Paused,
+        Tutorial
     }
     
     [BoxGroup("State Control")]
@@ -51,7 +52,7 @@ public class GameStateManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        ChangeState(GameState.Dialogue);
+        //ChangeState(GameState.Tutorial);
     }
 
     public void ChangeState(GameState newState)

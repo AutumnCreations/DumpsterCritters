@@ -153,7 +153,6 @@ public class PlayerController : MonoBehaviour
         pauseAction.performed += OnInventory;
         pauseAction.Enable();
 
-        GameStateManager.Instance.onGameStateChange += OnGameStateChange;
 
         dialogueManager = FindObjectOfType<DialogueManager>();
 
@@ -161,6 +160,8 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
+        GameStateManager.Instance.onGameStateChange += OnGameStateChange;
+
         navMeshAgent.speed = movementSpeed;
         navMeshAgent.stoppingDistance = stoppingDistance;
         pickupIcon.SetActive(false);
@@ -328,7 +329,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleClickInput(bool holdDown)
     {
-        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Tutorial)
         {
             dialogueManager.ContinueDialogue();
             return;
@@ -618,7 +619,7 @@ public class PlayerController : MonoBehaviour
 
     void OnClickPerformed(InputAction.CallbackContext context)
     {
-        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Tutorial)
         {
             return;
         }
@@ -648,7 +649,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteract(InputAction.CallbackContext context)
     {
-        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue)
+        if (GameStateManager.Instance.CurrentState == GameStateManager.GameState.Dialogue || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Tutorial)
         {
             dialogueManager.ContinueDialogue();
             return;
@@ -689,6 +690,10 @@ public class PlayerController : MonoBehaviour
                 navMeshAgent.isStopped = false;
                 break;
             case GameStateManager.GameState.Dialogue:
+                isPaused = true;
+                navMeshAgent.isStopped = true;
+                break;
+                case GameStateManager.GameState.Tutorial:
                 isPaused = true;
                 navMeshAgent.isStopped = true;
                 break;

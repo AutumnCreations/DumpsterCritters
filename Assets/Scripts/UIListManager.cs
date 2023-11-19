@@ -123,7 +123,8 @@ public abstract class UIListManager<T> : MonoBehaviour
         }
         else
         {
-            GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
+            if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Tutorial) 
+                GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
         }
     }
 

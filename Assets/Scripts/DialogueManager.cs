@@ -32,6 +32,7 @@ public class DialogueManager : MonoBehaviour
     private void Start()
     {
         continueButton.onClick.AddListener(() => ContinueDialogue());
+        StartTutorialDialogue();
     }
 
     public void StartDialogue(NPC npc)
@@ -47,9 +48,19 @@ public class DialogueManager : MonoBehaviour
         shopSystem.OnShopClosed += ContinueDialogueAfterShop;
     }
 
+    public void StartTutorialDialogue()
+    {
+        currentNPC = FindObjectOfType<NPC>();
+        GameStateManager.Instance.ChangeState(GameStateManager.GameState.Tutorial);
+        currentDialogue = currentNPC.GetDialogue(false);
+        currentLineIndex = 0;
+        dialogueUI.SetActive(true);
+        ShowLine();
+    }
+
     private void ShowLine()
     {
-        if (currentLineIndex == currentDialogue.shopLineIndex)
+        if (currentDialogue.lines[currentLineIndex].ToLower() == "open shop")
         {
             // Open the shop UI when the shop line index is reached
             dialogueUI.SetActive(false);

@@ -64,9 +64,18 @@ public class NPC : MonoBehaviour
         }
     }
 
-    internal Dialogue GetDialogue()
+    internal Dialogue GetDialogue(bool isTutorialComplete = true)
     {
+        dialogue.regularLines[0] = dialogue.greetingLines[UnityEngine.Random.Range(0, dialogue.greetingLines.Length - 1)];
+        dialogue.regularLines[2] = dialogue.goodbyeLines[UnityEngine.Random.Range(0, dialogue.goodbyeLines.Length - 1)];
+        dialogue.regularLines[3] = dialogue.tips[UnityEngine.Random.Range(0, dialogue.tips.Length - 1)];
+
+        string[] linesToUse = isTutorialComplete ? dialogue.regularLines : dialogue.tutorialLines;
+        dialogue.lines = linesToUse;
+
         return dialogue;
     }
+
+
 }
 
