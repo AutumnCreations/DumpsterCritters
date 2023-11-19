@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using DG.Tweening;
 using FMOD.Studio;
 using System.IO;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -234,6 +235,16 @@ public class PlayerController : MonoBehaviour
             {
                 PetCritter();
             }
+            else if (nearbyContainer != null && nearbyContainer is Placemat)
+            {
+                Debug.Log($"Attempting to unlock a placemat");
+                Placemat placemat = nearbyContainer.GetComponent<Placemat>();
+                //Attempt unlock of placemat
+                if (!placemat.unlocked)
+                {
+                    AttemptUnlock(placemat);
+                }
+            }
         }
         else if (nearbyContainer != null && nearbyContainer.currentObject == null && nearbyContainer is not FoodContainer
             && nearbyContainer is not FoodBowl
@@ -262,6 +273,53 @@ public class PlayerController : MonoBehaviour
             StoreItem();
             StopMoving();
         }
+    }
+
+    private void AttemptUnlock(Placemat placemat)
+    {
+        if (GameStateManager.Instance.critterCount >= placemat.requiredCritters)
+        {
+            Critter[] critters = FindObjectsOfType<Critter>();
+            int count = 0;
+
+            foreach (var critter in critters)
+            {
+                if (count < placemat.requiredCritters)
+                {
+                    critter.GroupInteractWithPlacemat(placemat, placemat.groupInteractionDuration);
+                    count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            StartCoroutine(WaitForGroupInteractionCompletion(critters, placemat));
+        }
+    }
+
+    private IEnumerator WaitForGroupInteractionCompletion(Critter[] critters, Placemat placemat)
+    {
+        bool allCrittersArrived = false;
+
+        while (!allCrittersArrived)
+        {
+            allCrittersArrived = true;
+            foreach (var critter in critters)
+            {
+                if (critter.currentState != Critter.CritterState.GroupInteract)
+                {
+                    allCrittersArrived = false;
+                    break;
+                }
+            }
+            yield return null;
+        }
+
+        // Start the timer when all critters have arrived
+        yield return new WaitForSeconds(placemat.groupInteractionDuration);
+        // Unlock logic or other post-interaction logic goes here
     }
 
     private void HandleClickInput(bool holdDown)
