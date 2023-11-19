@@ -7,10 +7,6 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(int sceneIndex)
     {
-        if (musicPlayer != null)
-        {
-            musicPlayer.StopMusic(); // Stop the music before loading the scene
-        }
         SceneManager.LoadScene(sceneIndex);
     }
 }
