@@ -5,7 +5,7 @@ using FMOD.Studio;
 
 public class MusicStart : MonoBehaviour
 {
-    private static MusicStart instance;
+    private static MusicStart instance { get; set; }
 
     public string[] tune;
 
@@ -31,5 +31,6 @@ public class MusicStart : MonoBehaviour
         string musicEventName = tune[n];        
         musicEvent = FMODUnity.RuntimeManager.CreateInstance(musicEventName);
         musicEvent.start();
-    }
+    } 
+    
 }
