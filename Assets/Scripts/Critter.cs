@@ -7,14 +7,15 @@ using Unity.VisualScripting;
 
 public class Critter : MonoBehaviour
 {
-    private enum CritterState
+    public enum CritterState
     {
         Idle,
         Roaming,
         SeekingFood,
         Eating,
         SeekingStimulation,
-        Playing
+        Playing,
+        GroupInteract
     }
 
     [BoxGroup("Settings")]
@@ -181,7 +182,7 @@ public class Critter : MonoBehaviour
 
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
-    CritterState currentState;
+    public CritterState currentState;
 
     [ShowInInspector, ReadOnly]
     [BoxGroup("Debug")]
@@ -395,6 +396,26 @@ public class Critter : MonoBehaviour
         {
             ChangeState(CritterState.Roaming);
         }
+    }
+
+    public void GroupInteractWithPlacemat(Placemat placemat, float waitDuration)
+    {
+        ChangeState(CritterState.GroupInteract);
+        StartCoroutine(GroupInteractionRoutine(placemat, waitDuration));
+    }
+
+    private IEnumerator GroupInteractionRoutine(Placemat placemat, float waitDuration)
+    {
+        // Move to placemat
+        agent.SetDestination(placemat.transform.position);
+        while (Vector3.Distance(transform.position, placemat.transform.position) > interactionDistance)
+        {
+            yield return null;
+        }
+
+        // Wait at placemat for duration
+        yield return new WaitForSeconds(waitDuration);
+        ChangeState(CritterState.Idle); // Return to idle after waiting
     }
 
     private IEnumerator WaitAndEvaluate()

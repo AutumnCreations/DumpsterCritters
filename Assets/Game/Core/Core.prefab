@@ -682,7 +682,7 @@ MonoBehaviour:
   dialogueUI: {fileID: 6815228651115989593}
   continueButton: {fileID: 586305784733768223}
   textSpeed: 0.04
-  Music: {fileID: 0}
+  Music: {fileID: 3298326971968541325}
 --- !u!114 &4157918890055192308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,6 +784,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}
+--- !u!1 &3298326971968541325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3109894614178335163, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}
+  m_PrefabInstance: {fileID: 499497461287902006}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4997244081378235668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4879462491626622498, guid: ebeaf85d3e41dad49b2be3f965baed84, type: 3}

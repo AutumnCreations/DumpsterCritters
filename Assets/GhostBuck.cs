@@ -48,6 +48,7 @@ public class GhostBuck : MonoBehaviour
             .SetEase(idleEaseType)
             .SetLoops(3, LoopType.Restart)
             .OnComplete(() => Destroy(gameObject));
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Coin");
     }
 
     private void OnTriggerEnter(Collider other)

@@ -24,8 +24,10 @@ public class Placemat : InteractableContainer
     TextMeshProUGUI critterCount;
 
     [BoxGroup("Placemat")]
-    [SerializeField]
-    int requiredCritters = 0;
+    public int requiredCritters = 0;
+
+    [BoxGroup("Placemat")]
+    public float groupInteractionDuration = 10f;
 
     protected override void Awake()
     {
