@@ -12,6 +12,8 @@ public class DialogueManager : MonoBehaviour
     GameObject dialogueUI;
     [SerializeField]
     Button continueButton;
+    [SerializeField]
+    Button skipButton;
     [SerializeField, Range(0.01f, 2f)]
     float textSpeed = 0.05f;
 
@@ -54,6 +56,7 @@ public class DialogueManager : MonoBehaviour
         GameStateManager.Instance.ChangeState(GameStateManager.GameState.Tutorial);
         currentDialogue = currentNPC.GetDialogue(false);
         currentLineIndex = 0;
+        skipButton.gameObject.SetActive(true);
         dialogueUI.SetActive(true);
         ShowLine();
     }
@@ -117,8 +120,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void EndDialogue()
+    public void EndDialogue()
     {
+        skipButton.gameObject.SetActive(false);
         GameStateManager.Instance.ChangeState(GameStateManager.GameState.Playing);
         dialogueUI.SetActive(false);
     }

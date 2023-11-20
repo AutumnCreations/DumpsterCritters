@@ -291,11 +291,12 @@ MonoBehaviour:
   maxCritters: 0
   foodItem: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}
   quantity: 1
-  respawnTime: 0
+  foodRespawn: 0
   fillTimer: {fileID: 4581515805984766646}
   ghostBuckDropChance: 0.1
   ghostBuckPrefab: {fileID: 0}
   PickupEvent: event:/Env/MouseTrap_Disarm
   RespawnEvent: event:/Env/MouseTrap_Arm
   destroyDelay: 3
+  mouseTrapRespawn: 180
   spriteRenderer: {fileID: 1832546218638140704}

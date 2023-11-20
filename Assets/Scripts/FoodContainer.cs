@@ -22,7 +22,7 @@ public class FoodContainer : InteractableContainer
     [Tooltip("How long does it take for the food to respawn in seconds? 0 = No Respawn")]
     [Range(0, 120)]
     [SerializeField]
-    float respawnTime = 10;
+    float foodRespawn = 10;
 
     [BoxGroup("UI")]
     [SerializeField]
@@ -49,7 +49,7 @@ public class FoodContainer : InteractableContainer
         if (foodItem != null)
         {
             SetObject(foodItem);
-            timePassed = respawnTime + 1;
+            timePassed = foodRespawn + 1;
         }
     }
 
@@ -71,21 +71,21 @@ public class FoodContainer : InteractableContainer
             currentObject.PickUp(player.grabPoint, true);
             FMODUnity.RuntimeManager.PlayOneShot(PickupEvent, transform.position);
             currentObject = null;
-            StartCoroutine(RespawnFruit());
+            StartCoroutine(RespawnFood(foodRespawn));
         }
     }
 
-    private IEnumerator RespawnFruit()
+    protected virtual IEnumerator RespawnFood(float time)
     {
-        if (respawnTime == 0) yield break;
+        if (time == 0) yield break;
         Debug.Log("Respawning Fruit...");
         ToggleUI(true);
         timePassed = 0;
 
-        while (timePassed < respawnTime)
+        while (timePassed < time)
         {
             timePassed += Time.deltaTime;
-            UpdateFillBar((respawnTime - timePassed) / respawnTime);
+            UpdateFillBar((time - timePassed) / time);
             yield return null;
         }
         ToggleUI(false);
@@ -105,7 +105,7 @@ public class FoodContainer : InteractableContainer
         if (player != null)
         {
             player.SetNearbyComponents(this.gameObject, true);
-            if (timePassed < respawnTime)
+            if (timePassed < foodRespawn)
             {
                 ToggleUI(true);
             }

@@ -5337,7 +5337,7 @@ MonoBehaviour:
   fedVFX: {fileID: 224161509393877855}
   feedPoint: {fileID: 1822031403060922586}
   InteractSuccessSound: event:/NPC/Mouse/Mouse_Heart
-  ghostBuckDropChance: 0.2
+  ghostBuckDropChance: 0.75
   hungerThresholdForGhostBuck: 20
   moodThresholdForGhostBuck: 80
   ghostBuckPrefab: {fileID: 5541199498955550374, guid: a3d9ce3c72d00d2448635024dec101e7, type: 3}

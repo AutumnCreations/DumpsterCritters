@@ -15,6 +15,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 6828946324636589963, guid: 32875e46b9c1b8a4cb41d84e356903de, type: 3}
   itemName: Bell
   itemSprite: {fileID: 1489633936, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
-  cost: 5
+  cost: 2
   rationCount: 0
   entertainmentValue: 2

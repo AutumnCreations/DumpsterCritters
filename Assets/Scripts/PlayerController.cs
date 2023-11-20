@@ -307,19 +307,19 @@ public class PlayerController : MonoBehaviour
 
         bool allCrittersArrived = false;
 
-        while (!allCrittersArrived)
-        {
-            allCrittersArrived = true;
-            foreach (var critter in critters)
-            {
-                if (critter.currentState != Critter.CritterState.GroupInteract)
-                {
-                    allCrittersArrived = false;
-                    break;
-                }
-            }
-            yield return null;
-        }
+        //while (!allCrittersArrived)
+        //{
+        //    allCrittersArrived = true;
+        //    foreach (var critter in critters)
+        //    {
+        //        if (critter.currentState != Critter.CritterState.GroupInteract)
+        //        {
+        //            allCrittersArrived = false;
+        //            break;
+        //        }
+        //    }
+        //    yield return null;
+        //}
 
         // Start the timer when all critters have arrived
         yield return new WaitForSeconds(placemat.groupInteractionDuration);

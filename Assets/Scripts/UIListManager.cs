@@ -69,7 +69,10 @@ public abstract class UIListManager<T> : MonoBehaviour
         itemUI.itemPriceText.text = $"{item.itemData.cost}";
         itemUI.itemImage.sprite = item.itemData.itemSprite;
         Debug.Log(item.itemData.itemPrefab);
-        itemUI.itemRationText.text = item.itemData.rationCount > 0 ? item.itemData.rationCount.ToString() : "";
+        bool isFood = item.itemData.rationCount > 0;
+        itemUI.itemRationText.text = isFood ? item.itemData.rationCount.ToString() : item.itemData.entertainmentValue.ToString();
+        itemUI.rationIcon.gameObject.SetActive(isFood);
+        itemUI.bellIcon.gameObject.SetActive(!isFood);
 
         if (!itemUIElements.ContainsKey(item))
         {

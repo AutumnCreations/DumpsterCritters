@@ -15,6 +15,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 6828946324636589963, guid: 262c38b7b6d268242a318de511c724d1, type: 3}
   itemName: Soccer Ball
   itemSprite: {fileID: 357485561, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
-  cost: 4
+  cost: 1
   rationCount: 0
   entertainmentValue: 1

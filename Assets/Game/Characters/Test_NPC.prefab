@@ -232,14 +232,12 @@ MonoBehaviour:
     - Hey there, spirit! Name's Whiskers. I'll be your guide in this spectral world.
     - First things first, those critters? They need your ghostly touch.
     - ' Keep ''em fed, entertained, and out of trouble.'
-    - Watch out for those mouse traps.
-    - 'No danger to us spirits, but the critters? '
+    - 'And watch out for those mouse traps. No danger to us spirits, but the critters? '
     - Well they're smart but best to get rid of them anyhow.
     - 'Here''s a tip: swipe that cheese from the traps. '
     - Critters love a free meal. You'll be a hero.
     - Oh, and don't forget the trees and bushes. They're ripe with fruit for your
       critter pals.
-    - And hey, don't forget to jazz up the place. A little charm goes a long way.
     - You ever need tips, tricks, or just a chat, I'm around. Us alley cats know
       a thing or two about survival.
     - Alright, I'm off. Remember, Whiskers' shop - quality goods, 'mysteriously'
@@ -295,21 +293,19 @@ MonoBehaviour:
   inventory:
     items:
     - itemData: {fileID: 11400000, guid: aae021535fb4ef84c888d699d81a61b8, type: 2}
-      quantity: 2
+      quantity: 50
     - itemData: {fileID: 11400000, guid: b50f3301d8b1b8341b2bd8b778a0a4d9, type: 2}
-      quantity: 6
+      quantity: 50
     - itemData: {fileID: 11400000, guid: d377074bca4d89d44b6bca918646130d, type: 2}
-      quantity: 6
+      quantity: 50
     - itemData: {fileID: 11400000, guid: a3ac3ea5041da2e42be6520bd42d1364, type: 2}
-      quantity: 3
+      quantity: 50
     - itemData: {fileID: 11400000, guid: 6c8cbad826a8f214e8f4b2741f5fb388, type: 2}
-      quantity: 3
-    - itemData: {fileID: 11400000, guid: 761aae232929c5c49a046610d64e91e2, type: 2}
-      quantity: 1
+      quantity: 50
     - itemData: {fileID: 11400000, guid: e055a256f8b8ace438c5a9bc356fe79f, type: 2}
-      quantity: 1
+      quantity: 2
     - itemData: {fileID: 11400000, guid: e2019742e6c251044b92800d8363c6a9, type: 2}
-      quantity: 1
+      quantity: 4
     - itemData: {fileID: 11400000, guid: df4e61edcfcb2de4d9cd643612219df7, type: 2}
-      quantity: 1
+      quantity: 4
   Music: {fileID: 0}
