@@ -102,9 +102,9 @@ public class Placemat : InteractableContainer
             currentCritters = 0;
             toyAnimation.Stop();
         }
-        else if (currentCritters == 1 && previousCritters == 0)
+        else if (currentCritters >= 1 && previousCritters <= 0)
         {
-            toyAnimation.RollnJump();
+            toyAnimation.PlayAnimations();
         }
     }
 

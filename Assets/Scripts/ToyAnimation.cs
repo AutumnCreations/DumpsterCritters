@@ -11,6 +11,10 @@ public class ToyAnimation : MonoBehaviour
 
     [BoxGroup("Settings/Preferences")]
     [SerializeField]
+    bool playOnAwake = true;
+
+    [BoxGroup("Settings/Preferences")]
+    [SerializeField]
     bool wiggle = false;
 
     [BoxGroup("Settings/Preferences")]
@@ -56,6 +60,11 @@ public class ToyAnimation : MonoBehaviour
     [ShowIf("shake")]
     [SerializeField]
     float shakeDuration = .5f;
+
+    [BoxGroup("Shake Settings")]
+    [ShowIf("shake")]
+    [SerializeField, Range(1, 100)]
+    float shakeStrength = 30f;
 
     #endregion
 
@@ -118,53 +127,78 @@ public class ToyAnimation : MonoBehaviour
         }
         initialPosition = baseSprite.localPosition;
         initialRotation = baseSprite.localRotation;
+        if (playOnAwake) PlayAnimations();
+    }
 
+    public void PlayAnimations()
+    {
         if (wiggle) Wiggle();
         if (shake) Shake();
+        if (roll && jump) RollnJump();
+        else if (roll) Roll();
+        else if (jump) Jump();
     }
 
-    public void RollnJump()
+    private void Roll()
     {
-        if (roll && jump)
-        {
+        sequence = DOTween.Sequence();
 
-            // Main sequence
-            sequence = DOTween.Sequence();
+        // Move to the left initially
+        sequence.Append(baseSprite.DOLocalMoveX(initialPosition.x - (rollDistance * 0.5f), rollDuration).SetEase(rollEaseType));
+        sequence.Join(baseSprite.DOLocalRotate(new Vector3(0, 0, 180), rollDuration, RotateMode.FastBeyond360).SetEase(rollEaseType));
 
-            // Non-repeating part: Roll back halfway
-            sequence.Append(baseSprite.DOLocalMoveX(initialPosition.x - (rollDistance * .5f), rollDuration * .5f).SetEase(rollEaseType));
-            sequence.Join(baseSprite.DOLocalRotate(new Vector3(baseSprite.localRotation.eulerAngles.x,
-                           baseSprite.localRotation.eulerAngles.y, 360), rollDuration * .5f).SetEase(rollEaseType));
+        // Nested sequence for repeating part
+        Sequence nestedSequence = DOTween.Sequence();
 
-            // Nested sequence for repeating part
-            Sequence nestedSequence = DOTween.Sequence();
+        // Move and rotate to the right and then to the left
+        nestedSequence.Append(baseSprite.DOLocalMoveX(initialPosition.x + rollDistance, rollDuration).SetEase(rollEaseType));
+        nestedSequence.Join(baseSprite.DOLocalRotate(new Vector3(0, 0, -360), rollDuration, RotateMode.FastBeyond360).SetEase(rollEaseType));
+        nestedSequence.Append(baseSprite.DOLocalMoveX(initialPosition.x - rollDistance, rollDuration).SetEase(rollEaseType));
+        nestedSequence.Join(baseSprite.DOLocalRotate(new Vector3(0, 0, 360), rollDuration, RotateMode.FastBeyond360).SetEase(rollEaseType));
 
-            // Jump forward
-            nestedSequence.Append(baseSprite.DOLocalJump(new Vector3(initialPosition.x + jumpDistance, initialPosition.y, initialPosition.z),
-                          jumpHeight, jumps, jumpDuration).SetEase(jumpEaseType));
-            //nestedSequence.Join(baseSprite.DOLocalRotate(new Vector3(baseSprite.localRotation.eulerAngles.x,
-            //               baseSprite.localRotation.eulerAngles.y, 0), jumpDuration).SetEase(rollEaseType));
+        nestedSequence.SetLoops(-1, LoopType.Yoyo);
 
-            // Roll back the rest of the way
-            nestedSequence.Append(baseSprite.DOLocalMoveX(initialPosition.x - (rollDistance * .5f), rollDuration).SetEase(rollEaseType));
-            nestedSequence.Join(baseSprite.DOLocalRotate(new Vector3(baseSprite.localRotation.eulerAngles.x,
-                           baseSprite.localRotation.eulerAngles.y, 0), rollDuration).SetEase(rollEaseType));
-
-            nestedSequence.SetLoops(-1, LoopType.Restart);
-
-            sequence.Append(nestedSequence);
-
-            //mainSequence.OnComplete(() =>
-            //{
-            //});
-        }
-        else
-        {
-            Debug.Log("You need to enable both Roll and Jump to use RollnJump");
-        }
+        sequence.Append(nestedSequence);
     }
 
-    public void Wiggle()
+    private void Jump()
+    {
+        baseSprite.DOLocalJump(new Vector3(initialPosition.x + jumpDistance, initialPosition.y, initialPosition.z),
+                       jumpHeight, jumps, jumpDuration)
+            .SetEase(jumpEaseType)
+            .SetLoops(-1, LoopType.Yoyo);
+        baseSprite.DOLocalRotate(new Vector3(0, 0, -360), jumpDuration, RotateMode.FastBeyond360).SetEase(jumpEaseType)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    private void RollnJump()
+    {
+
+        // Main sequence
+        sequence = DOTween.Sequence();
+
+        // Non-repeating part: Roll back halfway
+        sequence.Append(baseSprite.DOLocalMoveX(initialPosition.x + (rollDistance * 0.5f), rollDuration).SetEase(rollEaseType));
+        sequence.Join(baseSprite.DOLocalRotate(new Vector3(0, 0, 180), rollDuration, RotateMode.FastBeyond360).SetEase(rollEaseType));
+
+        // Nested sequence for repeating part
+        Sequence nestedSequence = DOTween.Sequence();
+
+        // Jump forward
+        nestedSequence.Append(baseSprite.DOLocalJump(new Vector3(baseSprite.position.x + jumpDistance, initialPosition.y, initialPosition.z),
+                      jumpHeight, jumps, jumpDuration).SetEase(jumpEaseType));
+        nestedSequence.Join(baseSprite.DOLocalRotate(new Vector3(0, 0, 360), rollDuration, RotateMode.FastBeyond360).SetEase(rollEaseType));
+
+        // Roll back the rest of the way
+        nestedSequence.Append(baseSprite.DOLocalMoveX(initialPosition.x + rollDistance, rollDuration).SetEase(rollEaseType));
+        nestedSequence.Join(baseSprite.DOLocalRotate(new Vector3(0, 0, -360), rollDuration, RotateMode.FastBeyond360).SetEase(rollEaseType));
+
+        nestedSequence.SetLoops(-1, LoopType.Restart);
+
+        sequence.Append(nestedSequence);
+    }
+
+    private void Wiggle()
     {
         // Set the initial rotation
         baseSprite.localRotation = Quaternion.Euler(baseSprite.localRotation.eulerAngles.x,
@@ -177,15 +211,16 @@ public class ToyAnimation : MonoBehaviour
             .SetEase(wiggleEaseType);
     }
 
-    public void Shake()
+    private void Shake()
     {
-        baseSprite.DOShakeRotation(shakeDuration, 50, 10, 50, true)
+        baseSprite.DOShakeRotation(shakeDuration, shakeStrength, 10, 50, true)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(shakeEaseType);
     }
 
     internal void Stop()
     {
+        Debug.Log($"Stopping toy animation {gameObject.name}");
         baseSprite.DOKill();
         sequence.Kill();
         baseSprite.DOLocalMove(initialPosition, .5f).SetEase(Ease.Linear);

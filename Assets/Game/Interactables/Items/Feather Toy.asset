@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 6828946324636589963, guid: 8fd2656046c7b00408dc4180089f4919, type: 3}
   itemName: Feather Toy
-  itemSprite: {fileID: -858408534, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
+  itemSprite: {fileID: 1967992559, guid: c7a7d91ad8b35834e8026a564ef0c755, type: 3}
   cost: 4
   rationCount: 0
   entertainmentValue: 4

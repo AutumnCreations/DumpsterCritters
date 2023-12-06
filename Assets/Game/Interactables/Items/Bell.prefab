@@ -154,7 +154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: roll
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: jumps
@@ -167,6 +167,10 @@ PrefabInstance:
     - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: jumpHeight
       value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8730337958783642186, guid: b4dca38bfb39de24887c3eb2f4840803, type: 3}
       propertyPath: jumpDistance

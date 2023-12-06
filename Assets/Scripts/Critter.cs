@@ -439,6 +439,7 @@ public class Critter : MonoBehaviour
 
     private void MoveAwayFromInteraction()
     {
+        if (targetInteraction == null) return;
         targetInteraction.CritterCountChange(-1);
         Vector3 directionAwayFromBowl = (transform.position - targetInteraction.transform.position).normalized;
         targetInteraction = null;

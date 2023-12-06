@@ -5311,18 +5311,18 @@ MonoBehaviour:
   useIntegers: 0
   isPaused: 0
   hunger: 50
-  needFood: 80
-  hungerIncreaseRate: 0.5
+  needFood: 70
+  hungerIncreaseRate: 0.75
   mood: 50
-  needAttention: 20
-  moodDecreaseRate: 0.25
+  needAttention: 30
+  moodDecreaseRate: 0.75
   petCooldown: 10
   feedCooldown: 10
   roamRadius: 15
   minRoamIdleTime: 1
-  maxRoamIdleTime: 7
-  eatingDuration: 2
-  playDuration: 5
+  maxRoamIdleTime: 6
+  eatingDuration: 4
+  playDuration: 8
   interactionDistance: 0.75
   moveAwayDistance: 5
   worldSpaceUI: {fileID: 2607772343737500851}
@@ -5338,7 +5338,7 @@ MonoBehaviour:
   feedPoint: {fileID: 1822031403060922586}
   InteractSuccessSound: event:/NPC/Mouse/Mouse_Heart
   ghostBuckDropChance: 0.75
-  hungerThresholdForGhostBuck: 20
+  hungerThresholdForGhostBuck: 40
   moodThresholdForGhostBuck: 80
   ghostBuckPrefab: {fileID: 5541199498955550374, guid: a3d9ce3c72d00d2448635024dec101e7, type: 3}
   currentState: 0

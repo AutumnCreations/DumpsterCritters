@@ -669,6 +669,12 @@ public class PlayerController : MonoBehaviour
     {
         // Should be able to cancel out of dialogue, shop, etc.
         if (isPaused) return;
+
+        if (timeSinceLastInteraction < interactionCooldown)
+        {
+            Debug.Log("Too soon to interact again");
+            return;
+        }
         DropItem();
     }
 
@@ -693,7 +699,7 @@ public class PlayerController : MonoBehaviour
                 isPaused = true;
                 navMeshAgent.isStopped = true;
                 break;
-                case GameStateManager.GameState.Tutorial:
+            case GameStateManager.GameState.Tutorial:
                 isPaused = true;
                 navMeshAgent.isStopped = true;
                 break;
